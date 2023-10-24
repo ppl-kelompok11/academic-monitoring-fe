@@ -20,9 +20,7 @@ const UseStyles = createStyles((theme) => ({
     margin: "0 auto",
     width: "100%",
     height: "100vh",
-    background:
-      "linear-gradient(160deg, #56209C 0.58%, #130D55 33.33%, #000 91.92%)",
-    maxHeight: "700px",
+    background: "#EEF0F6",
   },
   loginFormLayout: {
     [theme.fn.smallerThan("md")]: {
@@ -68,36 +66,38 @@ export default function Index() {
         <Grid>
           <Grid.Col sm={6} md={5} sx={{ width: "100%" }}>
             <Stack sx={{ height: "100vh" }} align="center" justify="center">
-              <Box sx={{ width: "400px" }} className={classes.loginFormLayout}>
-                <Text size={40} align="center">
-                  Forgot Password
+              <Box sx={{ width: "405px" }} className={classes.loginFormLayout}>
+                <Text c="primary" fw={600} size={45} align="center">
+                  Lupa Password
                 </Text>
-                <br />
-                <Text align="center">
-                  Please enter the email address associated with your account.
-                  Well send you a link to reset your password.
+                <Text c="black" fw={500} size={18} align="center">
+                  Masukkan Email Anda! <br />
+                  Anda akan menerima email untuk mengganti password.
                 </Text>
                 <br />
                 <TextInput
+                  size="lg"
+                  radius={11}
                   label="Email"
-                  placeholder="Email"
                   {...form.getInputProps("email")}
                 />
                 <br />
-                <Button fullWidth onClick={handleSubmit}>
-                  Send Link
+                <Button variant="filled" size="lg" radius="md" fullWidth onClick={handleSubmit}>
+                  Kirim Permintaan
                 </Button>
                 <br />
                 <Link href="signin">
                   <Text
+                    c="primary"
+                    size="md"
                     sx={{
                       ":hover": {
-                        fontWeight: 600,
+                        fontWeight: 500,
                       },
                     }}
                     align="center"
                   >
-                    Back To Sign In
+                    Kembali ke Sign In
                   </Text>
                 </Link>
               </Box>

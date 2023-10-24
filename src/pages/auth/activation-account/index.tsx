@@ -14,18 +14,16 @@ import {
 import Link from "next/link";
 import { useForm } from "@mantine/form";
 import api from "@/configs/axios-interceptors";
-import axios from "axios";
-import { cookies } from "next/headers";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 const UseStyles = createStyles((theme) => ({
   wrapper: {
+    margin: "0 auto",
+    width: "100%",
+    height: "100vh",
     background: "#EEF0F6",
   },
-  title: {
-    [theme.fn.smallerThan("lg")]: {
-      fontSize: "60px",
-    },
-  },
+  title: {},
   loginFormLayout: {
     [theme.fn.smallerThan("md")]: {
       width: "300px",
@@ -36,44 +34,50 @@ const UseStyles = createStyles((theme) => ({
       display: "none",
     },
   },
-  imageAuth: {
-    
-  },
 }));
-
-import Cookies from "js-cookie";
-const API = process.env.API_URL;
 export default function Index() {
-  const Router = useRouter();
   const { classes } = UseStyles();
+  const router = useRouter();
+  //set use state to any
+  const { isReady, query } = useRouter();
+  const [token, setToken] = useState<any>();
+  useEffect(() => {
+    if (isReady) {
+      setToken(query.token);
+    }
+  }, [isReady]);
   const form = useForm({
     initialValues: {
-      email: "",
       password: "",
+      confirm_password: "",
+    },
+    validate: (values) => {
+      return {
+        password:
+          values.password.length < 8
+            ? "Password must include at least 8 characters"
+            : null,
+        confirm_password:
+          !values.confirm_password ||
+          values.confirm_password !== values.password
+            ? "Password not match"
+            : null,
+      };
     },
   });
   const handleSubmit = async () => {
-    // console.log(form.errors);
     form.validate();
     if (!form.validate().hasErrors) {
       try {
-        const response = await api.post("/user/signin", {
-          email: form.values.email,
+        const response = await api.put("/user/reset-password", {
           password: form.values.password,
+          token: token,
         });
-        if (response.data.token) {
-          // console.log(response.data.token);
-          Cookies.set("token", response.data.token);
-          Cookies.set("user", JSON.stringify(response.data.user));
-          Router.push("/dashboard/SelectionProcess1");
-        }
         form.reset();
-      } catch (error) {
-        console.error("Error:", error);
-      }
+        router.push("/auth/login");
+      } catch (error) {}
     }
   };
-
   return (
     <>
       <div className={classes.wrapper}>
@@ -82,55 +86,39 @@ export default function Index() {
             <Stack sx={{ height: "100vh" }} align="center" justify="center">
               <Box sx={{ width: "405px" }} className={classes.loginFormLayout}>
                 <Text c="primary" fw={600} size={45} align="center" className={classes.title}>
-                  Selamat Datang !
+                  Aktivasi Akun
                 </Text>
                 <Text c="black" fw={500} size={18} align="center">
-                  Silahkan Masuk Untuk Memulai Sesi Anda
+                  Silahkan Buat Password untuk Menggunakan Akun Anda
                 </Text>
                 <br />
-                <TextInput
-                  size="lg"
-                  radius={11}
-                  label="Email"
-                  {...form.getInputProps("email")}
-                />
                 <PasswordInput
-                  mt="md"
                   size="lg"
                   radius={11}
-                  label="Password"
+                  label="New Password"
                   {...form.getInputProps("password")}
                 />
                 <br />
-                <Link href="forgot-password">
-                  <Text
-                    c="primary"
-                    align="left"
-                    sx={{
-                      ":hover": {
-                        fontWeight: 500,
-                      },
-                    }}
-                  >
-                    Forgot Password?
-                  </Text>
-                </Link>
-
+                <PasswordInput
+                  size="lg"
+                  radius={11}
+                  label="Confirm Password"
+                  {...form.getInputProps("confirm_password")}
+                />
                 <br />
                 <Button variant="filled" size="lg" radius="md" fullWidth onClick={handleSubmit}>
-                  Masuk
+                  Ganti Password
                 </Button>
-
               </Box>
             </Stack>
           </Grid.Col>
           <Grid.Col
             sm={6}
             md={7}
-            sx={{ width: "100%" }}
+            sx={{ width: "100%", height: "100vh" }}
             className={classes.hiddenMobile}
           >
-            <Image alt="auth" src="/AuthImage.png" height="100vh" className="" />
+            <Image alt="auth" src="/AuthImage.png" height="100vh" />
           </Grid.Col>
         </Grid>
       </div>

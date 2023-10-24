@@ -21,9 +21,7 @@ const UseStyles = createStyles((theme) => ({
     margin: "0 auto",
     width: "100%",
     height: "100vh",
-    background:
-      "linear-gradient(160deg, #56209C 0.58%, #130D55 33.33%, #000 91.92%)",
-    maxHeight: "700px",
+    background: "#EEF0F6",
   },
   title: {},
   loginFormLayout: {
@@ -86,44 +84,31 @@ export default function Index() {
         <Grid>
           <Grid.Col sm={6} md={5} sx={{ width: "100%" }}>
             <Stack sx={{ height: "100vh" }} align="center" justify="center">
-              <Box sx={{ width: "400px" }} className={classes.loginFormLayout}>
-                <Text size={40} align="center" className={classes.title}>
-                  Reset Password
+              <Box sx={{ width: "405px" }} className={classes.loginFormLayout}>
+                <Text c="primary" fw={600} size={45} align="center" className={classes.title}>
+                  Ganti Password
                 </Text>
-                <br />
-                <Text align="center">
-                  To reset your password, please enter your new password below.
-                  Make sure its strong and unique.
+                <Text c="black" fw={500} size={18} align="center">
+                  Silahkan Ganti Password Anda
                 </Text>
                 <br />
                 <PasswordInput
+                  size="lg"
+                  radius={11}
                   label="New Password"
-                  placeholder="Password"
                   {...form.getInputProps("password")}
                 />
                 <br />
                 <PasswordInput
+                  size="lg"
+                  radius={11}
                   label="Confirm Password"
-                  placeholder="Password"
                   {...form.getInputProps("confirm_password")}
                 />
                 <br />
-                <Button fullWidth onClick={handleSubmit}>
-                  Reset
+                <Button variant="filled" size="lg" radius="md" fullWidth onClick={handleSubmit}>
+                  Ganti Password
                 </Button>
-                <br />
-                <Link href="/">
-                  <Text
-                    sx={{
-                      ":hover": {
-                        fontWeight: 600,
-                      },
-                    }}
-                    align="center"
-                  >
-                    Back To Home
-                  </Text>
-                </Link>
               </Box>
             </Stack>
           </Grid.Col>
