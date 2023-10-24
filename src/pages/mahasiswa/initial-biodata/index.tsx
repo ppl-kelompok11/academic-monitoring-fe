@@ -122,7 +122,7 @@ export default function Index() {
               {...form.getInputProps("status")}
             />  
             <Group mt="md">
-              <Button type="submit">Tambah</Button>
+              <Button type="submit">Simpan</Button>
             </Group>
           </form>
         </Box>
