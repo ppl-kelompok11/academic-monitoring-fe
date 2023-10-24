@@ -38,6 +38,7 @@ export default function App({ Component, pageProps }: AppProps) {
               styles: {
                 label: {
                   color: "#243063",
+                  fontSize: "18px"
                 },
                 input: {
                   backgroundColor: "transparent",
@@ -59,6 +60,19 @@ export default function App({ Component, pageProps }: AppProps) {
                 innerInput: {
                   backgroundColor: "transparent",
                   color: "#243063",
+                },
+              },
+            },
+            NativeSelect: {
+              styles: {
+                label: {
+                  color: "#243063",
+                  fontSize: "18px"
+                },
+                input: {
+                  backgroundColor: "transparent",
+                  color: "#243063",
+                  border: "2px solid #243063",
                 },
               },
             },
