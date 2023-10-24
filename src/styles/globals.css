@@ -99,3 +99,21 @@ a {
     color-scheme: dark;
   }
 }
+
+html::-webkit-scrollbar {
+  width: 10px;
+  height: 1rem;
+  background: #D9D9D9;
+  margin-right: 50px;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: #333F73;
+  border-radius: 999px;
+  border-width: 1px;
+  border-color: #333f739d;
+  -webkit-border-radius: 2rem;
+  -moz-border-radius: 2rem;
+  -ms-border-radius: 2rem;
+  -o-border-radius: 2rem;
+}
