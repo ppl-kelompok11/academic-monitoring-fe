@@ -20,7 +20,7 @@ import { useRouter } from "next/router";
 const UseStyles = createStyles((theme) => ({
   wrapper: {
     background:
-      "linear-gradient(160deg, #56209C 0.58%, #130D55 33.33%, #000 91.92%)",
+      "#EEF0F6",
   },
   title: {
     [theme.fn.smallerThan("lg")]: {
@@ -37,7 +37,11 @@ const UseStyles = createStyles((theme) => ({
       display: "none",
     },
   },
+  imageAuth: {
+    
+  },
 }));
+
 import Cookies from "js-cookie";
 const API = process.env.API_URL;
 export default function Index() {
@@ -77,21 +81,25 @@ export default function Index() {
         <Grid>
           <Grid.Col sm={6} md={5} sx={{ width: "100%" }}>
             <Stack sx={{ height: "100vh" }} align="center" justify="center">
-              <Box sx={{ width: "400px" }} className={classes.loginFormLayout}>
-                <Text size={80} align="center" className={classes.title}>
-                  Hi, There !
+              <Box sx={{ width: "405px" }} className={classes.loginFormLayout}>
+                <Text c="primary" fw={600} size={45} align="center" className={classes.title}>
+                  Selamat Datang !
                 </Text>
-                <Text align="center">
-                  Welcome To Future Leader Summit, lets join us
+                <Text c="black" fw={500} size={18} align="center">
+                  Silahkan Masuk Untuk Memulai Sesi Anda
                 </Text>
                 <br />
                 <TextInput
+                  size="lg"
+                  radius={11}
                   label="Email"
                   placeholder="Email"
                   {...form.getInputProps("email")}
                 />
                 <PasswordInput
                   mt="md"
+                  size="lg"
+                  radius={11}
                   label="Password"
                   placeholder="Password"
                   {...form.getInputProps("password")}
@@ -99,10 +107,11 @@ export default function Index() {
                 <br />
                 <Link href="forgot-password">
                   <Text
-                    align="right"
+                    c="primary"
+                    align="left"
                     sx={{
                       ":hover": {
-                        fontWeight: 600,
+                        fontWeight: 500,
                       },
                     }}
                   >
@@ -111,40 +120,10 @@ export default function Index() {
                 </Link>
 
                 <br />
-                <Button fullWidth onClick={handleSubmit}>
-                  Sign In
+                <Button variant="filled" size="lg" radius="md" fullWidth onClick={handleSubmit}>
+                  Masuk
                 </Button>
 
-                <br />
-                <Text align="center">
-                  Don’t have an account?
-                  <Link href="signup">
-                    <Text
-                      sx={{
-                        ":hover": {
-                          fontWeight: 600,
-                        },
-                      }}
-                      color="#6879C0"
-                      span
-                    >
-                      {" "}
-                      Sign Up
-                    </Text>
-                  </Link>
-                </Text>
-                <Link href="/">
-                  <Text
-                    sx={{
-                      ":hover": {
-                        fontWeight: 600,
-                      },
-                    }}
-                    align="center"
-                  >
-                    Back To Home
-                  </Text>
-                </Link>
               </Box>
             </Stack>
           </Grid.Col>
@@ -154,7 +133,7 @@ export default function Index() {
             sx={{ width: "100%" }}
             className={classes.hiddenMobile}
           >
-            <Image alt="auth" src="/AuthImage.png" height="100vh" />
+            <Image alt="auth" src="/AuthImage.png" height="100vh" className="" />
           </Grid.Col>
         </Grid>
       </div>

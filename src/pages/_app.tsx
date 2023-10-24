@@ -8,10 +8,10 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>FLS 2023</title>
+        <title>Academic Monitoring App</title>
         <meta
           name="description"
-          content="Golden Generation 2045: Levearaging Leadership Through Resistance"
+          content="Monitoring and Evaluating System for Informatics Diponegoro Univeristy"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -37,26 +37,28 @@ export default function App({ Component, pageProps }: AppProps) {
             TextInput: {
               styles: {
                 label: {
-                  color: "white",
+                  color: "#243063",
                 },
                 input: {
                   backgroundColor: "transparent",
-                  color: "white",
+                  color: "#243063",
+                  border: "2px solid #243063",
                 },
               },
             },
             PasswordInput: {
               styles: {
                 label: {
-                  color: "white",
+                  color: "#243063",
                 },
                 input: {
                   backgroundColor: "transparent",
-                  color: "white",
+                  color: "#243063",
+                  border: "2px solid #243063",
                 },
                 innerInput: {
                   backgroundColor: "transparent",
-                  color: "white",
+                  color: "#243063",
                 },
               },
             },
@@ -117,20 +119,20 @@ export default function App({ Component, pageProps }: AppProps) {
             },
           },
           colors: {
-            brand: [
-              "#eceff8",
-              "#c7ceeb",
-              "#a2addd",
-              "#7c8ccf",
-              "#576bc2",
-              "#3d52a8",
-              "#303f83",
-              "#222d5d",
-              "#141b38",
-              "#070913",
+            primary: [
+              "#ffffff",
+              "#EBEBED",
+              "#d3d6e0",
+              "#a7acc1",
+              "#7c83a1",
+              "#333F73",
+              "#243063",
+              "#1d264f",
+              "#0e1328",
+              "#04050a",
             ],
           },
-          primaryColor: "brand",
+          primaryColor: "primary",
         }}
       >
         <Notifications />
