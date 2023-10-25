@@ -5,80 +5,80 @@ import Cookies from "js-cookie";
 // Membuat instance Axios dengan konfigurasi default
 const API_URL = process.env.API_URL;
 const api = axios.create({
-  baseURL: "https://api.futureleadersummit.id/api", // Ganti dengan URL API Anda
-  timeout: 10000, // Timeout dalam milidetik
+    baseURL: "http://localhost:8000/api", // Ganti dengan URL API Anda
+    timeout: 10000, // Timeout dalam milidetik
 });
 api.interceptors.request.use(
-  (config) => {
-    // Mendapatkan token dari tempat penyimpanan Anda (misalnya local storage, state, atau cookie)
-    const token = Cookies.get("token");
+    (config) => {
+        // Mendapatkan token dari tempat penyimpanan Anda (misalnya local storage, state, atau cookie)
+        const token = Cookies.get("token");
 
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+        if (token) {
+            config.headers["Authorization"] = `Bearer ${token}`;
+        }
+        // console.log(config);
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
     }
-    // console.log(config);
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
 );
 api.interceptors.response.use(
-  (response) => {
-    if (response.data.message) {
-      notifications.show({
-        color: "green",
-        title: "Success",
-        message: response.data.message,
-        styles: (theme) => ({
-          root: {
-            backgroundColor: "black",
-          },
-        }),
-      });
+    (response) => {
+        if (response.data.message) {
+            notifications.show({
+                color: "green",
+                title: "Success",
+                message: response.data.message,
+                styles: (theme) => ({
+                    root: {
+                        backgroundColor: "black",
+                    },
+                }),
+            });
+        }
+        return response;
+    },
+    (error) => {
+        if (error.response.status === 401) {
+            notifications.show({
+                color: "red",
+                title: "Unauthorized",
+                message: "Please login to access this page",
+                styles: (theme) => ({
+                    root: {
+                        backgroundColor: "black",
+                    },
+                }),
+            });
+            Router.push("/auth/signin");
+        }
+        if (error.response.status === 403) {
+            notifications.show({
+                color: "red",
+                title: "Forbidden",
+                message: "You cannot do this action",
+                styles: (theme) => ({
+                    root: {
+                        backgroundColor: "black",
+                    },
+                }),
+            });
+        }
+        if (error.response.status === 422) {
+            notifications.show({
+                color: "red",
+                title: "Error",
+                message: error.response.data.message,
+                styles: (theme) => ({
+                    root: {
+                        backgroundColor: "black",
+                    },
+                }),
+            });
+        }
+        return Promise.reject(error);
     }
-    return response;
-  },
-  (error) => {
-    if (error.response.status === 401) {
-      notifications.show({
-        color: "red",
-        title: "Unauthorized",
-        message: "Please login to access this page",
-        styles: (theme) => ({
-          root: {
-            backgroundColor: "black",
-          },
-        }),
-      });
-      Router.push("/auth/signin");
-    }
-    if (error.response.status === 403) {
-      notifications.show({
-        color: "red",
-        title: "Forbidden",
-        message: "You cannot do this action",
-        styles: (theme) => ({
-          root: {
-            backgroundColor: "black",
-          },
-        }),
-      });
-    }
-    if (error.response.status === 422) {
-      notifications.show({
-        color: "red",
-        title: "Error",
-        message: error.response.data.message,
-        styles: (theme) => ({
-          root: {
-            backgroundColor: "black",
-          },
-        }),
-      });
-    }
-    return Promise.reject(error);
-  }
 );
 
 export default api;
