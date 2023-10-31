@@ -56,7 +56,7 @@ export default function Index({ activeLink, role }: NavbarProps ) {
           <Image src="/logo.svg" alt="logo_undip" width="45px" />
         </Center>
       </Navbar.Section>
-      <Navbar.Section grow mt="30px">
+      <Navbar.Section grow my="30px">
         <Center>
           {role === "operator" && (<OperatorNavItem activeLink={activeLink} />)}
           {role === "mahasiswa" && (<MahasiswaNavItem activeLink={activeLink} />)}
