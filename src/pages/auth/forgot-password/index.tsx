@@ -1,26 +1,27 @@
-import React, { use } from "react";
+import React from "react";
 import {
-  Flex,
   Grid,
   Stack,
   Text,
   createStyles,
   Image,
   TextInput,
-  PasswordInput,
   Box,
   Button,
 } from "@mantine/core";
-import Link from "next/link";
 import { useForm } from "@mantine/form";
-import api from "@/configs/axios-interceptors";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import api from "@/configs/axios-interceptors";
+
 const UseStyles = createStyles((theme) => ({
   wrapper: {
-    margin: "0 auto",
-    width: "100%",
-    height: "100vh",
     background: "#EEF0F6",
+  },
+  title: {
+    [theme.fn.smallerThan("lg")]: {
+      fontSize: "60px",
+    },
   },
   loginFormLayout: {
     [theme.fn.smallerThan("md")]: {
@@ -33,8 +34,10 @@ const UseStyles = createStyles((theme) => ({
     },
   },
 }));
+
 export default function Index() {
   const { classes } = UseStyles();
+
   const form = useForm({
     initialValues: {
       email: "",
@@ -48,6 +51,7 @@ export default function Index() {
       };
     },
   });
+
   const handleSubmit = async () => {
     form.validate();
     if (!form.validate().hasErrors) {
@@ -63,16 +67,22 @@ export default function Index() {
   return (
     <>
       <div className={classes.wrapper}>
-        <Grid>
-          <Grid.Col sm={6} md={5} sx={{ width: "100%" }}>
+        <Grid mb={0}>
+          <Grid.Col pb={0} sm={6} md={5} sx={{ width: "100%" }}>
             <Stack sx={{ height: "100vh" }} align="center" justify="center">
               <Box sx={{ width: "405px" }} className={classes.loginFormLayout}>
-                <Text c="primary" fw={600} size={45} align="center">
+                <Text
+                  c="primary"
+                  fw={600}
+                  size={45}
+                  align="center"
+                  className={classes.title}
+                >
                   Lupa Password
                 </Text>
                 <Text c="black" fw={500} size={18} align="center">
                   Masukkan Email Anda! <br />
-                  Anda akan menerima email untuk mengganti password.
+                  Anda akan menerima <br/> email untuk mengganti password.
                 </Text>
                 <br />
                 <TextInput
@@ -82,7 +92,13 @@ export default function Index() {
                   {...form.getInputProps("email")}
                 />
                 <br />
-                <Button variant="filled" size="lg" radius="md" fullWidth onClick={handleSubmit}>
+                <Button
+                  variant="filled"
+                  size="lg"
+                  radius="md"
+                  fullWidth
+                  onClick={handleSubmit}
+                >
                   Kirim Permintaan
                 </Button>
                 <br />
@@ -104,9 +120,10 @@ export default function Index() {
             </Stack>
           </Grid.Col>
           <Grid.Col
+            pb={0}
             sm={6}
             md={7}
-            sx={{ width: "100%", height: "100vh" }}
+            sx={{ width: "100%"}}
             className={classes.hiddenMobile}
           >
             <Image alt="auth" src="/AuthImage.png" height="100vh" />
