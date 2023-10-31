@@ -11,10 +11,14 @@ import {
   NativeSelect,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import AppLayout from "@/layouts/AppLayout";
+import Navbar from "@/components/molekul/Navbar";
+import { group } from "console";
+import App from "@/pages/_app";
 
 const UseStyles = createStyles((theme) => ({
   wrapper: {
-    background: "#FFFFFF",
+    
   },
   form: {
     background: "#FFFFFF",
@@ -49,8 +53,9 @@ export default function Index() {
   });
 
   return (
-    <div>
-      <Stack sx={{ height: "100vh" }} mt={35} mx={45}>
+    <AppLayout activeLink="validation" role="dosen-wali">
+    <div className={classes.wrapper}>
+      <Stack mx={45}>
         <Text c="black" size={32} fw={600} align="left">
           Tambah Akun Mahasiswa
         </Text>
@@ -85,7 +90,7 @@ export default function Index() {
           </form>
         </Box>
       </Stack>
-      test
     </div>
+    </AppLayout>
   );
 }

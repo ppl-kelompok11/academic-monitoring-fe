@@ -1,29 +1,28 @@
-import React, { use } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Flex,
   Grid,
   Stack,
   Text,
   createStyles,
   Image,
-  TextInput,
   PasswordInput,
   Box,
   Button,
 } from "@mantine/core";
-import Link from "next/link";
 import { useForm } from "@mantine/form";
 import api from "@/configs/axios-interceptors";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+
 const UseStyles = createStyles((theme) => ({
   wrapper: {
-    margin: "0 auto",
-    width: "100%",
-    height: "100vh",
     background: "#EEF0F6",
   },
-  title: {},
+  title: {
+    [theme.fn.smallerThan("lg")]: {
+      fontSize: "60px",
+      lineHeight: "60px",
+    },
+  },
   loginFormLayout: {
     [theme.fn.smallerThan("md")]: {
       width: "300px",
@@ -35,17 +34,19 @@ const UseStyles = createStyles((theme) => ({
     },
   },
 }));
+
 export default function Index() {
   const { classes } = UseStyles();
   const router = useRouter();
-  //set use state to any
   const { isReady, query } = useRouter();
   const [token, setToken] = useState<any>();
+  
   useEffect(() => {
     if (isReady) {
       setToken(query.token);
     }
   }, [isReady]);
+  
   const form = useForm({
     initialValues: {
       password: "",
@@ -65,6 +66,7 @@ export default function Index() {
       };
     },
   });
+
   const handleSubmit = async () => {
     form.validate();
     if (!form.validate().hasErrors) {
@@ -78,11 +80,12 @@ export default function Index() {
       } catch (error) {}
     }
   };
+
   return (
     <>
       <div className={classes.wrapper}>
-        <Grid>
-          <Grid.Col sm={6} md={5} sx={{ width: "100%" }}>
+        <Grid mb={0}>
+          <Grid.Col pb={0} sm={6} md={5} sx={{ width: "100%" }}>
             <Stack sx={{ height: "100vh" }} align="center" justify="center">
               <Box sx={{ width: "405px" }} className={classes.loginFormLayout}>
                 <Text c="primary" fw={600} size={45} align="center" className={classes.title}>
@@ -113,6 +116,7 @@ export default function Index() {
             </Stack>
           </Grid.Col>
           <Grid.Col
+            pb={0}
             sm={6}
             md={7}
             sx={{ width: "100%", height: "100vh" }}
