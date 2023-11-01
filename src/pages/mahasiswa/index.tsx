@@ -14,6 +14,7 @@ import {
     Badge,
     Pagination,
     Stack,
+    Tabs
 } from "@mantine/core";
 import {
     IconEditCircle,
