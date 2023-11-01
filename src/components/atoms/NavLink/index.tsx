@@ -1,11 +1,12 @@
 import React from "react";
 import Link from "next/link";
-import { createStyles, Box, px, Center } from "@mantine/core";
+import { createStyles, Box, px, Center, Tooltip } from "@mantine/core";
 
 interface NavLinksProps {
   isActive?: boolean;
   children: React.ReactNode;
   route: string;
+  label?: string;
 }
 
 const UseStyles = createStyles((theme) => ({
@@ -32,28 +33,35 @@ const UseStyles = createStyles((theme) => ({
   },
 }));
 
-export default function Index({ isActive, children, route }: NavLinksProps) {
+export default function Index({
+  isActive,
+  children,
+  route,
+  label,
+}: NavLinksProps) {
   const { classes } = UseStyles();
 
   return (
     <Link href={route}>
-      <Box
-        p={10}
-        className={classes.link}
-        sx={(theme) => ({
-          backgroundColor: isActive ? "#333F73" : "transparent",
-          borderRadius: "8px",
-          [theme.fn.smallerThan("sm")]: {
-            height: px(50),
-            display: "flex",
-            alignItems: "center",
-            width: px(50),
+      <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
+        <Box
+          p={10}
+          className={classes.link}
+          sx={(theme) => ({
+            backgroundColor: isActive ? "#333F73" : "transparent",
             borderRadius: "8px",
-          },
-        })}
-      >
-        <Center>{children}</Center>
-      </Box>
+            [theme.fn.smallerThan("sm")]: {
+              height: px(50),
+              display: "flex",
+              alignItems: "center",
+              width: px(50),
+              borderRadius: "8px",
+            },
+          })}
+        >
+          <Center>{children}</Center>
+        </Box>
+      </Tooltip>
     </Link>
   );
 }

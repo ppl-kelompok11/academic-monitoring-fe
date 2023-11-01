@@ -68,10 +68,10 @@ export default function Index({ activeLink, role }: NavbarProps ) {
       <Navbar.Section>
         <Center>
           <Stack>
-            <NavLink route="/profile" isActive={activeLink === "profile"}>
+            <NavLink label="Profil" route="/profile" isActive={activeLink === "profile"}>
               <FaUser color="white" size={30} />
             </NavLink>
-            <NavButton onClick={onLogout}>
+            <NavButton label="Keluar" onClick={onLogout}>
               <CgLogOut color="white" size={30} />
             </NavButton>
           </Stack>

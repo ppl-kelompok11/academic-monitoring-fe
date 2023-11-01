@@ -11,10 +11,10 @@ type NavbarProps = {
 export default function MahasiswaNavItem({ activeLink }: NavbarProps) {
   return (
     <Stack>
-      <NavLink route="/" isActive={activeLink === "dashboard"}>
+      <NavLink route="/" label="Dashboard" isActive={activeLink === "dashboard"}>
         <TbCategoryFilled color="white" size={30} />
       </NavLink>
-      <NavLink route="/academic" isActive={activeLink === "academic"}>
+      <NavLink route="/academic" label="Akademik" isActive={activeLink === "academic"}>
         <IoSchool color="white" size={30} />
       </NavLink>
     </Stack>

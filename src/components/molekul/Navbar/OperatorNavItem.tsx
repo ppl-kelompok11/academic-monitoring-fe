@@ -12,13 +12,13 @@ type NavbarProps = {
 export default function OperatorNavItem({ activeLink }: NavbarProps) {
   return (
     <Stack>
-      <NavLink route="/" isActive={activeLink === "dashboard"}>
+      <NavLink route="/" label="Dashboard" isActive={activeLink === "dashboard"}>
         <TbCategoryFilled color="white" size={30} />
       </NavLink>
-      <NavLink route="/accounts" isActive={activeLink === "accounts"}>
+      <NavLink route="/accounts" label="Manajemen Akun" isActive={activeLink === "accounts"}>
         <FaUserGroup color="white" size={30} />
       </NavLink>
-      <NavLink route="/edit-status" isActive={activeLink === "edit-status"}>
+      <NavLink route="/edit-status" label="Edit Status Mahasiswa" isActive={activeLink === "edit-status"}>
         <BiSolidMessageSquareEdit color="white" size={30} />
       </NavLink>
     </Stack>

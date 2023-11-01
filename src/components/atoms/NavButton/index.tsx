@@ -1,9 +1,10 @@
 import React from "react";
-import { createStyles, px, Center, Button } from "@mantine/core";
+import { createStyles, px, Center, Button, Tooltip } from "@mantine/core";
 
 interface NavButtonProps {
   children: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  label?: string;
 }
 
 const UseStyles = createStyles((theme) => ({
@@ -33,10 +34,11 @@ const UseStyles = createStyles((theme) => ({
   },
 }));
 
-export default function Index({ onClick, children }: NavButtonProps) {
+export default function Index({ onClick, children, label }: NavButtonProps) {
   const { classes } = UseStyles();
 
   return (
+    <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
     <Button
       onClick={onClick}
       p={10}
@@ -54,5 +56,6 @@ export default function Index({ onClick, children }: NavButtonProps) {
     >
       <Center>{children}</Center>
     </Button>
+    </Tooltip>
   );
 }
