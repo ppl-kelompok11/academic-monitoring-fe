@@ -72,40 +72,40 @@ export default function Index(props: Partial<FileUploadProps>) {
         }}
         onReject={(files) => {}}
         maxSize={3 * 1024 ** 3}
-        sx={{ ":hover": { backgroundColor: "black" } }}
+        sx={{ ":hover": { backgroundColor: "#EEF0F6" } }}
         // sx={{ backgroundColor: "black" }}
         color="black"
-        bg="black"
+        bg="white"
         accept={props.mimeTypes}
         {...props}
       >
         <Group
           position="center"
           spacing="xl"
-          // sx={{
-          //   minHeight: rem(220),
-          //   backgroundColor: "black",
-          //   border: "none",
-          //   color: "black",
-          // }}
+          sx={{
+            minHeight: "150px",
+            // backgroundColor: "black",
+            // border: "none",
+            // color: "black",
+          }}
           color="black"
         >
           <Dropzone.Accept>
-            <IconUpload size="3.2rem" color="white" />
+            <IconUpload size="3.2rem" color="black" />
           </Dropzone.Accept>
           <Dropzone.Reject>
-            <IconX size="3.2rem" color="white" />
+            <IconX size="3.2rem" color="black" />
           </Dropzone.Reject>
           <Dropzone.Idle>
-            <IconUpload size="3.2rem" color="white" />
+            <IconUpload size="3.2rem" color="black" />
           </Dropzone.Idle>
 
           <div>
-            <Text color="white" size="xl" inline>
-              Drag file here or click to select files
+            <Text color="black" size="xl" inline>
+              Letakkan atau Pilih File
             </Text>
-            <Text size="sm" color="white" inline mt={7}>
-              Attach as many files as you like, each file should not exceed 3mb
+            <Text size="sm" color="black" inline mt={7}>
+              Masukkan File Kurang Dari 3 MB
             </Text>
           </div>
         </Group>

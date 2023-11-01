@@ -21,6 +21,7 @@ import {
     IconSearch,
     IconTrash,
 } from "@tabler/icons-react";
+import AppLayout from "@/layouts/AppLayout";
 import { useRouter } from "next/router";
 import api from "@/configs/axios-interceptors";
 import { useCallback } from "react";
@@ -151,8 +152,8 @@ const Mahasiswa = () => {
     ));
 
     return (
-        <>
-            <Stack sx={{ height: "100vh" }} mt={35} mx={45}>
+        <AppLayout role="operator" activeLink="accounts">
+            <Stack mt={35} mx={45}>
                 <Text c="black" size={32} fw={600} align="left">
                     Manajemen Akun
                 </Text>
@@ -214,7 +215,7 @@ const Mahasiswa = () => {
                     </ScrollArea>
                 </Card>
             </Stack>
-        </>
+        </AppLayout>
     );
 };
 

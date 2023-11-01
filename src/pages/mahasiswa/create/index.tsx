@@ -9,8 +9,10 @@ import {
   Button,
   Space,
   NativeSelect,
+  ScrollArea
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import AppLayout from "@/layouts/AppLayout";
 
 const UseStyles = createStyles((theme) => ({
   wrapper: {
@@ -55,12 +57,12 @@ export default function Index() {
   });
 
   return (
-    <div>
-      <Stack sx={{ height: "100vh" }} mt={35} mx={45}>
+    <AppLayout role="mahasiswa" activeLink="dashboard">
+      <Stack my={35} mx={45}>
         <Text c="black" size={32} fw={600} align="left">
           Isi Data Pribadi Anda
         </Text>
-        <Box className={classes.form} py={15} px={20}>
+        <Box className={classes.form} py={20} px={30}>
           <form onSubmit={form.onSubmit((values) => console.log(values))}>
             <TextInput
               size="md"
@@ -127,7 +129,6 @@ export default function Index() {
           </form>
         </Box>
       </Stack>
-      test
-    </div>
+    </AppLayout>
   );
 }
