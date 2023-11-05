@@ -65,7 +65,7 @@ export default function Index() {
             <Text c="black" size={32} fw={700} align="left">
               Input IRS
             </Text>
-            </Group>
+          </Group>
           <Box className={classes.form} py={15} px={20}>
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
               <TextInput

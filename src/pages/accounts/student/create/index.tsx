@@ -9,6 +9,7 @@ import {
   Button,
   Space,
   NativeSelect,
+  Select,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import Link from "next/link";
@@ -87,11 +88,29 @@ export default function Index() {
                 {...form.getInputProps("angkatan")}
               />
               <Space h={15} />
-              <NativeSelect
+              <Select
                 label="Status"
-                data={["Aktif", "Cuti", "Mangkir", "Drop Out", "Lulus"]}
+                data={[
+                  { value: 'aktif', label: 'Aktif' },
+                  { value: 'lulus', label: 'lulus' },
+                  { value: 'cuti', label: 'Cuti' },
+                  { value: 'mangkir', label: 'Mangkir' },
+                  { value: 'dropout', label: 'Dropout' },
+                ]}
                 {...form.getInputProps("status")}
               />
+              <Select
+                label="Status"
+                data={[
+                  { value: 'aktif', label: 'Aktif' },
+                  { value: 'lulus', label: 'lulus' },
+                  { value: 'cuti', label: 'Cuti' },
+                  { value: 'mangkir', label: 'Mangkir' },
+                  { value: 'dropout', label: 'Dropout' },
+                ]}
+                {...form.getInputProps("status")}
+              />
+
               <Group mt="md">
                 <Button type="submit">Tambah</Button>
               </Group>

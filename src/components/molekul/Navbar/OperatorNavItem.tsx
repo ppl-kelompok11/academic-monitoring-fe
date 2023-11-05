@@ -12,7 +12,7 @@ type NavbarProps = {
 export default function OperatorNavItem({ activeLink }: NavbarProps) {
   return (
     <Stack>
-      <NavLink route="/" label="Dashboard" isActive={activeLink === "dashboard"}>
+      <NavLink route="/dashboard/operator" label="Dashboard" isActive={activeLink === "dashboard"}>
         <TbCategoryFilled color="white" size={30} />
       </NavLink>
       <NavLink route="/accounts" label="Manajemen Akun" isActive={activeLink === "accounts"}>

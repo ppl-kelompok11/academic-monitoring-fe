@@ -3,7 +3,7 @@ import Router from 'next/router';
 
 export default function Index() {
   useEffect(() => {
-    Router.push('/mahasiswa/academic/irs');
+    Router.push('/academic/irs');
   }, []);
 
   return null;

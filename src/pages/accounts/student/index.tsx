@@ -16,6 +16,8 @@ import {
   Stack,
   Tabs,
   Space,
+  Group,
+  Box,
 } from "@mantine/core";
 import {
   IconEditCircle,
@@ -25,11 +27,14 @@ import {
 } from "@tabler/icons-react";
 import AppLayout from "@/layouts/AppLayout";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { IoIosArrowBack } from "react-icons/io";
 import api from "@/configs/axios-interceptors";
 import { useCallback } from "react";
 import { GetServerSideProps } from "next";
 import Cookies from "js-cookie";
 import getConfig from "next/config";
+import TitleWithBack from "@/components/atoms/TitleWithBack";
 // const { publicRuntimeConfig } = getConfig();
 const useStyles = createStyles((theme) => ({
   header: {
@@ -156,12 +161,11 @@ const Mahasiswa = () => {
   return (
     <AppLayout role="operator" activeLink="accounts">
       <Stack mt={35} mx={45}>
-        <Text c="black" size={32} fw={600} align="left">
-          Manajemen Akun
-        </Text>
-        <Card mt={20} bg={"white"} radius={"lg"}>
+        <TitleWithBack title="Manajemen Akun" route="/dashboard/operator" />
+        <Card mt={10} bg={"white"} radius={"lg"}>
           <Tabs
-            color="primary" variant="pills"
+            color="primary"
+            variant="pills"
             value="student"
             onTabChange={(value) => router.push(`/accounts/${value}`)}
           >
