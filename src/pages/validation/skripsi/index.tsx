@@ -29,7 +29,6 @@ import {
 import AppLayout from "@/layouts/AppLayout";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { IoIosArrowBack } from "react-icons/io";
 import api from "@/configs/axios-interceptors";
 import { useCallback } from "react";
 import { GetServerSideProps } from "next";
@@ -75,7 +74,7 @@ const useStyles = createStyles((theme) => ({
 //   }[];
 // };
 
-const Mahasiswa = () => {
+export default function Index() {
   const router = useRouter();
   const token = Cookies.get("token");
   const [activePage, setPage] = useState(1);
@@ -85,100 +84,104 @@ const Mahasiswa = () => {
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
 
-  const getData = useCallback(async () => {
-    try {
-      const response = await api.get(
-        `students?search=${search}&page=${activePage}`
-      );
-      console.log(response.data.data);
-      setData(response.data.data);
-      setTotalPage(response.data.meta.last_page);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [search, activePage]);
+  // const getData = useCallback(async () => {
+  //   try {
+  //     const response = await api.get(
+  //       `students?search=${search}&page=${activePage}`
+  //     );
+  //     console.log(response.data.data);
+  //     setData(response.data.data);
+  //     setTotalPage(response.data.meta.last_page);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [search, activePage]);
 
-  useEffect(() => {
-    getData();
-  }, [search, activePage]);
+  // useEffect(() => {
+  //   getData();
+  // }, [search, activePage]);
 
-  const handleDelete = async (id: number) => {
-    try {
-      const response = await api.delete(`customers/delete?id=${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log(response.data.data);
-      getData();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
-  const rows = data.map((row: any) => (
-    <tr key={row.id}>
-      <td>{row.name}</td>
-      <td>{row.email}</td>
-      <td>{row.nim}</td>
+  // const rows = data.map((row: any) => (
+  //   <tr key={row.id}>
+  //     <td>{row.name}</td>
+  //     <td>{row.email}</td>
+  //     <td>{row.nim}</td>
+  //     <td>
+  //       {row.active ? (
+  //         <Badge color="green">Aktif</Badge>
+  //       ) : (
+  //         <Badge color="red">Tidak Aktif</Badge>
+  //       )}
+  //     </td>
+  //     <td>{row.created_at}</td>
+  //     <td>
+  //       {
+  //         <>
+  //           <Flex gap="xs">
+  //             <ActionIcon
+  //               variant="filled"
+  //               color="blue"
+  //               onClick={() => {
+  //                 router.push(`/mahasiswa/detail/${row.id}`);
+  //               }}
+  //             >
+  //               <IconInfoCircle size="1rem" />
+  //             </ActionIcon>
+  //             <ActionIcon
+  //               variant="filled"
+  //               color="yellow"
+  //               onClick={() => {
+  //                 router.push(`/mahasiswa/update/${row.id}`);
+  //               }}
+  //             >
+  //               <IconEditCircle size="1rem" />
+  //             </ActionIcon>
+  //             <ActionIcon
+  //               variant="filled"
+  //               color="red"
+  //               onClick={() => {
+  //                 handleDelete(row.id);
+  //               }}
+  //             >
+  //               <IconTrash size="1rem" />
+  //             </ActionIcon>
+  //           </Flex>
+  //         </>
+  //       }
+  //     </td>
+  //   </tr>
+  // ));
+
+  const rows = (
+    <tr>
+      <td>Faizal Husain Adiasha</td>
+      <td>Lulus</td>
+      <td>A</td>
       <td>
-        {row.active ? (
-          <Badge color="green">Aktif</Badge>
-        ) : (
-          <Badge color="red">Tidak Aktif</Badge>
-        )}
+        <Link href="#">lihat file</Link>
       </td>
-      <td>{row.created_at}</td>
       <td>
-        {
-          <>
-            <Flex gap="xs">
-              <ActionIcon
-                variant="filled"
-                color="blue"
-                onClick={() => {
-                  router.push(`/mahasiswa/detail/${row.id}`);
-                }}
-              >
-                <IconInfoCircle size="1rem" />
-              </ActionIcon>
-              <ActionIcon
-                variant="filled"
-                color="yellow"
-                onClick={() => {
-                  router.push(`/mahasiswa/update/${row.id}`);
-                }}
-              >
-                <IconEditCircle size="1rem" />
-              </ActionIcon>
-              <ActionIcon
-                variant="filled"
-                color="red"
-                onClick={() => {
-                  handleDelete(row.id);
-                }}
-              >
-                <IconTrash size="1rem" />
-              </ActionIcon>
-            </Flex>
-          </>
-        }
+        <Button>Validasi</Button>
       </td>
     </tr>
-  ));
+  );
 
   return (
-    <AppLayout role="operator" activeLink="accounts">
+    <AppLayout role="dosen-wali" activeLink="validation">
       <Stack mt={35} mx={45}>
-        <TitleWithBack title="Manajemen Akun" route="/dashboard/operator" />
+        <TitleWithBack title="Validasi" route="/dashboard/lecture" />
         <Card mt={10} bg={"white"} radius={"lg"}>
           <Tabs
             color="primary"
             variant="pills"
-            value="student"
-            onTabChange={(value) => router.push(`/accounts/${value}`)}
+            value="skripsi"
+            onTabChange={(value) => router.push(`/validation/${value}`)}
           >
             <Tabs.List>
-              <Tabs.Tab value="student">Mahasiswa</Tabs.Tab>
-              <Tabs.Tab value="lecture">Dosen</Tabs.Tab>
+              <Tabs.Tab value="irs">IRS</Tabs.Tab>
+              <Tabs.Tab value="khs">KHS</Tabs.Tab>
+              <Tabs.Tab value="pkl">PKL</Tabs.Tab>
+              <Tabs.Tab value="skripsi">Skripsi</Tabs.Tab>
             </Tabs.List>
           </Tabs>
           <Space h={15} />
@@ -196,17 +199,6 @@ const Mahasiswa = () => {
                 />
               </Flex>
             </Grid.Col>
-            <Grid.Col md={3} xs={12}>
-              <Flex justify={{ xs: "flex-start", md: "flex-end" }}>
-                <Button
-                  onClick={() => {
-                    router.push("/mahasiswa/create");
-                  }}
-                >
-                  Tambah
-                </Button>
-              </Flex>
-            </Grid.Col>
           </Grid>
           <ScrollArea
             mt={10}
@@ -220,11 +212,10 @@ const Mahasiswa = () => {
               >
                 <tr>
                   <th>Nama</th>
-                  <th>Email</th>
-                  <th>NIM</th>
-                  <th>Status</th>
-                  <th>Dibuat</th>
-                  <th>Aksi</th>
+                  <th>Status Skripsi</th>
+                  <th>Nilai Skripsi</th>
+                  <th>Scan Seminar Skripsi</th>
+                  <th>Validasi</th>
                 </tr>
               </thead>
               <tbody>{rows}</tbody>
@@ -242,6 +233,4 @@ const Mahasiswa = () => {
       </Stack>
     </AppLayout>
   );
-};
-
-export default Mahasiswa;
+}

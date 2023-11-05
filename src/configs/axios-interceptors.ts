@@ -32,7 +32,7 @@ api.interceptors.response.use(
                 message: response.data.message,
                 styles: (theme) => ({
                     root: {
-                        backgroundColor: "black",
+                        backgroundColor: "white",
                     },
                 }),
             });
@@ -47,7 +47,7 @@ api.interceptors.response.use(
                 message: "Please login to access this page",
                 styles: (theme) => ({
                     root: {
-                        backgroundColor: "black",
+                        backgroundColor: "white",
                     },
                 }),
             });
@@ -60,7 +60,7 @@ api.interceptors.response.use(
                 message: "You cannot do this action",
                 styles: (theme) => ({
                     root: {
-                        backgroundColor: "black",
+                        backgroundColor: "white",
                     },
                 }),
             });
@@ -72,7 +72,7 @@ api.interceptors.response.use(
                 message: error.response.data.message,
                 styles: (theme) => ({
                     root: {
-                        backgroundColor: "black",
+                        backgroundColor: "white",
                     },
                 }),
             });

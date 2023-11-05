@@ -64,7 +64,7 @@ export default function Index() {
                     console.log(response.data.token);
                     Cookies.set("token", response.data.token);
                     Cookies.set("user", JSON.stringify(response.data.user));
-                    Router.push("/mahasiswa/initial-biodata");
+                    Router.push("/dashboard/operator");
                 }
                 form.reset();
             } catch (error) {
