@@ -8,6 +8,9 @@ import NavLink from "@/components/atoms/NavLink";
 import NavButton from "@/components/atoms/NavButton";
 import { FaUser } from "react-icons/fa6";
 import { CgLogOut } from "react-icons/cg";
+import Cookies from "js-cookie";
+import api from "@/configs/axios-interceptors";
+import router from "next/router";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -37,9 +40,18 @@ export type NavbarProps = {
 export default function Index({ activeLink, role }: NavbarProps ) {
   const { classes } = useStyles();
 
-  const onLogout = () => {
-    // Cookies.remove("token");
-    // router.push("/login");
+  const onLogout = async () => {
+    try {
+      const response = await api.post("/auth/logout");
+
+      if(response.status === 200) {
+        Cookies.remove("token");
+        Cookies.remove("user");
+        router.push("/auth/signin");
+      }
+    } catch (error) {
+      console.log("Error:", error);
+    }
   };
 
   return (
