@@ -80,7 +80,7 @@ const Mahasiswa = () => {
   const getData = useCallback(async () => {
     try {
       const response = await api.get(
-        `students?search=${search}&page=${activePage}`
+        `lecture?search=${search}&page=${activePage}`
       );
       console.log(response.data.data);
       setData(response.data.data);
@@ -107,15 +107,9 @@ const Mahasiswa = () => {
     <tr key={row.id}>
       <td>{row.name}</td>
       <td>{row.email}</td>
-      <td>{row.nim}</td>
-      <td>
-        {row.active ? (
-          <Badge color="green">Aktif</Badge>
-        ) : (
-          <Badge color="red">Tidak Aktif</Badge>
-        )}
-      </td>
-      <td>{row.created_at}</td>
+      <td>{row.nip}</td>
+      <td>{row.nidn}</td>
+      <td>{row.work_start_date}</td>
       <td>
         {
           <>
@@ -124,7 +118,7 @@ const Mahasiswa = () => {
                 variant="filled"
                 color="blue"
                 onClick={() => {
-                  router.push(`/mahasiswa/detail/${row.id}`);
+                  // router.push(`/mahasiswa/detail/${row.id}`);
                 }}
               >
                 <IconInfoCircle size="1rem" />
@@ -133,7 +127,7 @@ const Mahasiswa = () => {
                 variant="filled"
                 color="yellow"
                 onClick={() => {
-                  router.push(`/mahasiswa/update/${row.id}`);
+                  // router.push(`/mahasiswa/update/${row.id}`);
                 }}
               >
                 <IconEditCircle size="1rem" />
@@ -142,7 +136,7 @@ const Mahasiswa = () => {
                 variant="filled"
                 color="red"
                 onClick={() => {
-                  handleDelete(row.id);
+                  // handleDelete(row.id);
                 }}
               >
                 <IconTrash size="1rem" />
@@ -187,7 +181,7 @@ const Mahasiswa = () => {
               <Flex justify={{ xs: "flex-start", md: "flex-end" }}>
                 <Button
                   onClick={() => {
-                    router.push("/mahasiswa/create");
+                    router.push("/accounts/lecture/create");
                   }}
                 >
                   Tambah
@@ -208,9 +202,9 @@ const Mahasiswa = () => {
                 <tr>
                   <th>Nama</th>
                   <th>Email</th>
-                  <th>NIM</th>
-                  <th>Status</th>
-                  <th>Dibuat</th>
+                  <th>NIP</th>
+                  <th>NIDN</th>
+                  <th>Tanggal Masuk</th>
                   <th>Aksi</th>
                 </tr>
               </thead>

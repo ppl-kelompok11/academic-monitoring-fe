@@ -12,13 +12,15 @@ import {
   NativeSelect,
   Select,
 } from "@mantine/core";
+import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import Link from "next/link";
 import AppLayout from "@/layouts/AppLayout";
 import { IoIosArrowBack } from "react-icons/io";
+import next from "next";
+import moment from "moment";
 import api from "@/configs/axios-interceptors";
 import Router from "next/router";
-import next from "next";
 
 const UseStyles = createStyles((theme) => ({
   wrapper: {},
@@ -47,11 +49,11 @@ export default function Index() {
   const { classes } = UseStyles();
   const form = useForm({
     initialValues: {
-      nim: "",
-      email: "",
       nama: "",
-      angkatan: "",
-      status: "",
+      email: "",
+      nip: "",
+      nidn: "",
+      workStartDate: "",
       password: "",
     },
   });
@@ -61,17 +63,16 @@ export default function Index() {
     form.validate();
     if (!form.validate().hasErrors) {
       try {
-        const response = await api.post("/students", {
+        const response = await api.post("/lecture", {
           email: form.values.email,
           password: form.values.password,
           name: form.values.nama,
-          nim: form.values.nim,
-          start_education_year: form.values.angkatan,
-          status: form.values.status,
+          nip: form.values.nip,
+          nidn: form.values.nidn,
         });
         console.log(response);
         form.reset();
-        Router.push("/accounts/student");
+        Router.push("/accounts/lecture");
       } catch (error) {
         console.log(error);
       }
@@ -92,9 +93,9 @@ export default function Index() {
               <IoIosArrowBack size={32} />
             </Box>
             <Text c="black" size={32} fw={700} align="left">
-              Tambah Akun Mahasiswa
+              Tambah Akun Dosen
             </Text>
-            </Group>
+          </Group>
           <Box className={classes.form} py={15} px={20}>
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
               <TextInput
@@ -109,39 +110,12 @@ export default function Index() {
                 {...form.getInputProps("nama")}
               />
               <Space h={15} />
-              <TextInput
-                size="md"
-                label="nim"
-                {...form.getInputProps("nim")}
-              />
+              <TextInput size="md" label="NIP" {...form.getInputProps("nip")} />
               <Space h={15} />
               <TextInput
                 size="md"
-                label="Angkatan"
-                {...form.getInputProps("angkatan")}
-              />
-              <Space h={15} />
-              {/* <Select
-                label="Status"
-                data={[
-                  { value: 'aktif', label: 'Aktif' },
-                  { value: 'lulus', label: 'lulus' },
-                  { value: 'cuti', label: 'Cuti' },
-                  { value: 'mangkir', label: 'Mangkir' },
-                  { value: 'dropout', label: 'Dropout' },
-                ]}
-                {...form.getInputProps("status")}
-              /> */}
-              <Select
-                label="Status"
-                data={[
-                  { value: 'aktif', label: 'Aktif' },
-                  { value: 'lulus', label: 'lulus' },
-                  { value: 'cuti', label: 'Cuti' },
-                  { value: 'mangkir', label: 'Mangkir' },
-                  { value: 'dropout', label: 'Dropout' },
-                ]}
-                {...form.getInputProps("status")}
+                label="NIDN"
+                {...form.getInputProps("nidn")}
               />
               <Space h={15} />
               <PasswordInput
@@ -149,7 +123,21 @@ export default function Index() {
                 label="Password"
                 {...form.getInputProps("password")}
               />
-
+              {/* <DateInput
+                dateParser={(input) => {
+                  const date = moment(input, "DD/MM/YYYY").toDate();
+                  return date;
+                }}
+                valueFormat="DD/MM/YYYY"
+                label="Tanggal Mulai Bekerja"
+                {...form.getInputProps("workStartDate")}
+              />
+              <Space h={15} />
+              <TextInput
+                size="md"
+                label="Tanggal Mulai Bekerja"
+                {...form.getInputProps("workStartDate")}
+              /> */}
               <Group mt="md">
                 <Button type="submit" onClick={handleSubmit}>Tambah</Button>
               </Group>

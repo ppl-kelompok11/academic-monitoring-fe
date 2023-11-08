@@ -200,7 +200,7 @@ const Mahasiswa = () => {
               <Flex justify={{ xs: "flex-start", md: "flex-end" }}>
                 <Button
                   onClick={() => {
-                    router.push("/mahasiswa/create");
+                    router.push("/accounts/student/create");
                   }}
                 >
                   Tambah

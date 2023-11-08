@@ -61,9 +61,9 @@ export default function Index() {
           password: form.values.password,
         });
         if (response.data.token) {
-          console.log(response.data.token);
+          // console.log(response.data.token);
           Cookies.set("token", response.data.token);
-          Cookies.set("user", JSON.stringify(response.data.user));
+          Cookies.set("user", JSON.stringify(response.data.profile));
           Router.push("/dashboard/operator");
         }
         form.reset();
