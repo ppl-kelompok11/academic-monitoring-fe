@@ -58,6 +58,8 @@ export default function App({ Component, pageProps }: AppProps) {
                   backgroundColor: "transparent",
                   color: "#243063",
                   border: "2px solid #243063",
+                  borderRadius: "8px",
+                  marginTop: "5px",
                 },
                 innerInput: {
                   backgroundColor: "transparent",
@@ -96,33 +98,56 @@ export default function App({ Component, pageProps }: AppProps) {
                 },
               },
             },
+            // DateInput: {
+            //   styles: {
+            //     label: {
+            //       color: "white",
+            //     },
+            //     input: {
+            //       backgroundColor: "transparent",
+            //       color: "white",
+            //     },
+            //     innerInput: {
+            //       backgroundColor: "transparent",
+            //       color: "white",
+            //     },
+            //   },
+            // },
             DateInput: {
               styles: {
                 label: {
-                  color: "white",
+                  color: "#243063",
+                  fontSize: "18px"
                 },
                 input: {
                   backgroundColor: "transparent",
-                  color: "white",
+                  color: "#243063",
+                  border: "2px solid #243063",
+                  borderRadius: "8px",
+                  marginTop: "5px",
                 },
                 innerInput: {
                   backgroundColor: "transparent",
-                  color: "white",
+                  color: "#243063",
                 },
               },
             },
             Select: {
               styles: {
                 label: {
-                  color: "white",
+                  color: "#243063",
+                  fontSize: "18px"
                 },
                 input: {
                   backgroundColor: "transparent",
-                  color: "white",
+                  color: "#243063",
+                  border: "2px solid #243063",
+                  borderRadius: "8px",
+                  marginTop: "5px",
                 },
                 innerInput: {
                   backgroundColor: "transparent",
-                  color: "white",
+                  color: "#243063",
                 },
               },
             },
