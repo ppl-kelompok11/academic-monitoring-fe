@@ -75,6 +75,7 @@ export default function Index() {
 
         console.log(form.values);
     };
+    
     const handleUpload = (file: any) => {
         form.setFieldValue("scan_irs", file);
         console.log(form.values);
