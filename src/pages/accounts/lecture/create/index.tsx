@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Stack,
-  Text,
   createStyles,
   Box,
   TextInput,
@@ -9,18 +8,14 @@ import {
   Group,
   Button,
   Space,
-  NativeSelect,
-  Select,
 } from "@mantine/core";
-import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import Link from "next/link";
+import { DateInput } from '@mantine/dates';
 import AppLayout from "@/layouts/AppLayout";
-import { IoIosArrowBack } from "react-icons/io";
-import next from "next";
-import moment from "moment";
 import api from "@/configs/axios-interceptors";
 import Router from "next/router";
+import TitleWithBack from "@/components/atoms/TitleWithBack";
+import moment from "moment";
 
 const UseStyles = createStyles((theme) => ({
   wrapper: {},
@@ -69,6 +64,7 @@ export default function Index() {
           name: form.values.nama,
           nip: form.values.nip,
           nidn: form.values.nidn,
+          workStartDate: moment(form.values.workStartDate).format("YYYY-MM-DD"),
         });
         console.log(response);
         form.reset();
@@ -83,19 +79,10 @@ export default function Index() {
     <AppLayout activeLink="accounts" role="operator">
       <div className={classes.wrapper}>
         <Stack mx={45}>
-          <Group spacing={5}>
-            <Box
-              component={Link}
-              href="/operator/dashboard"
-              display="flex"
-              style={{ textDecoration: "none" }}
-            >
-              <IoIosArrowBack size={32} />
-            </Box>
-            <Text c="black" size={32} fw={700} align="left">
-              Tambah Akun Dosen
-            </Text>
-          </Group>
+        <TitleWithBack
+            title="Tambah Akun Dosen"
+            route="/accounts/lecture/"
+          />
           <Box className={classes.form} py={15} px={20}>
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
               <TextInput
@@ -123,12 +110,9 @@ export default function Index() {
                 label="Password"
                 {...form.getInputProps("password")}
               />
-              {/* <DateInput
-                dateParser={(input) => {
-                  const date = moment(input, "DD/MM/YYYY").toDate();
-                  return date;
-                }}
-                valueFormat="DD/MM/YYYY"
+              <Space h={15} />
+              <DateInput
+                valueFormat="YYYY-MM-DD"
                 label="Tanggal Mulai Bekerja"
                 {...form.getInputProps("workStartDate")}
               />
@@ -137,7 +121,7 @@ export default function Index() {
                 size="md"
                 label="Tanggal Mulai Bekerja"
                 {...form.getInputProps("workStartDate")}
-              /> */}
+              />
               <Group mt="md">
                 <Button type="submit" onClick={handleSubmit}>Tambah</Button>
               </Group>

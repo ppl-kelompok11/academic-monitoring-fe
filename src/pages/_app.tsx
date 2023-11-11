@@ -125,6 +125,7 @@ export default function App({ Component, pageProps }: AppProps) {
                   border: "2px solid #243063",
                   borderRadius: "8px",
                   marginTop: "5px",
+                  height: "42px",
                 },
                 innerInput: {
                   backgroundColor: "transparent",
@@ -144,6 +145,27 @@ export default function App({ Component, pageProps }: AppProps) {
                   border: "2px solid #243063",
                   borderRadius: "8px",
                   marginTop: "5px",
+                  height: "42px",
+                },
+                innerInput: {
+                  backgroundColor: "transparent",
+                  color: "#243063",
+                },
+              },
+            },
+            YearPickerInput: {
+              styles: {
+                label: {
+                  color: "#243063",
+                  fontSize: "18px"
+                },
+                input: {
+                  backgroundColor: "transparent",
+                  color: "#243063",
+                  border: "2px solid #243063",
+                  borderRadius: "8px",
+                  marginTop: "5px",
+                  height: "42px",
                 },
                 innerInput: {
                   backgroundColor: "transparent",

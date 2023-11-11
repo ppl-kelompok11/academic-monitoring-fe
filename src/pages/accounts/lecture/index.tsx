@@ -16,6 +16,7 @@ import {
   Stack,
   Tabs,
   Space,
+  Center,
 } from "@mantine/core";
 import {
   IconEditCircle,
@@ -77,6 +78,7 @@ const Mahasiswa = () => {
   const [data, setData] = useState([]);
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
+
   const getData = useCallback(async () => {
     try {
       const response = await api.get(
@@ -89,9 +91,11 @@ const Mahasiswa = () => {
       console.log(error);
     }
   }, [search, activePage]);
+
   useEffect(() => {
     getData();
   }, [search, activePage]);
+
   const handleDelete = async (id: number) => {
     try {
       const response = await api.delete(`customers/delete?id=${id}`, {
@@ -103,6 +107,7 @@ const Mahasiswa = () => {
       console.log(error);
     }
   };
+
   const rows = data.map((row: any) => (
     <tr key={row.id}>
       <td>{row.name}</td>
@@ -112,37 +117,35 @@ const Mahasiswa = () => {
       <td>{row.work_start_date}</td>
       <td>
         {
-          <>
-            <Flex gap="xs">
-              <ActionIcon
-                variant="filled"
-                color="blue"
-                onClick={() => {
-                  // router.push(`/mahasiswa/detail/${row.id}`);
-                }}
-              >
-                <IconInfoCircle size="1rem" />
-              </ActionIcon>
-              <ActionIcon
-                variant="filled"
-                color="yellow"
-                onClick={() => {
-                  // router.push(`/mahasiswa/update/${row.id}`);
-                }}
-              >
-                <IconEditCircle size="1rem" />
-              </ActionIcon>
-              <ActionIcon
-                variant="filled"
-                color="red"
-                onClick={() => {
-                  // handleDelete(row.id);
-                }}
-              >
-                <IconTrash size="1rem" />
-              </ActionIcon>
-            </Flex>
-          </>
+          <Flex gap="xs">
+            <ActionIcon
+              variant="filled"
+              color="blue"
+              onClick={() => {
+                // router.push(`/mahasiswa/detail/${row.id}`);
+              }}
+            >
+              <IconInfoCircle size="1rem" />
+            </ActionIcon>
+            <ActionIcon
+              variant="filled"
+              color="yellow"
+              onClick={() => {
+                // router.push(`/mahasiswa/update/${row.id}`);
+              }}
+            >
+              <IconEditCircle size="1rem" />
+            </ActionIcon>
+            <ActionIcon
+              variant="filled"
+              color="red"
+              onClick={() => {
+                // handleDelete(row.id);
+              }}
+            >
+              <IconTrash size="1rem" />
+            </ActionIcon>
+          </Flex>
         }
       </td>
     </tr>
@@ -151,10 +154,11 @@ const Mahasiswa = () => {
   return (
     <AppLayout role="operator" activeLink="accounts">
       <Stack mt={35} mx={45}>
-        <TitleWithBack title="Manajemen Akun" route="dashboard/operator"/>
+        <TitleWithBack title="Manajemen Akun" route="dashboard/operator" />
         <Card mt={10} bg={"white"} radius={"lg"}>
           <Tabs
-            color="primary" variant="pills"
+            color="primary"
+            variant="pills"
             value="lecture"
             onTabChange={(value) => router.push(`/accounts/${value}`)}
           >
@@ -170,7 +174,8 @@ const Mahasiswa = () => {
                 <Input
                   icon={<IconSearch />}
                   placeholder="Cari Dosen"
-                  radius={"xl"}
+                  radius={8}
+                  w={300}
                   onChange={(e) => {
                     setSearch(e.currentTarget.value);
                   }}
@@ -210,12 +215,14 @@ const Mahasiswa = () => {
               </thead>
               <tbody>{rows}</tbody>
             </Table>
-            <Pagination
-              my={20}
-              value={activePage}
-              onChange={setPage}
-              total={totalPage}
-            />
+            <Center>
+              <Pagination
+                my={20}
+                value={activePage}
+                onChange={setPage}
+                total={totalPage}
+              />
+            </Center>
           </ScrollArea>
         </Card>
       </Stack>

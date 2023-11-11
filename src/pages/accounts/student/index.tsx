@@ -6,7 +6,6 @@ import {
   rem,
   Card,
   Grid,
-  Text,
   Input,
   Flex,
   Button,
@@ -17,8 +16,6 @@ import {
   Tabs,
   Space,
   Center,
-  Group,
-  Box,
 } from "@mantine/core";
 import {
   IconEditCircle,
@@ -29,10 +26,8 @@ import {
 import AppLayout from "@/layouts/AppLayout";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { IoIosArrowBack } from "react-icons/io";
 import api from "@/configs/axios-interceptors";
 import { useCallback } from "react";
-import { GetServerSideProps } from "next";
 import Cookies from "js-cookie";
 import getConfig from "next/config";
 import TitleWithBack from "@/components/atoms/TitleWithBack";
@@ -113,7 +108,7 @@ const Mahasiswa = () => {
       console.log(error);
     }
   };
-  
+
   const rows = data.map((row: any) => (
     <tr key={row.id}>
       <td>{row.name}</td>
@@ -129,37 +124,35 @@ const Mahasiswa = () => {
       <td>{row.created_at}</td>
       <td>
         {
-          <>
-            <Flex gap="xs">
-              <ActionIcon
-                variant="filled"
-                color="blue"
-                onClick={() => {
-                  router.push(`/mahasiswa/detail/${row.id}`);
-                }}
-              >
-                <IconInfoCircle size="1rem" />
-              </ActionIcon>
-              <ActionIcon
-                variant="filled"
-                color="yellow"
-                onClick={() => {
-                  router.push(`/mahasiswa/update/${row.id}`);
-                }}
-              >
-                <IconEditCircle size="1rem" />
-              </ActionIcon>
-              <ActionIcon
-                variant="filled"
-                color="red"
-                onClick={() => {
-                  handleDelete(row.id);
-                }}
-              >
-                <IconTrash size="1rem" />
-              </ActionIcon>
-            </Flex>
-          </>
+          <Flex gap="xs">
+            <ActionIcon
+              variant="filled"
+              color="blue"
+              onClick={() => {
+                router.push(`/mahasiswa/detail/${row.id}`);
+              }}
+            >
+              <IconInfoCircle size="1rem" />
+            </ActionIcon>
+            <ActionIcon
+              variant="filled"
+              color="yellow"
+              onClick={() => {
+                router.push(`/mahasiswa/update/${row.id}`);
+              }}
+            >
+              <IconEditCircle size="1rem" />
+            </ActionIcon>
+            <ActionIcon
+              variant="filled"
+              color="red"
+              onClick={() => {
+                handleDelete(row.id);
+              }}
+            >
+              <IconTrash size="1rem" />
+            </ActionIcon>
+          </Flex>
         }
       </td>
     </tr>

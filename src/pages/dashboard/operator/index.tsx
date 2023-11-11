@@ -1,29 +1,19 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import AppLayout from "@/layouts/AppLayout";
 import {
   Stack,
   Text,
   createStyles,
-  Box,
-  TextInput,
   Group,
-  Button,
   Space,
-  NativeSelect,
   Card,
-  SimpleGrid,
   Center,
-  Grid,
   Flex,
 } from "@mantine/core";
-
-import { AiOutlinePlus } from "react-icons/ai";
-import { FaPlus } from "react-icons/fa";
 import { PiPlusBold } from "react-icons/pi";
 import Link from "next/link";
-import NavButton from "@/components/atoms/NavButton";
-
 import SimpleCard from "@/components/atoms/SimpleCard";
+import api from "@/configs/axios-interceptors";
 
 const useStyles = createStyles((theme) => ({
   name: {
@@ -52,6 +42,39 @@ const useStyles = createStyles((theme) => ({
 
 export default function Index() {
   const { classes } = useStyles();
+  const [totalMhs, setTotalMhs] = useState(0);
+  const [totalDsn, setTotalDsn] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  const getTotalMahasiswa = async () => {
+    try {
+      const response = await api.get("/students");
+      const total = (response.data.data).length
+      setTotalMhs(total);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getTotalDosenWali = async () => {
+    try {
+      const response = await api.get("/lecture");
+      const total = (response.data.data).length
+      setTotalDsn(total);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getTotalMahasiswa();
+  }, []);
+
+  useEffect(() => {
+    getTotalDosenWali();
+  }, []);
 
   return (
     <AppLayout activeLink="dashboard" role="operator">
@@ -68,8 +91,8 @@ export default function Index() {
         <Space h={20} />
         <Stack align="flex-start">
           <Group position="center">
-            <SimpleCard title="Jumlah Mahasiswa" value="569" />
-            <SimpleCard title="Jumlah Dosen" value="48" />
+            <SimpleCard title="Jumlah Mahasiswa" value={totalMhs.toString()} loading={loading}/>
+            <SimpleCard title="Jumlah Dosen" value={totalDsn.toString()} loading={loading}/>
           </Group>
           <Group position="center">
             <Card w={450} className={classes.card}>

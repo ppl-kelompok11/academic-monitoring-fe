@@ -1,9 +1,17 @@
 import React from "react";
-import { Card, Stack, Text, createStyles } from "@mantine/core";
+import {
+  Card,
+  Stack,
+  Text,
+  createStyles,
+  Skeleton,
+  Center,
+} from "@mantine/core";
 
 type SimpleCardProps = {
   title: string;
   value: string;
+  loading: boolean;
 };
 
 const useStyles = createStyles((theme) => ({
@@ -12,7 +20,11 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function Index({ title, value }: SimpleCardProps) {
+export default function Index({
+  title,
+  value,
+  loading = false,
+}: SimpleCardProps) {
   const { classes } = useStyles();
 
   return (
@@ -21,8 +33,11 @@ export default function Index({ title, value }: SimpleCardProps) {
         <Text size={32} weight={600}>
           {title}
         </Text>
+
         <Text size={48} weight={600}>
-          {value}
+          <Skeleton width={128} height={48} radius={12} visible={loading}>
+            <Center>{value}</Center>
+          </Skeleton>
         </Text>
       </Stack>
     </Card>

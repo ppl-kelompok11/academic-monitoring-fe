@@ -1,24 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Stack,
-  Text,
   createStyles,
   Box,
   TextInput,
-  PasswordInput,
   Group,
   Button,
   Space,
-  NativeSelect,
   Select,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import Link from "next/link";
+import { YearPickerInput } from "@mantine/dates";
 import AppLayout from "@/layouts/AppLayout";
-import { IoIosArrowBack } from "react-icons/io";
 import api from "@/configs/axios-interceptors";
 import Router from "next/router";
-import next from "next";
+import TitleWithBack from "@/components/atoms/TitleWithBack";
 
 const UseStyles = createStyles((theme) => ({
   wrapper: {},
@@ -45,12 +41,14 @@ const UseStyles = createStyles((theme) => ({
 
 export default function Index() {
   const { classes } = UseStyles();
+  const [dosenWali, setDosenWali] = useState([]);
+
   const form = useForm({
     initialValues: {
       nim: "",
       email: "",
       nama: "",
-      angkatan: "",
+      angkatan: new Date(),
       status: "",
       password: "",
     },
@@ -78,80 +76,57 @@ export default function Index() {
     }
   };
 
+  const getDosenWali = async () => {
+    try {
+      const response = await api.get("/lecture");
+      setDosenWali(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  React.useEffect(() => {
+    getDosenWali();
+  }, []);
+
+  const doswalData = dosenWali.map((doswal: any) => ({
+    value: doswal.id,
+    label: doswal.name + " - " + doswal.nip,
+  }));
+
   return (
     <AppLayout activeLink="accounts" role="operator">
       <div className={classes.wrapper}>
         <Stack mx={45}>
-          <Group spacing={5}>
-            <Box
-              component={Link}
-              href="/operator/dashboard"
-              display="flex"
-              style={{ textDecoration: "none" }}
-            >
-              <IoIosArrowBack size={32} />
-            </Box>
-            <Text c="black" size={32} fw={700} align="left">
-              Tambah Akun Mahasiswa
-            </Text>
-            </Group>
+          <TitleWithBack
+            title="Tambah Akun Mahasiswa"
+            route="/accounts/student/"
+          />
           <Box className={classes.form} py={15} px={20}>
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
-              <TextInput
-                size="md"
-                label="Email"
-                {...form.getInputProps("email")}
-              />
-              <Space h={15} />
               <TextInput
                 size="md"
                 label="Nama Lengkap"
                 {...form.getInputProps("nama")}
               />
               <Space h={15} />
-              <TextInput
-                size="md"
-                label="nim"
-                {...form.getInputProps("nim")}
-              />
+              <TextInput size="md" label="NIM" {...form.getInputProps("nim")} />
               <Space h={15} />
-              <TextInput
-                size="md"
+              <YearPickerInput
                 label="Angkatan"
+                placeholder="Pilih Tahun Masuk"
                 {...form.getInputProps("angkatan")}
               />
               <Space h={15} />
-              {/* <Select
-                label="Status"
-                data={[
-                  { value: 'aktif', label: 'Aktif' },
-                  { value: 'lulus', label: 'lulus' },
-                  { value: 'cuti', label: 'Cuti' },
-                  { value: 'mangkir', label: 'Mangkir' },
-                  { value: 'dropout', label: 'Dropout' },
-                ]}
-                {...form.getInputProps("status")}
-              /> */}
               <Select
-                label="Status"
-                data={[
-                  { value: 'aktif', label: 'Aktif' },
-                  { value: 'lulus', label: 'lulus' },
-                  { value: 'cuti', label: 'Cuti' },
-                  { value: 'mangkir', label: 'Mangkir' },
-                  { value: 'dropout', label: 'Dropout' },
-                ]}
+                label="Dosen Wali"
+                data={doswalData}
                 {...form.getInputProps("status")}
               />
-              <Space h={15} />
-              <PasswordInput
-                size="md"
-                label="Password"
-                {...form.getInputProps("password")}
-              />
-
               <Group mt="md">
-                <Button type="submit" onClick={handleSubmit}>Tambah</Button>
+                <Button type="submit" onClick={handleSubmit}>
+                  Tambah
+                </Button>
               </Group>
             </form>
           </Box>

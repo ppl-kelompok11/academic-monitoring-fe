@@ -14,8 +14,6 @@ import { useForm } from "@mantine/form";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import api from "@/configs/axios-interceptors";
-import axios from "axios";
-import { cookies } from "next/headers";
 import Cookies from "js-cookie";
 
 const useStyles = createStyles((theme) => ({
@@ -51,6 +49,7 @@ export default function Index() {
       password: "",
     },
   });
+  
   const handleSubmit = async () => {
     // console.log(form.errors);
     form.validate();
@@ -72,6 +71,12 @@ export default function Index() {
       }
     }
   };
+
+  const handleEnter = (e : any) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  }
 
   return (
     <>
@@ -96,7 +101,8 @@ export default function Index() {
                 <TextInput
                   size="lg"
                   radius={11}
-                  label="Email"
+                  label="Email / NIM / NIP"
+                  onKeyDownCapture={handleEnter}
                   {...form.getInputProps("email")}
                 />
                 <PasswordInput
@@ -104,6 +110,7 @@ export default function Index() {
                   size="lg"
                   radius={11}
                   label="Password"
+                  onKeyDownCapture={handleEnter}
                   {...form.getInputProps("password")}
                 />
                 <br />
