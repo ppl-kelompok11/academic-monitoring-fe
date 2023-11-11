@@ -117,7 +117,6 @@ const Mahasiswa = () => {
       <td>{row.pkl_status}</td>
       <td>{row.grade}</td>
       <td>{row.scan_pkl}</td>
-      <td>{row.created_at}</td>
       <td>
         {
           <>
@@ -215,7 +214,6 @@ const Mahasiswa = () => {
                   <th>Status</th>
                   <th>Nilai</th>
                   <th>Scan Berita Acara PKL</th>
-                  <th>Dibuat</th>
                   <th>Aksi</th>
                 </tr>
               </thead>

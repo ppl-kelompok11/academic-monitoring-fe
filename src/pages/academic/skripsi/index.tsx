@@ -119,7 +119,6 @@ const Mahasiswa = () => {
       <td>{row.skripsi_status}</td>
       <td>{row.grade}</td>
       <td>{row.scan_skripsi}</td>
-      <td>{row.created_at}</td>
       <td>
         {
           <Flex gap="xs">
@@ -206,7 +205,6 @@ const Mahasiswa = () => {
                   <th>Status</th>
                   <th>Nilai</th>
                   <th>Scan Berita Acara Skripsi</th>
-                  <th>Dibuat</th>
                   <th>Aksi</th>
                 </tr>
               </thead>

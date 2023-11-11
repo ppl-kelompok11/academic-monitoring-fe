@@ -21,14 +21,15 @@ import {
   Box,
 } from "@mantine/core";
 import {
-  IconEditCircle,
   IconInfoCircle,
   IconSearch,
-  IconTrash,
+  IconCheck,
+  IconX,
 } from "@tabler/icons-react";
 import AppLayout from "@/layouts/AppLayout";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { IoIosArrowBack } from "react-icons/io";
 import api from "@/configs/axios-interceptors";
 import { useCallback } from "react";
 import { GetServerSideProps } from "next";
@@ -74,7 +75,7 @@ const useStyles = createStyles((theme) => ({
 //   }[];
 // };
 
-export default function Index() {
+const Mahasiswa = () => {
   const router = useRouter();
   const token = Cookies.get("token");
   const [activePage, setPage] = useState(1);
@@ -84,87 +85,75 @@ export default function Index() {
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
 
-  // const getData = useCallback(async () => {
-  //   try {
-  //     const response = await api.get(
-  //       `students?search=${search}&page=${activePage}`
-  //     );
-  //     console.log(response.data.data);
-  //     setData(response.data.data);
-  //     setTotalPage(response.data.meta.last_page);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, [search, activePage]);
+  const getData = useCallback(async () => {
+    try {
+      const response = await api.get(`pkl?search=${search}&page=${activePage}`);
+      console.log(response.data.data);
+      setData(response.data.data);
+      setTotalPage(response.data.meta.last_page);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [search, activePage]);
 
-  // useEffect(() => {
-  //   getData();
-  // }, [search, activePage]);
+  useEffect(() => {
+    getData();
+  }, [search, activePage]);
 
-  // const rows = data.map((row: any) => (
-  //   <tr key={row.id}>
-  //     <td>{row.name}</td>
-  //     <td>{row.email}</td>
-  //     <td>{row.nim}</td>
-  //     <td>
-  //       {row.active ? (
-  //         <Badge color="green">Aktif</Badge>
-  //       ) : (
-  //         <Badge color="red">Tidak Aktif</Badge>
-  //       )}
-  //     </td>
-  //     <td>{row.created_at}</td>
-  //     <td>
-  //       {
-  //         <>
-  //           <Flex gap="xs">
-  //             <ActionIcon
-  //               variant="filled"
-  //               color="blue"
-  //               onClick={() => {
-  //                 router.push(`/mahasiswa/detail/${row.id}`);
-  //               }}
-  //             >
-  //               <IconInfoCircle size="1rem" />
-  //             </ActionIcon>
-  //             <ActionIcon
-  //               variant="filled"
-  //               color="yellow"
-  //               onClick={() => {
-  //                 router.push(`/mahasiswa/update/${row.id}`);
-  //               }}
-  //             >
-  //               <IconEditCircle size="1rem" />
-  //             </ActionIcon>
-  //             <ActionIcon
-  //               variant="filled"
-  //               color="red"
-  //               onClick={() => {
-  //                 handleDelete(row.id);
-  //               }}
-  //             >
-  //               <IconTrash size="1rem" />
-  //             </ActionIcon>
-  //           </Flex>
-  //         </>
-  //       }
-  //     </td>
-  //   </tr>
-  // ));
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await api.delete(`customers/delete?id=${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(response.data.data);
+      getData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const rows = (
-    <tr>
-      <td>Faizal Husain Adiasha</td>
-      <td>Lulus</td>
-      <td>A</td>
+  const rows = data.map((row: any) => (
+    <tr key={row.id}>
+      <td>{row.name}</td>
+      <td>{row.nim}</td>
+      <td>{row.pkl_status}</td>
+      <td>{row.grade}</td>
+      <td>{row.scan_pkl}</td>
       <td>
-        <Link href="#">lihat file</Link>
-      </td>
-      <td>
-        <Button>Validasi</Button>
+        {
+          <Flex gap="xs">
+            <ActionIcon
+              variant="filled"
+              color="blue"
+              onClick={() => {
+                // router.push(`/academic/irs/${row.id}/edit`);
+              }}
+            >
+              <IconInfoCircle size="1rem" />
+            </ActionIcon>
+            <ActionIcon
+              variant="filled"
+              color="green"
+              onClick={() => {
+                // handleValidation(row.id);
+              }}
+            >
+              <IconCheck size="1rem" />
+            </ActionIcon>
+            <ActionIcon
+              variant="filled"
+              color="red"
+              onClick={() => {
+                // handleValidation(row.id);
+              }}
+            >
+              <IconX size="1rem" />
+            </ActionIcon>
+          </Flex>
+        }
       </td>
     </tr>
-  );
+  ));
 
   return (
     <AppLayout role="dosen-wali" activeLink="validation">
@@ -190,7 +179,7 @@ export default function Index() {
               <Flex gap="md">
                 <Input
                   icon={<IconSearch />}
-                  placeholder="Cari Mahasiswa"
+                  placeholder="Cari Data"
                   radius={8}
                   w={300}
                   onChange={(e) => {
@@ -198,6 +187,8 @@ export default function Index() {
                   }}
                 />
               </Flex>
+            </Grid.Col>
+            <Grid.Col md={3} xs={12}>
             </Grid.Col>
           </Grid>
           <ScrollArea
@@ -212,10 +203,11 @@ export default function Index() {
               >
                 <tr>
                   <th>Nama</th>
-                  <th>Status PKL</th>
-                  <th>Nilai PKL</th>
-                  <th>Scan Seminar PKL</th>
-                  <th>Validasi</th>
+                  <th>NIM</th>
+                  <th>Status</th>
+                  <th>Nilai</th>
+                  <th>Scan Berita Acara PKL</th>
+                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>{rows}</tbody>
@@ -233,4 +225,6 @@ export default function Index() {
       </Stack>
     </AppLayout>
   );
-}
+};
+
+export default Mahasiswa;
