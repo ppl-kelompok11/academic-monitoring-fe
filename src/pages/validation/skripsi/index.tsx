@@ -19,9 +19,11 @@ import {
   Center,
   Group,
   Box,
+  useMantineTheme,
+  Modal,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import {
-  IconInfoCircle,
   IconSearch,
   IconCheck,
   IconX,
@@ -37,6 +39,7 @@ import Cookies from "js-cookie";
 import getConfig from "next/config";
 import TitleWithBack from "@/components/atoms/TitleWithBack";
 // const { publicRuntimeConfig } = getConfig();
+
 const useStyles = createStyles((theme) => ({
   header: {
     position: "sticky",
@@ -84,6 +87,9 @@ const Mahasiswa = () => {
   const [data, setData] = useState([]);
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [path, setPath] = useState("");
+  const theme = useMantineTheme();
 
   const getData = useCallback(async () => {
     try {
@@ -102,16 +108,25 @@ const Mahasiswa = () => {
     getData();
   }, [search, activePage]);
 
-  const handleDelete = async (id: number) => {
+  const handleValidation = (id: number, status: string) => {
     try {
-      const response = await api.delete(`customers/delete?id=${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const response = api.put(`skripsi/validate`, {
+        id: id,
+        verification_status: status,
       });
-      console.log(response.data.data);
+      console.log(response);
       getData();
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleView = (path: string) => {
+    return () => {
+      setPath(path);
+      console.log(path)
+      open();
+    };
   };
 
   const rows = data.map((row: any) => (
@@ -120,25 +135,17 @@ const Mahasiswa = () => {
       <td>{row.nim}</td>
       <td>{row.skripsi_status}</td>
       <td>{row.grade}</td>
-      <td>{row.scan_skripsi}</td>
-      <td>{row.created_at}</td>
+      <td>
+        <Button onClick={handleView(row.scan_skripsi.url)}>Lihat Berkas</Button>
+      </td>
       <td>
         {
           <Flex gap="xs">
             <ActionIcon
               variant="filled"
-              color="blue"
-              onClick={() => {
-                // router.push(`/academic/irs/${row.id}/edit`);
-              }}
-            >
-              <IconInfoCircle size="1rem" />
-            </ActionIcon>
-            <ActionIcon
-              variant="filled"
               color="green"
               onClick={() => {
-                // handleValidation(row.id);
+                handleValidation(row.id, "02");
               }}
             >
               <IconCheck size="1rem" />
@@ -147,7 +154,7 @@ const Mahasiswa = () => {
               variant="filled"
               color="red"
               onClick={() => {
-                // handleValidation(row.id);
+                handleValidation(row.id, "00");
               }}
             >
               <IconX size="1rem" />
@@ -160,6 +167,21 @@ const Mahasiswa = () => {
 
   return (
     <AppLayout role="dosen-wali" activeLink="validation">
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="Berkas Berita Acara Skripsi"
+        size="90%"
+        centered
+        overlayProps={{
+          color: theme.colors.dark[9],
+          opacity: 0.55,
+          blur: 3,
+        }}
+      >
+        <iframe src={path} width="100%" height="720px" />
+      </Modal>
+      
       <Stack mt={35} mx={45}>
         <TitleWithBack title="Validasi" route="/dashboard/lecture" />
         <Card mt={10} bg={"white"} radius={"lg"}>
