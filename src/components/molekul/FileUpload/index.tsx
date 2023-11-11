@@ -130,7 +130,7 @@ export default function Index(props: Partial<FileUploadProps>) {
                 >
                     <Document size="80px" color="#243063" />
                     <Stack justify="flex-end" align="flex-start">
-                        <Text color="white" size="15px">
+                        <Text size="15px">
                             {props.file?.filename}
                         </Text>
                         <Group>

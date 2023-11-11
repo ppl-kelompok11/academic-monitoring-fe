@@ -8,14 +8,13 @@ import {
   Group,
   Button,
   Space,
-  NativeSelect,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import Link from "next/link";
 import AppLayout from "@/layouts/AppLayout";
-import { IoIosArrowBack } from "react-icons/io";
-import next from "next";
 import FileUpload from "@/components/molekul/FileUpload";
+import api from "@/configs/axios-interceptors";
+import { useRouter } from "next/router";
+import TitleWithBack from "@/components/atoms/TitleWithBack";
 
 const UseStyles = createStyles((theme) => ({
   wrapper: {},
@@ -42,50 +41,67 @@ const UseStyles = createStyles((theme) => ({
 
 export default function Index() {
   const { classes } = UseStyles();
+  const router = useRouter();
   const form = useForm({
     initialValues: {
-      status: "",
-      nilai: "",
+      status: "passed",
+      grade: "",
+      scan_skripsi: {
+        path: "",
+        filename: "",
+        ext: "",
+        url: "",
+      },
     },
   });
+
+  const handleSubmit = async () => {
+    try {
+      const response = await api.post("/skripsi", {
+        skripsi_status: form.values.status,
+        grade: form.values.grade,
+        scan_skripsi: form.values.scan_skripsi.path,
+      });
+
+      if (response.status === 200) {
+        router.push("/academic/skripsi");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    console.log(form.values);
+  };
+
+  const handleUpload = (file: any) => {
+    form.setFieldValue("scan_skripsi", file);
+    console.log(form.values);
+  };
 
   return (
     <AppLayout activeLink="academic" role="mahasiswa">
       <div className={classes.wrapper}>
         <Stack mx={45}>
-          <Group spacing={5}>
-            <Box
-              component={Link}
-              href="/mahasiswa/dashboard"
-              display="flex"
-              style={{ textDecoration: "none" }}
-            >
-              <IoIosArrowBack size={32} />
-            </Box>
-            <Text c="black" size={32} fw={700} align="left">
-              Input Skripsi
-            </Text>
-            </Group>
+          <TitleWithBack title="Input Skripsi" route="/academic/skripsi/" />
           <Box className={classes.form} py={15} px={20}>
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
               <TextInput
                 size="md"
-                label="Status Skripsi"
-                {...form.getInputProps("status")}
-              />
-              <Space h={15} />
-              <TextInput
-                size="md"
                 label="Nilai Skripsi"
-                {...form.getInputProps("nilai")}
+                {...form.getInputProps("grade")}
               />
               <Space h={15} />
               <Text c="primary" size={18} fw={500} align="left" mb={5}>
-                Scan Berita Acara PKL
+                Scan Berita Acara Skripsi
               </Text>
-              <FileUpload />
+              <FileUpload
+                file={form.values.scan_skripsi}
+                onFileUpload={handleUpload}
+              />
               <Group mt="md">
-                <Button type="submit">Simpan</Button>
+                <Button type="submit" onClick={handleSubmit}>
+                  Simpan
+                </Button>
               </Group>
             </form>
           </Box>

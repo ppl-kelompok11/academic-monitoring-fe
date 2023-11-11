@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Stack,
   Text,
@@ -8,14 +8,14 @@ import {
   Group,
   Button,
   Space,
-  NativeSelect,
+  Select,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import Link from "next/link";
 import AppLayout from "@/layouts/AppLayout";
-import { IoIosArrowBack } from "react-icons/io";
-import next from "next";
+import api from "@/configs/axios-interceptors";
+import { useRouter } from "next/router";
 import FileUpload from "@/components/molekul/FileUpload";
+import TitleWithBack from "@/components/atoms/TitleWithBack";
 
 const UseStyles = createStyles((theme) => ({
   wrapper: {},
@@ -42,51 +42,82 @@ const UseStyles = createStyles((theme) => ({
 
 export default function Index() {
   const { classes } = UseStyles();
+  const router = useRouter();
+  const [irs, setIrs] = useState([]);
+
   const form = useForm({
     initialValues: {
-      semester: "",
+      irs_id: "",
       sks: "",
-      sksk: "",
       ip: "",
-      ipk: "",
+      scan_khs: {
+        path: "",
+        filename: "",
+        ext: "",
+        url: "",
+      },
     },
   });
+
+  const getIRS = async () => {
+    try {
+      const response = await api.get("/irs");
+      setIrs(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  React.useEffect(() => {
+    getIRS();
+  }, []);
+
+  const irsData = irs.map((data: any) => ({
+    value: data.id,
+    label: data.semester,
+  }));
+
+  const handleSubmit = async () => {
+    try {
+      const response = await api.post("/khs", {
+        irs_id: form.values.irs_id,
+        sks: form.values.sks,
+        ip: form.values.ip,
+        scan_khs: form.values.scan_khs.path,
+      });
+
+      if (response.status === 200) {
+        router.push("/academic/khs");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    console.log(form.values);
+  };
+
+  const handleUpload = (file: any) => {
+    form.setFieldValue("scan_khs", file);
+    console.log(form.values);
+  };
 
   return (
     <AppLayout activeLink="academic" role="mahasiswa">
       <div className={classes.wrapper}>
         <Stack mx={45}>
-          <Group spacing={5}>
-            <Box
-              component={Link}
-              href="/mahasiswa/dashboard"
-              display="flex"
-              style={{ textDecoration: "none" }}
-            >
-              <IoIosArrowBack size={32} />
-            </Box>
-            <Text c="black" size={32} fw={700} align="left">
-              Input KHS
-            </Text>
-            </Group>
+          <TitleWithBack title="Input KHS" route="/academic/khs/" />
           <Box className={classes.form} py={15} px={20}>
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
-              <TextInput
-                size="md"
+              <Select
                 label="Semester"
-                {...form.getInputProps("semester")}
+                data={irsData}
+                {...form.getInputProps("irs_id")}
               />
               <Space h={15} />
               <TextInput
                 size="md"
-                label="Jumlah SKS Semester"
+                label="SKS Semester"
                 {...form.getInputProps("sks")}
-              />
-              <Space h={15} />
-              <TextInput
-                size="md"
-                label="Jumlah SKS Kumulatif"
-                {...form.getInputProps("sksk")}
               />
               <Space h={15} />
               <TextInput
@@ -95,18 +126,17 @@ export default function Index() {
                 {...form.getInputProps("ip")}
               />
               <Space h={15} />
-              <TextInput
-                size="md"
-                label="IP Kumulatif"
-                {...form.getInputProps("ipk")}
-              />
-              <Space h={15} />
               <Text c="primary" size={18} fw={500} align="left" mb={5}>
                 Scan KHS
               </Text>
-              <FileUpload />
+              <FileUpload
+                file={form.values.scan_khs}
+                onFileUpload={handleUpload}
+              />
               <Group mt="md">
-                <Button type="submit">Simpan</Button>
+                <Button type="submit" onClick={handleSubmit}>
+                  Simpan
+                </Button>
               </Group>
             </form>
           </Box>

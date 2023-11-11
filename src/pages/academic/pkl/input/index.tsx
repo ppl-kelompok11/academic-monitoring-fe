@@ -8,17 +8,13 @@ import {
   Group,
   Button,
   Space,
-  Select,
-  NativeSelect,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import Link from "next/link";
 import AppLayout from "@/layouts/AppLayout";
-import { IoIosArrowBack } from "react-icons/io";
-import next from "next";
 import FileUpload from "@/components/molekul/FileUpload";
 import api from "@/configs/axios-interceptors";
 import { useRouter } from "next/router";
+import TitleWithBack from "@/components/atoms/TitleWithBack";
 
 const UseStyles = createStyles((theme) => ({
   wrapper: {},
@@ -48,7 +44,7 @@ export default function Index() {
   const router = useRouter();
   const form = useForm({
     initialValues: {
-      status: "",
+      status: "passed",
       grade: "",
       scan_pkl: {
         path: "",
@@ -86,31 +82,9 @@ export default function Index() {
     <AppLayout activeLink="academic" role="mahasiswa">
       <div className={classes.wrapper}>
         <Stack mx={45}>
-          <Group spacing={5}>
-            <Box
-              component={Link}
-              href="/mahasiswa/dashboard"
-              display="flex"
-              style={{ textDecoration: "none" }}
-            >
-              <IoIosArrowBack size={32} />
-            </Box>
-            <Text c="black" size={32} fw={700} align="left">
-              Input PKL
-            </Text>
-          </Group>
+          <TitleWithBack title="Input PKL" route="/academic/pkl/" />
           <Box className={classes.form} py={15} px={20}>
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
-              <Select
-                label="Status PKL"
-                data={[
-                  { value: "not_taken", label: "Belum Ambil" },
-                  { value: "ongoing", label: "Sedang Ambil" },
-                  { value: "lulus", label: "Sudah Lulus" },
-                ]}
-                {...form.getInputProps("status")}
-              />
-              <Space h={15} />
               <TextInput
                 size="md"
                 label="Nilai PKL"

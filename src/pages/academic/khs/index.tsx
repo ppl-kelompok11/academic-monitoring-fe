@@ -116,41 +116,32 @@ const Mahasiswa = () => {
     <tr key={row.id}>
       <td>{row.semester}</td>
       <td>{row.sks}</td>
+      <td>{row.sks_kumulatif}</td>
+      <td>{row.ip}</td>
+      <td>{row.ip_kumulatif}</td>
       <td>{row.scan_khs}</td>
-      <td>{row.created_at}</td>
       <td>
         {
-          <>
-            <Flex gap="xs">
-              {/* <ActionIcon
-                                variant="filled"
-                                color="blue"
-                                onClick={() => {
-                                    router.push(`/mahasiswa/detail/${row.id}`);
-                                }}
-                            >
-                                <IconInfoCircle size="1rem" />
-                            </ActionIcon> */}
-              <ActionIcon
-                variant="filled"
-                color="yellow"
-                onClick={() => {
-                  router.push(`/academic/irs/${row.id}/edit`);
-                }}
-              >
-                <IconEditCircle size="1rem" />
-              </ActionIcon>
-              <ActionIcon
-                variant="filled"
-                color="red"
-                onClick={() => {
-                  handleDelete(row.id);
-                }}
-              >
-                <IconTrash size="1rem" />
-              </ActionIcon>
-            </Flex>
-          </>
+          <Flex gap="xs">
+            <ActionIcon
+              variant="filled"
+              color="yellow"
+              onClick={() => {
+                router.push(`/academic/irs/${row.id}/edit`);
+              }}
+            >
+              <IconEditCircle size="1rem" />
+            </ActionIcon>
+            <ActionIcon
+              variant="filled"
+              color="red"
+              onClick={() => {
+                handleDelete(row.id);
+              }}
+            >
+              <IconTrash size="1rem" />
+            </ActionIcon>
+          </Flex>
         }
       </td>
     </tr>
@@ -177,17 +168,17 @@ const Mahasiswa = () => {
           <Space h={15} />
           <Grid justify="space-between">
             <Grid.Col md={9} xs={12}>
-              {/* <Flex gap="md">
-                                <Input
-                                    icon={<IconSearch />}
-                                    placeholder="Cari Mahasiswa"
-                                    radius={8}
-                                    w={300}
-                                    onChange={(e) => {
-                                        setSearch(e.currentTarget.value);
-                                    }}
-                                />
-                            </Flex> */}
+              <Flex gap="md">
+                <Input
+                  icon={<IconSearch />}
+                  placeholder="Cari Data"
+                  radius={8}
+                  w={300}
+                  onChange={(e) => {
+                    setSearch(e.currentTarget.value);
+                  }}
+                />
+              </Flex>
             </Grid.Col>
             <Grid.Col md={3} xs={12}>
               <Flex justify={{ xs: "flex-start", md: "flex-end" }}>
@@ -213,9 +204,11 @@ const Mahasiswa = () => {
               >
                 <tr>
                   <th>Semester</th>
-                  <th>SKS</th>
+                  <th>SKS Semester</th>
+                  <th>SKS Kumulatif</th>
+                  <th>IP Semester</th>
+                  <th>IP Kumulatif</th>
                   <th>Scan KHS</th>
-                  <th>Dibuat</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
