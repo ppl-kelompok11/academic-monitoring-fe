@@ -46,18 +46,7 @@ const UseStyles = createStyles((theme) => ({
 export default function Index() {
     const { classes } = UseStyles();
     const router = useRouter();
-    const form = useForm({
-        initialValues: {
-            semester: "",
-            sks: "",
-            scan_irs: {
-                path: "",
-                filename: "",
-                ext: "",
-                url: "",
-            },
-        },
-    });
+    const form = useForm({});
     useEffect(() => {
         if (router.isReady) {
             console.log(router.query.id);
@@ -69,11 +58,13 @@ export default function Index() {
         try {
             const response = await api.get(`/irs/${id}`);
             if (response.status === 200) {
+                console.log("ini response", response.data);
                 form.setValues({
                     semester: response.data.semester,
                     sks: response.data.sks,
                     scan_irs: response.data.scan_irs,
                 });
+                console.log("ini form", form.values);
             }
         } catch (error) {
             console.log(error);
@@ -85,7 +76,7 @@ export default function Index() {
             const response = await api.post("/irs", {
                 semester: form.values.semester,
                 sks: form.values.sks,
-                scan_irs: form.values.scan_irs.path,
+                // scan_irs: form.values.scan_irs.path,
             });
 
             if (response.status === 200) {
@@ -148,7 +139,7 @@ export default function Index() {
                             </Text>
                             <FileUpload
                                 file={form.values.scan_irs}
-                                // onFileUpload={handleUpload}
+                                onFileUpload={handleUpload}
                             />
                             <Group mt="md">
                                 <Button type="submit" onClick={handleSubmit}>
