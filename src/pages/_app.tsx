@@ -49,6 +49,21 @@ export default function App({ Component, pageProps }: AppProps) {
                 },
               },
             },
+            Textarea: {
+              styles: {
+                label: {
+                  color: "#243063",
+                  fontSize: "18px"
+                },
+                input: {
+                  backgroundColor: "transparent",
+                  color: "#243063",
+                  border: "2px solid #243063",
+                  borderRadius: "8px",
+                  marginTop: "5px",
+                },
+              },
+            },
             PasswordInput: {
               styles: {
                 label: {
@@ -80,21 +95,6 @@ export default function App({ Component, pageProps }: AppProps) {
                   borderRadius: "8px",
                   marginTop: "5px",
                   height: "42px",
-                },
-              },
-            },
-            Textarea: {
-              styles: {
-                label: {
-                  color: "white",
-                },
-                input: {
-                  backgroundColor: "transparent",
-                  color: "white",
-                },
-                innerInput: {
-                  backgroundColor: "transparent",
-                  color: "white",
                 },
               },
             },

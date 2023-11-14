@@ -42,15 +42,16 @@ const UseStyles = createStyles((theme) => ({
 export default function Index() {
   const { classes } = UseStyles();
   const [dosenWali, setDosenWali] = useState([]);
+  const thisYear = new Date().getFullYear();
 
   const form = useForm({
     initialValues: {
       nim: "",
-      email: "",
       nama: "",
-      angkatan: new Date(),
-      status: "",
-      password: "",
+      angkatan: thisYear.toString(),
+      status: "00",
+      lecture_id: "",
+      entrance_code: "",
     },
   });
 
@@ -60,12 +61,12 @@ export default function Index() {
     if (!form.validate().hasErrors) {
       try {
         const response = await api.post("/students", {
-          email: form.values.email,
-          password: form.values.password,
           name: form.values.nama,
           nim: form.values.nim,
-          start_education_year: form.values.angkatan,
+          start_education_year: parseInt(form.values.angkatan),
           status: form.values.status,
+          entrance_code: form.values.entrance_code,
+          lecture_id: form.values.lecture_id,
         });
         console.log(response);
         form.reset();
@@ -94,6 +95,20 @@ export default function Index() {
     label: doswal.name + " - " + doswal.nip,
   }));
 
+  const entrancesData = [
+    { value: "00", label: "SNMPTN" },
+    { value: "01", label: "SBMPTN" },
+    { value: "02", label: "Mandiri" },
+  ];
+
+  const angkatanData = [];
+  for (let i = thisYear - 2; i <= thisYear + 2; i++) {
+    angkatanData.push({
+      value: i.toString(),
+      label: i.toString(),
+    });
+  }
+
   return (
     <AppLayout activeLink="accounts" role="operator">
       <div className={classes.wrapper}>
@@ -112,16 +127,22 @@ export default function Index() {
               <Space h={15} />
               <TextInput size="md" label="NIM" {...form.getInputProps("nim")} />
               <Space h={15} />
-              <YearPickerInput
+              <Select
                 label="Angkatan"
-                placeholder="Pilih Tahun Masuk"
+                data={angkatanData}
                 {...form.getInputProps("angkatan")}
+              />
+              <Space h={15} />
+              <Select
+                label="Jalur Masuk"
+                data={entrancesData}
+                {...form.getInputProps("entrance_code")}
               />
               <Space h={15} />
               <Select
                 label="Dosen Wali"
                 data={doswalData}
-                {...form.getInputProps("status")}
+                {...form.getInputProps("lecture_id")}
               />
               <Group mt="md">
                 <Button type="submit" onClick={handleSubmit}>

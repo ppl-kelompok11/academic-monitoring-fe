@@ -5,7 +5,7 @@ export default function middleware(request: NextRequest) {
   const token = request.cookies.get("token");
   const userData = request.cookies.get("user");
   const user = userData && JSON.parse(userData.value);
-  
+
   // redirect unauthenticated users to signin page
   if (
     (request.nextUrl.pathname.startsWith("/dashboard") ||
@@ -21,7 +21,26 @@ export default function middleware(request: NextRequest) {
 
   // redirect authenticated users to dashboard
   if (token && request.nextUrl.pathname.startsWith("/auth")) {
-    // console.log("have token");
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
+  if (
+    (!user?.active && token) &&
+    (request.nextUrl.pathname.startsWith("/academic") ||
+      request.nextUrl.pathname.startsWith("/profile") ||
+      request.nextUrl.pathname.startsWith("/dashboard"))
+  ) {
+    return NextResponse.redirect(new URL("/initial-data", request.url));
+  }
+
+  if (user?.active && token && request.nextUrl.pathname.startsWith("/initial-data")) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 }
+
+const activeStudentRoutes = [
+  "/academic",
+  "/accounts",
+  "/validation",
+  "/profile",
+];
