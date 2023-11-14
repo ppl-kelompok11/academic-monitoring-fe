@@ -15,7 +15,7 @@ export default function OperatorNavItem({ activeLink }: NavbarProps) {
       <NavLink route="/dashboard/operator" label="Dashboard" isActive={activeLink === "dashboard"}>
         <TbCategoryFilled color="white" size={30} />
       </NavLink>
-      <NavLink route="/accounts" label="Manajemen Akun" isActive={activeLink === "accounts"}>
+      <NavLink route="/accounts/student" label="Manajemen Akun" isActive={activeLink === "accounts"}>
         <FaUserGroup color="white" size={30} />
       </NavLink>
       <NavLink route="/edit-status" label="Edit Status Mahasiswa" isActive={activeLink === "edit-status"}>

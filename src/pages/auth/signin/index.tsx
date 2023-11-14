@@ -63,7 +63,7 @@ export default function Index() {
           // console.log(response.data.token);
           Cookies.set("token", response.data.token);
           Cookies.set("user", JSON.stringify(response.data.profile));
-          Router.push("/dashboard/operator");
+          Router.push("/dashboard");
         }
         form.reset();
       } catch (error) {

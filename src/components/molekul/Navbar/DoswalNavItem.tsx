@@ -13,10 +13,10 @@ type NavbarProps = {
 export default function DoswalNavItem({ activeLink }: NavbarProps) {
   return (
     <Stack>
-      <NavLink route="/" label="Dashboard" isActive={activeLink === "dashboard"}>
+      <NavLink route="/dashboard/lecturer" label="Dashboard" isActive={activeLink === "dashboard"}>
         <TbCategoryFilled color="white" size={30} />
       </NavLink>
-      <NavLink route="/validation" label="Validasi Progress" isActive={activeLink === "validation"}>
+      <NavLink route="/validation/irs" label="Validasi Progress" isActive={activeLink === "validation"}>
         <BsClipboard2CheckFill color="white" size={30} />
       </NavLink>
       <NavLink route="/recap" label="Rekap Progress" isActive={activeLink === "recap"}>
