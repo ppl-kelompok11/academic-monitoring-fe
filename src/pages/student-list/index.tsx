@@ -70,7 +70,7 @@ const useStyles = createStyles((theme) => ({
 //   }[];
 // };
 
-const Mahasiswa = () => {
+const Index = () => {
   const router = useRouter();
   const token = Cookies.get("token");
   const [activePage, setPage] = useState(1);
@@ -97,18 +97,6 @@ const Mahasiswa = () => {
     getData();
   }, [search, activePage]);
 
-  const handleDelete = async (id: number) => {
-    try {
-      const response = await api.delete(`customers/delete?id=${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log(response.data.data);
-      getData();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const rows = data.map((row: any) => (
     <tr key={row.id}>
       <td>{row.name}</td>
@@ -128,28 +116,10 @@ const Mahasiswa = () => {
               variant="filled"
               color="blue"
               onClick={() => {
-                router.push(`/mahasiswa/detail/${row.id}`);
+                router.push(`/students/${row.id}`);
               }}
             >
               <IconInfoCircle size="1rem" />
-            </ActionIcon>
-            <ActionIcon
-              variant="filled"
-              color="yellow"
-              onClick={() => {
-                router.push(`/mahasiswa/update/${row.id}`);
-              }}
-            >
-              <IconEditCircle size="1rem" />
-            </ActionIcon>
-            <ActionIcon
-              variant="filled"
-              color="red"
-              onClick={() => {
-                handleDelete(row.id);
-              }}
-            >
-              <IconTrash size="1rem" />
             </ActionIcon>
           </Flex>
         }
@@ -158,22 +128,10 @@ const Mahasiswa = () => {
   ));
 
   return (
-    <AppLayout role="operator" activeLink="accounts">
+    <AppLayout role="dosen-wali" activeLink="student-list">
       <Stack mt={35} mx={45}>
-        <TitleWithBack title="Manajemen Akun" route="/dashboard/operator" />
+        <TitleWithBack title="List Mahasiswa" route="/dashboard/lecture" />
         <Card mt={10} bg={"white"} radius={"lg"}>
-          <Tabs
-            color="primary"
-            variant="pills"
-            value="student"
-            onTabChange={(value) => router.push(`/accounts/${value}`)}
-          >
-            <Tabs.List>
-              <Tabs.Tab value="student">Mahasiswa</Tabs.Tab>
-              <Tabs.Tab value="lecture">Dosen</Tabs.Tab>
-            </Tabs.List>
-          </Tabs>
-          <Space h={15} />
           <Grid justify="space-between">
             <Grid.Col md={9} xs={12}>
               <Flex gap="md">
@@ -189,15 +147,7 @@ const Mahasiswa = () => {
               </Flex>
             </Grid.Col>
             <Grid.Col md={3} xs={12}>
-              <Flex justify={{ xs: "flex-start", md: "flex-end" }}>
-                <Button
-                  onClick={() => {
-                    router.push("/accounts/student/create");
-                  }}
-                >
-                  Tambah
-                </Button>
-              </Flex>
+              
             </Grid.Col>
           </Grid>
           <ScrollArea
@@ -214,7 +164,6 @@ const Mahasiswa = () => {
                   <th>Nama</th>
                   <th>Email</th>
                   <th>NIM</th>
-                  {/* <th>Status</th> */}
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -235,4 +184,4 @@ const Mahasiswa = () => {
   );
 };
 
-export default Mahasiswa;
+export default Index;

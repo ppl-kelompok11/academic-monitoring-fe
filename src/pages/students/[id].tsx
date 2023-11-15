@@ -15,6 +15,7 @@ import {
   Stack,
   Tabs,
   Space,
+  Text,
   Center,
 } from "@mantine/core";
 import {
@@ -31,6 +32,7 @@ import { useCallback } from "react";
 import Cookies from "js-cookie";
 import getConfig from "next/config";
 import TitleWithBack from "@/components/atoms/TitleWithBack";
+import { TextalignCenter } from "iconsax-react";
 // const { publicRuntimeConfig } = getConfig();
 const useStyles = createStyles((theme) => ({
   header: {
@@ -80,97 +82,145 @@ const Mahasiswa = () => {
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
 
-  const getData = useCallback(async () => {
-    try {
-      const response = await api.get(
-        `students?search=${search}&page=${activePage}`
-      );
-      console.log(response.data.data);
-      setData(response.data.data);
-      setTotalPage(response.data.meta.last_page);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [search, activePage]);
+  const [activeTab, setActiveTab] = useState<string | null>("first");
+  const [mahasiswa, setMahasiswa] = useState<any>({});
+  const [riwayat, setRiwayat] = useState<any>([]);
 
   useEffect(() => {
-    getData();
-  }, [search, activePage]);
+    if (router.isReady) {
+      console.log(router.query.id);
+      getData(router.query.id);
+      getRiwayat(router.query.id);
+    }
+  }, [router.isReady]);
 
-  const handleDelete = async (id: number) => {
+  const getData = async (id: any) => {
     try {
-      const response = await api.delete(`customers/delete?id=${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      console.log(response.data.data);
-      getData();
+      const response = await api.get(`/students/${id}`);
+      if (response.status === 200) {
+        console.log("ini response", response.data);
+        setMahasiswa(response.data);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const rows = data.map((row: any) => (
-    <tr key={row.id}>
-      <td>{row.name}</td>
-      <td>{row.email}</td>
-      <td>{row.nim}</td>
-      {/* <td>
-        {row.active ? (
-          <Badge color="green">Aktif</Badge>
-        ) : (
-          <Badge color="red">Tidak Aktif</Badge>
-        )}
-      </td> */}
+  const getRiwayat = async (id: any) => {
+    try {
+      const response = await api.get(`/students/academic/${id}`);
+      if (response.status === 200) {
+        console.log("riwayat", response.data.data);
+        setRiwayat(response.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const rows = riwayat.map((row: any) => (
+    <tr key={row.semester_value}>
+      <td>{row.semester_value}</td>
       <td>
-        {
-          <Flex gap="xs">
-            <ActionIcon
-              variant="filled"
-              color="blue"
-              onClick={() => {
-                router.push(`/mahasiswa/detail/${row.id}`);
-              }}
-            >
-              <IconInfoCircle size="1rem" />
-            </ActionIcon>
-            <ActionIcon
-              variant="filled"
-              color="yellow"
-              onClick={() => {
-                router.push(`/mahasiswa/update/${row.id}`);
-              }}
-            >
-              <IconEditCircle size="1rem" />
-            </ActionIcon>
-            <ActionIcon
-              variant="filled"
-              color="red"
-              onClick={() => {
-                handleDelete(row.id);
-              }}
-            >
-              <IconTrash size="1rem" />
-            </ActionIcon>
-          </Flex>
-        }
+        {row.irs_verification_status == "02" ? "IRS" : ""}{" "}
+        {row.khs_verification_status == "02" ? "KHS" : ""}{" "}
+        {row.pkl_verification_status == "02" ? "PKL" : ""}{" "}
+        {row.skripsi_verification_status == "02" ? "Skripsi" : ""}
       </td>
     </tr>
   ));
 
   return (
-    <AppLayout role="operator" activeLink="accounts">
+    <AppLayout role="dosen-wali" activeLink="student-list">
       <Stack mt={35} mx={45}>
-        <TitleWithBack title="Manajemen Akun" route="/dashboard/operator" />
+        <TitleWithBack title="Detail Mahasiswa" route="/student-list" />
         <Card mt={10} bg={"white"} radius={"lg"}>
+          <Grid justify="space-between">
+            <Grid.Col span={8}>
+              <table>
+                <tr>
+                  <td>Nama Lengkap</td>
+                  <td>:</td>
+                  <td>{mahasiswa.name}</td>
+                </tr>
+                <tr>
+                  <td>NIM</td>
+                  <td>:</td>
+                  <td>{mahasiswa.nim}</td>
+                </tr>
+                <tr>
+                  <td>Angkatan</td>
+                  <td>:</td>
+                  <td>{mahasiswa.start_education_year}</td>
+                </tr>
+                <tr>
+                  <td>Dosen Wali</td>
+                  <td>:</td>
+                  <td>{mahasiswa.lecture_name}</td>
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td>:</td>
+                  <td>{mahasiswa.email}</td>
+                </tr>
+                <tr>
+                  <td>Provinsi</td>
+                  <td>:</td>
+                  <td>{mahasiswa.province_name}</td>
+                </tr>
+                <tr>
+                  <td>Kabupaten / Kota</td>
+                  <td>:</td>
+                  <td>{mahasiswa.city_name}</td>
+                </tr>
+                <tr>
+                  <td>Alamat</td>
+                  <td>:</td>
+                  <td>{mahasiswa.address}</td>
+                </tr>
+                <tr>
+                  <td>Nomor Telepon</td>
+                  <td>:</td>
+                  <td>{mahasiswa.phone}</td>
+                </tr>
+              </table>
+            </Grid.Col>
+            <Grid.Col span={4}></Grid.Col>
+          </Grid>
+        </Card>
+
+        <Text c="black" size={32} fw={700} align="left">
+          Riwayat Progress Akademik Mahasiswa
+        </Text>
+
+        <Card mt={10} bg={"white"} radius={"lg"}>
+          <Table miw={700}>
+            <thead
+              className={cx(classes.header, {
+                [classes.scrolled]: scrolled,
+              })}
+            >
+              <tr>
+                <th>Semester</th>
+                <th>Dokumen Terverifikasi</th>
+              </tr>
+            </thead>
+            <tbody>{rows}</tbody>
+          </Table>
+        </Card>
+
+        {/* <Card mt={10} bg={"white"} radius={"lg"}>
           <Tabs
             color="primary"
             variant="pills"
-            value="student"
+            value="irs"
             onTabChange={(value) => router.push(`/accounts/${value}`)}
           >
             <Tabs.List>
-              <Tabs.Tab value="student">Mahasiswa</Tabs.Tab>
-              <Tabs.Tab value="lecture">Dosen</Tabs.Tab>
+              <Tabs.Tab value="irs">IRS</Tabs.Tab>
+              <Tabs.Tab value="khs">KHS</Tabs.Tab>
+              <Tabs.Tab value="pkl">PKL</Tabs.Tab>
+              <Tabs.Tab value="skripsi">Skripsi</Tabs.Tab>
             </Tabs.List>
           </Tabs>
           <Space h={15} />
@@ -214,7 +264,7 @@ const Mahasiswa = () => {
                   <th>Nama</th>
                   <th>Email</th>
                   <th>NIM</th>
-                  {/* <th>Status</th> */}
+                  <th>Status</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -229,7 +279,7 @@ const Mahasiswa = () => {
               />
             </Center>
           </ScrollArea>
-        </Card>
+        </Card> */}
       </Stack>
     </AppLayout>
   );
