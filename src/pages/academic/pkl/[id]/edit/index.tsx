@@ -50,8 +50,8 @@ export default function Index() {
     const form = useForm({
         initialValues: {
             semester_value: "",
-            sks: "",
-            scan_irs: {
+            grade: "",
+            scan_pkl: {
                 path: "",
                 filename: "",
                 url: "",
@@ -68,13 +68,13 @@ export default function Index() {
 
     const showDetail = async (id: any) => {
         try {
-            const response = await api.get(`/irs/${id}`);
+            const response = await api.get(`/pkl/${id}`);
             if (response.status === 200) {
                 console.log("ini response", response.data);
                 form.setValues({
                     semester_value: response.data.semester_value,
-                    sks: response.data.sks,
-                    scan_irs: response.data.scan_irs,
+                    grade: response.data.grade,
+                    scan_pkl: response.data.scan_pkl,
                 });
                 console.log("ini form", form.values);
             }
@@ -85,14 +85,14 @@ export default function Index() {
 
     const handleSubmit = async () => {
         try {
-            const response = await api.post("/irs", {
-                semester: form.values.semester_value,
-                sks: form.values.sks,
-                scan_irs: form.values.scan_irs.path,
+            const response = await api.put("/pkl", {
+                semester_value: form.values.semester_value,
+                grade: form.values.grade,
+                scan_pkl: form.values.scan_pkl.path,
             });
 
             if (response.status === 200) {
-                router.push("/academic/irs");
+                router.push("/academic/pkl");
             }
         } catch (error) {
             console.log(error);
@@ -123,6 +123,29 @@ export default function Index() {
         label: data.value,
     }));
 
+    const gradeData = [
+        {
+            value: "4.00",
+            label: "A",
+        },
+        {
+            value: "3.00",
+            label: "B",
+        },
+        {
+            value: "2.00",
+            label: "C",
+        },
+        {
+            value: "1.00",
+            label: "D",
+        },
+        {
+            value: "0.0",
+            label: "E",
+        },
+    ];
+
     return (
         <AppLayout activeLink="academic" role="mahasiswa">
             <div className={classes.wrapper}>
@@ -137,7 +160,7 @@ export default function Index() {
                             <IoIosArrowBack size={32} />
                         </Box>
                         <Text c="black" size={32} fw={700} align="left">
-                            Input IRS
+                            Edit pkl
                         </Text>
                     </Group>
                     <Box className={classes.form} py={15} px={20}>
@@ -152,10 +175,10 @@ export default function Index() {
                                 {...form.getInputProps("semester_value")}
                             />
                             <Space h={15} />
-                            <TextInput
-                                size="md"
-                                label="Jumlah SKS Diambil"
-                                {...form.getInputProps("sks")}
+                            <Select
+                                label="Nilai pkl"
+                                data={gradeData}
+                                {...form.getInputProps("grade")}
                             />
                             <Space h={15} />
                             <Text
@@ -167,8 +190,17 @@ export default function Index() {
                             >
                                 Scan IRS
                             </Text>
+                            <Text
+                                c="primary"
+                                size={18}
+                                fw={500}
+                                align="left"
+                                mb={5}
+                            >
+                                Scan Berita Acara pkl
+                            </Text>
                             <FileUpload
-                                file={form.values.scan_irs}
+                                file={form.values.scan_pkl}
                                 onFileUpload={handleUpload}
                             />
                             <Group mt="md">
