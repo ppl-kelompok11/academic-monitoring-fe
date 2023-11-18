@@ -51,6 +51,8 @@ api.interceptors.response.use(
                     },
                 }),
             });
+            Cookies.remove("token");
+            Cookies.remove("user");
             Router.push("/auth/signin");
         }
         if (error.response.status === 403) {

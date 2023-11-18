@@ -189,13 +189,20 @@ const Mahasiswa = () => {
               </Flex>
             </Grid.Col>
             <Grid.Col md={3} xs={12}>
-              <Flex justify={{ xs: "flex-start", md: "flex-end" }}>
+              <Flex gap={16} justify={{ xs: "flex-start", md: "flex-end" }}>
                 <Button
                   onClick={() => {
                     router.push("/accounts/student/create");
                   }}
                 >
                   Tambah
+                </Button>
+                <Button
+                  onClick={() => {
+                    router.push("/accounts/student/import");
+                  }}
+                >
+                  Import
                 </Button>
               </Flex>
             </Grid.Col>

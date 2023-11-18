@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import {
   createStyles,
   Table,
@@ -17,6 +17,11 @@ import {
   Space,
   Text,
   Center,
+  Image,
+  Tooltip,
+  Modal,
+  Collapse,
+  Skeleton,
 } from "@mantine/core";
 import {
   IconEditCircle,
@@ -24,6 +29,7 @@ import {
   IconSearch,
   IconTrash,
 } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
 import AppLayout from "@/layouts/AppLayout";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -33,68 +39,65 @@ import Cookies from "js-cookie";
 import getConfig from "next/config";
 import TitleWithBack from "@/components/atoms/TitleWithBack";
 import { TextalignCenter } from "iconsax-react";
+import IrsPanel from "@/components/molekul/ProgressTabPanel/IrsPanel";
+import KhsPanel from "@/components/molekul/ProgressTabPanel/KhsPanel";
+import PklPanel from "@/components/molekul/ProgressTabPanel/PklPanel";
+import SkripsiPanel from "@/components/molekul/ProgressTabPanel/SkripsiPanel";
+import ProgressAkademik from "@/components/molekul/ProgressAkademik";
+import ProfilMahasiswaProgress from "@/components/molekul/ProfilMahasiswaProgress";
 // const { publicRuntimeConfig } = getConfig();
-const useStyles = createStyles((theme) => ({
-  header: {
-    position: "sticky",
-    top: 0,
-    backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-    transition: "box-shadow 150ms ease",
-
-    "&::after": {
-      content: '""',
-      position: "absolute",
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderBottom: `${rem(1)} solid ${
-        theme.colorScheme === "dark"
-          ? theme.colors.dark[3]
-          : theme.colors.gray[2]
-      }`,
-    },
-  },
-
-  scrolled: {
-    boxShadow: theme.shadows.sm,
-  },
-}));
-
-// type TableScrollAreaProps = NextPageWithAuth & {
-//   data: {
-//     id: number;
-//     order_name: string;
-//     customer_name: string;
-//     instantion: string;
-//     quantity: number;
-//     total_price: number;
-//   }[];
-// };
 
 const Mahasiswa = () => {
   const router = useRouter();
-  const token = Cookies.get("token");
-  const [activePage, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [totalPage, setTotalPage] = useState(0);
-  const [data, setData] = useState([]);
-  const { classes, cx } = useStyles();
-  const [scrolled, setScrolled] = useState(false);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [openCollapse, { toggle }] = useDisclosure(false);
 
-  const [activeTab, setActiveTab] = useState<string | null>("first");
   const [mahasiswa, setMahasiswa] = useState<any>({});
   const [riwayat, setRiwayat] = useState<any>([]);
+  const [semester, setSemester] = useState<any>(null);
+  const [irsId, setIrsId] = useState<any>(null);
+  const [irs, setIrs] = useState<any>({});
+  const [khsId, setKhsId] = useState<any>(null);
+  const [khs, setKhs] = useState<any>({});
+  const [pklId, setPklId] = useState<any>(null);
+  const [pkl, setPkl] = useState<any>({});
+  const [skripsi, setSkripsi] = useState<any>({});
+  const [skripsiId, setSkripsiId] = useState<any>(null);
+  const [path, setPath] = useState("");
 
   useEffect(() => {
     if (router.isReady) {
       console.log(router.query.id);
-      getData(router.query.id);
+      getMahasiswa(router.query.id);
       getRiwayat(router.query.id);
     }
   }, [router.isReady]);
 
-  const getData = async (id: any) => {
+  useEffect(() => {
+    if (irsId) {
+      getIrs(irsId);
+    }
+  }, [irsId]);
+
+  useEffect(() => {
+    if (khsId) {
+      getKhs(khsId);
+    }
+  }, [khsId]);
+
+  useEffect(() => {
+    if (pklId) {
+      getPkl(pklId);
+    }
+  }, [pklId]);
+
+  useEffect(() => {
+    if (skripsiId) {
+      getSkripsi(skripsiId);
+    }
+  }, [skripsiId]);
+
+  const getMahasiswa = async (id: any) => {
     try {
       const response = await api.get(`/students/${id}`);
       if (response.status === 200) {
@@ -118,168 +121,171 @@ const Mahasiswa = () => {
     }
   };
 
-  const rows = riwayat.map((row: any) => (
-    <tr key={row.semester_value}>
-      <td>{row.semester_value}</td>
-      <td>
-        {row.irs_verification_status == "02" ? "IRS" : ""}{" "}
-        {row.khs_verification_status == "02" ? "KHS" : ""}{" "}
-        {row.pkl_verification_status == "02" ? "PKL" : ""}{" "}
-        {row.skripsi_verification_status == "02" ? "Skripsi" : ""}
-      </td>
-    </tr>
-  ));
+  const getIrs = async (id: any) => {
+    try {
+      const response = await api.get(`/irs/${id}`);
+      if (response.status === 200) {
+        console.log("IRS", response.data);
+        setIrs(response.data);
+        setPath(response.data.scan_irs.url);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getKhs = async (id: any) => {
+    try {
+      const response = await api.get(`/khs/${id}`);
+      if (response.status === 200) {
+        console.log("KHS", response.data);
+        setKhs(response.data);
+        setPath(response.data.scan_khs.url);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getPkl = async (id: any) => {
+    try {
+      const response = await api.get(`/pkl/${id}`);
+      if (response.status === 200) {
+        console.log("PKL", response.data);
+        setKhs(response.data);
+        setPath(response.data.scan_pkl.url);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getSkripsi = async (id: any) => {
+    try {
+      const response = await api.get(`/skripsi/${id}`);
+      if (response.status === 200) {
+        console.log("Skripsi", response.data);
+        setSkripsi(response.data);
+        setPath(response.data.scan_skripsi.url);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const closeModal = () => {
+    close();
+    irs && setIrsId(null);
+    khs && setKhsId(null);
+    pkl && setPklId(null);
+    skripsi && setSkripsiId(null);
+    openCollapse && toggle();
+  };
+
+  const onViewDetail = (path: string) => {
+    return () => {
+      setPath(path);
+      toggle();
+    };
+  };
 
   return (
     <AppLayout role="dosen-wali" activeLink="student-list">
+      <Modal
+        opened={opened}
+        onClose={closeModal}
+        title={`Progress Akademik Semester ${semester}`}
+        size="70%"
+        centered
+      >
+        <Tabs defaultValue="irs">
+          <Tabs.List>
+            {irsId && <Tabs.Tab value="irs">IRS</Tabs.Tab>}
+            {khsId && <Tabs.Tab value="khs">KHS</Tabs.Tab>}
+            {pklId && <Tabs.Tab value="pkl">PKL</Tabs.Tab>}
+            {skripsiId && <Tabs.Tab value="skripsi">Skripsi</Tabs.Tab>}
+          </Tabs.List>
+
+          <Tabs.Panel value="irs">
+            <IrsPanel
+              irs={irs}
+              openCollapse={openCollapse}
+              onViewDetail={onViewDetail}
+              path={path}
+            />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="khs">
+            <KhsPanel
+              khs={khs}
+              openCollapse={openCollapse}
+              onViewDetail={onViewDetail}
+              path={path}
+            />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="pkl">
+            <PklPanel
+              pkl={pkl}
+              openCollapse={openCollapse}
+              onViewDetail={onViewDetail}
+              path={path}
+            />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="skripsi">
+            <SkripsiPanel
+              skripsi={skripsi}
+              openCollapse={openCollapse}
+              onViewDetail={onViewDetail}
+              path={path}
+            />
+          </Tabs.Panel>
+        </Tabs>
+      </Modal>
+
       <Stack mt={35} mx={45}>
         <TitleWithBack title="Detail Mahasiswa" route="/student-list" />
-        <Card mt={10} bg={"white"} radius={"lg"}>
-          <Grid justify="space-between">
-            <Grid.Col span={8}>
-              <table>
-                <tr>
-                  <td>Nama Lengkap</td>
-                  <td>:</td>
-                  <td>{mahasiswa.name}</td>
-                </tr>
-                <tr>
-                  <td>NIM</td>
-                  <td>:</td>
-                  <td>{mahasiswa.nim}</td>
-                </tr>
-                <tr>
-                  <td>Angkatan</td>
-                  <td>:</td>
-                  <td>{mahasiswa.start_education_year}</td>
-                </tr>
-                <tr>
-                  <td>Dosen Wali</td>
-                  <td>:</td>
-                  <td>{mahasiswa.lecture_name}</td>
-                </tr>
-                <tr>
-                  <td>Email</td>
-                  <td>:</td>
-                  <td>{mahasiswa.email}</td>
-                </tr>
-                <tr>
-                  <td>Provinsi</td>
-                  <td>:</td>
-                  <td>{mahasiswa.province_name}</td>
-                </tr>
-                <tr>
-                  <td>Kabupaten / Kota</td>
-                  <td>:</td>
-                  <td>{mahasiswa.city_name}</td>
-                </tr>
-                <tr>
-                  <td>Alamat</td>
-                  <td>:</td>
-                  <td>{mahasiswa.address}</td>
-                </tr>
-                <tr>
-                  <td>Nomor Telepon</td>
-                  <td>:</td>
-                  <td>{mahasiswa.phone}</td>
-                </tr>
-              </table>
-            </Grid.Col>
-            <Grid.Col span={4}></Grid.Col>
-          </Grid>
-        </Card>
-
+        <ProfilMahasiswaProgress mahasiswa={mahasiswa}/>
+        <Space h={10} />
         <Text c="black" size={32} fw={700} align="left">
-          Riwayat Progress Akademik Mahasiswa
+          Progress Akademik Mahasiswa
         </Text>
-
-        <Card mt={10} bg={"white"} radius={"lg"}>
-          <Table miw={700}>
-            <thead
-              className={cx(classes.header, {
-                [classes.scrolled]: scrolled,
-              })}
+        <Card
+          mt={10}
+          bg={"white"}
+          radius={"lg"}
+          style={{ overflow: "visible" }}
+        >
+          <Center>
+            <Flex
+              gap="md"
+              maw={800}
+              justify="center"
+              align="center"
+              direction="row"
+              wrap="wrap"
             >
-              <tr>
-                <th>Semester</th>
-                <th>Dokumen Terverifikasi</th>
-              </tr>
-            </thead>
-            <tbody>{rows}</tbody>
-          </Table>
-        </Card>
-
-        {/* <Card mt={10} bg={"white"} radius={"lg"}>
-          <Tabs
-            color="primary"
-            variant="pills"
-            value="irs"
-            onTabChange={(value) => router.push(`/accounts/${value}`)}
-          >
-            <Tabs.List>
-              <Tabs.Tab value="irs">IRS</Tabs.Tab>
-              <Tabs.Tab value="khs">KHS</Tabs.Tab>
-              <Tabs.Tab value="pkl">PKL</Tabs.Tab>
-              <Tabs.Tab value="skripsi">Skripsi</Tabs.Tab>
-            </Tabs.List>
-          </Tabs>
-          <Space h={15} />
-          <Grid justify="space-between">
-            <Grid.Col md={9} xs={12}>
-              <Flex gap="md">
-                <Input
-                  icon={<IconSearch />}
-                  placeholder="Cari Mahasiswa"
-                  radius={8}
-                  w={300}
-                  onChange={(e) => {
-                    setSearch(e.currentTarget.value);
-                  }}
-                />
-              </Flex>
-            </Grid.Col>
-            <Grid.Col md={3} xs={12}>
-              <Flex justify={{ xs: "flex-start", md: "flex-end" }}>
-                <Button
-                  onClick={() => {
-                    router.push("/accounts/student/create");
-                  }}
-                >
-                  Tambah
-                </Button>
-              </Flex>
-            </Grid.Col>
-          </Grid>
-          <ScrollArea
-            mt={10}
-            onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
-          >
-            <Table miw={700}>
-              <thead
-                className={cx(classes.header, {
-                  [classes.scrolled]: scrolled,
-                })}
-              >
-                <tr>
-                  <th>Nama</th>
-                  <th>Email</th>
-                  <th>NIM</th>
-                  <th>Status</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody>{rows}</tbody>
-            </Table>
-            <Center>
-              <Pagination
-                my={20}
-                value={activePage}
-                onChange={setPage}
-                total={totalPage}
+              <ProgressAkademik 
+                riwayat={riwayat}
+                irs={irs}
+                khs={khs}
+                pkl={pkl}
+                skripsi={skripsi}
+                setIrs={setIrs}
+                setKhs={setKhs}
+                setPkl={setPkl}
+                setSkripsi={setSkripsi}
+                setIrsId={setIrsId}
+                setKhsId={setKhsId}
+                setPklId={setPklId}
+                setSkripsiId={setSkripsiId}
+                setSemester={setSemester}
+                open={open}
               />
-            </Center>
-          </ScrollArea>
-        </Card> */}
+            </Flex>
+          </Center>
+        </Card>
       </Stack>
     </AppLayout>
   );
