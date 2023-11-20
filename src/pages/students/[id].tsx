@@ -245,7 +245,7 @@ const Mahasiswa = () => {
       </Modal>
 
       <Stack mt={35} mx={45}>
-        <TitleWithBack title="Detail Mahasiswa" route="/student-list" />
+        <TitleWithBack title="Detail Mahasiswa" route="/students" />
         <ProfilMahasiswaProgress mahasiswa={mahasiswa}/>
         <Space h={10} />
         <Text c="black" size={32} fw={700} align="left">

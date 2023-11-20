@@ -22,7 +22,7 @@ export default function DoswalNavItem({ activeLink }: NavbarProps) {
       <NavLink route="/recap" label="Rekap Progress" isActive={activeLink === "recap"}>
         <SlBookOpen color="white" size={30} />
       </NavLink>
-      <NavLink route="/student-list" label="Daftar Mahasiswa" isActive={activeLink === "student-list"}>
+      <NavLink route="/students" label="Daftar Mahasiswa" isActive={activeLink === "student-list"}>
         <FaUserGroup color="white" size={30} />
       </NavLink>
     </Stack>
