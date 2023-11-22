@@ -21,6 +21,9 @@ import {
   Box,
   useMantineTheme,
   Modal,
+  Collapse,
+  Skeleton,
+  Loader,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -63,6 +66,13 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
+  statusRow: {
+    "&:hover": {
+      cursor: "pointer",
+      backgroundColor: theme.colors.gray[0],
+    }
+  },
+
   scrolled: {
     boxShadow: theme.shadows.sm,
   },
@@ -79,107 +89,141 @@ const useStyles = createStyles((theme) => ({
 //   }[];
 // };
 
-const Mahasiswa = () => {
+const Index = () => {
   const router = useRouter();
-  const token = Cookies.get("token");
-  const [activePage, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [totalPage, setTotalPage] = useState(0);
-  const [data, setData] = useState([]);
   const { classes, cx } = useStyles();
+  const [opened, { toggle }] = useDisclosure(false);
+  const [activePage, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
+  const [rekap, setRekap] = useState<any>([]);
+  const [totalAngkatan, setTotalAngkatan] = useState<any>(null);
+  const [status, setStatus] = useState("");
+  const [angkatan, setAngkatan] = useState("");
+  const [list, setList] = useState([]);
   const [scrolled, setScrolled] = useState(false);
-  const [opened, { open, close }] = useDisclosure(false);
-  const [path, setPath] = useState("");
+  const [isLoadingList, setIsLoadingList] = useState(false);
+  const [isLoadingRecap, setIsLoadingRecap] = useState(true);
   const theme = useMantineTheme();
 
-  const getData = useCallback(async () => {
+  const getRekap = async () => {
     try {
-      const response = await api.get(`pkl?search=${search}&page=${activePage}`);
+      const response = await api.get(`recap/status`);
       console.log(response.data.data);
-      setData(response.data.data);
-      setTotalPage(response.data.meta.last_page);
+      const total = response.data.data.length;
+      setRekap(response.data.data);
+      setTotalAngkatan(total);
+      setIsLoadingRecap(false);
+      console.log(totalAngkatan);
     } catch (error) {
       console.log(error);
     }
-  }, [search, activePage]);
+  };
+
+  const getList = useCallback(
+    async (status: any, angkatan: any) => {
+      try {
+        setIsLoadingList(true);
+        const response = await api.get(
+          `students?status=${status}&start_education_year=${angkatan}&page=${activePage}`
+        );
+        console.log(response.data.data);
+        setList(response.data.data);
+        setTotalPage(response.data.meta.last_page);
+        setIsLoadingList(false);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [activePage]
+  );
 
   useEffect(() => {
-    getData();
-  }, [search, activePage]);
+    getRekap();
+  }, []);
 
-  const handleValidation = (id: number, status: string) => {
-    try {
-      const response = api.put(`pkl/validate`, {
-        id: id,
-        verification_status: status,
-      });
-      console.log(response);
-      getData();
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    if (status && angkatan) {
+      getList(status, angkatan);
     }
-  };
+  }, [status, angkatan, activePage]);
 
-  const handleView = (path: string) => {
-    return () => {
-      setPath(path);
-      open();
-    };
-  };
+  const parseStatus = (status: string) => {
+    if (status == "00") {
+      return "Aktif";
+    } else if (status == "01") {
+      return "Cuti";
+    } else if (status == "02") {
+      return "Mangkir";
+    } else if (status == "03") {
+      return "Drop Out";
+    } else if (status == "04") {
+      return "Mengundurkan Diri";
+    } else if (status == "05") {
+      return "Lulus";
+    } else if (status == "06") {
+      return "Meninggal";
+    }
+  }
 
-  const rows = data.map((row: any) => (
-    <tr key={row.id}>
-      <td>{row.name}</td>
-      <td>{row.nim}</td>
-      <td>{row.pkl_status}</td>
-      <td>{row.grade}</td>
-      <td>
-        <Button onClick={handleView(row.scan_pkl.url)}>Lihat Berkas</Button>
-      </td>
-      <td>
-        {
-          <Flex gap="xs">
-            <ActionIcon
-              variant="filled"
-              color="green"
-              onClick={() => {
-                handleValidation(row.id, "02");
-              }}
-            >
-              <IconCheck size="1rem" />
-            </ActionIcon>
-            <ActionIcon
-              variant="filled"
-              color="red"
-              onClick={() => {
-                handleValidation(row.id, "00");
-              }}
-            >
-              <IconX size="1rem" />
-            </ActionIcon>
-          </Flex>
+  const recapRows = rekap.map((row: any) => {
+    const clickStatus = (status: string) => {
+      return () => {
+        if (!opened) {
+          setStatus(status);
+          setAngkatan(row.start_education_year.toString());
         }
+        toggle();
+      }
+    }
+
+    return (
+      <tr key={row.start_education_year}>
+        <td>{row.start_education_year}</td>
+        <td onClick={clickStatus("00")} className={classes.statusRow}>
+          {row.active}
+        </td>
+        <td onClick={clickStatus("01")} className={classes.statusRow}>
+          {row.holiday}
+        </td>
+        <td onClick={clickStatus("02")} className={classes.statusRow}>
+          {row.absent}
+        </td>
+        <td onClick={clickStatus("03")} className={classes.statusRow}>
+          {row.drop_out}
+        </td>
+        <td onClick={clickStatus("04")} className={classes.statusRow}>
+          {row.resign}
+        </td>
+        <td onClick={clickStatus("05")} className={classes.statusRow}>
+          {row.graduate}
+        </td>
+        <td onClick={clickStatus("06")} className={classes.statusRow}>
+          {row.die}
+        </td>
+      </tr>
+    );
+  });
+
+  const rows = list.map((row: any, index: number) => (
+    <tr key={row.id}>
+      <td>{index + 1}</td>
+      <td>{row.nim}</td>
+      <td>{row.name}</td>
+      <td>{row.start_education_year}</td>
+      <td>
+        {row.status == "00" && "Aktif"}
+        {row.status == "01" && "Cuti"}
+        {row.status == "02" && "Mangkir"}
+        {row.status == "03" && "Drop Out"}
+        {row.status == "04" && "Mengundurkan Diri"}
+        {row.status == "05" && "Lulus"}
+        {row.status == "06" && "Meninggal"}
       </td>
     </tr>
   ));
 
   return (
     <AppLayout role="dosen-wali" activeLink="validation">
-      <Modal
-        opened={opened}
-        onClose={close}
-        title="Berkas Berita Acara PKL"
-        size="90%"
-        centered
-        overlayProps={{
-          color: theme.colors.dark[9],
-          opacity: 0.55,
-          blur: 3,
-        }}
-      >
-        <iframe src={path} width="100%" height="720px" />
-      </Modal>
-
       <Stack mt={35} mx={45}>
         <TitleWithBack title="Rekapitulasi" route="/dashboard/lecture" />
         <Card mt={10} bg={"white"} radius={"lg"}>
@@ -196,56 +240,93 @@ const Mahasiswa = () => {
             </Tabs.List>
           </Tabs>
           <Space h={15} />
-          <Grid justify="space-between">
-            <Grid.Col md={9} xs={12}>
-              <Flex gap="md">
-                <Input
-                  icon={<IconSearch />}
-                  placeholder="Cari Data"
-                  radius={8}
-                  w={300}
-                  onChange={(e) => {
-                    setSearch(e.currentTarget.value);
-                  }}
-                />
-              </Flex>
-            </Grid.Col>
-            <Grid.Col md={3} xs={12}></Grid.Col>
-          </Grid>
           <ScrollArea
             mt={10}
             onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
           >
-            <Table miw={700}>
-              <thead
-                className={cx(classes.header, {
-                  [classes.scrolled]: scrolled,
-                })}
-              >
-                <tr>
-                  <th>Nama</th>
-                  <th>NIM</th>
-                  <th>Status</th>
-                  <th>Nilai</th>
-                  <th>Scan Berita Acara PKL</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody>{rows}</tbody>
-            </Table>
-            <Center>
-              <Pagination
-                my={20}
-                value={activePage}
-                onChange={setPage}
-                total={totalPage}
-              />
-            </Center>
+            {isLoadingRecap ? (
+              <Center>
+                <Loader />
+              </Center>
+            ) : (
+              <Table miw={700} withColumnBorders withBorder>
+                <thead
+                  className={cx(classes.header, {
+                    [classes.scrolled]: scrolled,
+                  })}
+                >
+                  <tr>
+                    <th style={{ textAlign: "center" }}>Angkatan</th>
+                    <th style={{ textAlign: "center" }}>Aktif</th>
+                    <th style={{ textAlign: "center" }}>Cuti</th>
+                    <th style={{ textAlign: "center" }}>Mangkir</th>
+                    <th style={{ textAlign: "center" }}>Drop Out</th>
+                    <th style={{ textAlign: "center" }}>Mengundurkan Diri</th>
+                    <th style={{ textAlign: "center" }}>Lulus</th>
+                    <th style={{ textAlign: "center" }}>Meninggal</th>
+                  </tr>
+                </thead>
+                <tbody style={{ textAlign: "center" }}>{recapRows}</tbody>
+              </Table>
+            )}
           </ScrollArea>
         </Card>
+        <Collapse in={opened}>
+          <Card mt={10} bg={"white"} radius={"lg"}>
+            <Text align="center" fw={600} size={20}>
+              Daftar Status {parseStatus(status)} Angkatan {angkatan} <br />
+              Mahasiswa Informatika Fakultas Sains dan Matematika UNDIP Semarang
+            </Text>
+            <ScrollArea
+              mt={10}
+              onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+            >
+              <Table miw={700}>
+                <thead
+                  className={cx(classes.header, {
+                    [classes.scrolled]: scrolled,
+                  })}
+                >
+                  <tr>
+                    <th>No</th>
+                    <th>NIM</th>
+                    <th>Nama</th>
+                    <th>Angkatan</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {isLoadingList ? (
+                    <tr>
+                      <td colSpan={5} style={{ textAlign: "center" }}>
+                        <Loader />
+                      </td>
+                    </tr>
+                  ) : list.length == 0 ? (
+                    <tr>
+                      <td colSpan={5} style={{ textAlign: "center" }}>
+                        Tidak Ada Mahasiswa
+                      </td>
+                    </tr>
+                  ) : (
+                    rows
+                  )}
+                </tbody>
+              </Table>
+              <Center>
+                <Pagination
+                  my={20}
+                  value={activePage}
+                  onChange={setPage}
+                  total={totalPage}
+                />
+              </Center>
+            </ScrollArea>
+          </Card>
+        </Collapse>
       </Stack>
     </AppLayout>
   );
 };
 
-export default Mahasiswa;
+export default Index;

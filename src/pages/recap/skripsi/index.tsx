@@ -66,6 +66,13 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
+  statusRow: {
+    "&:hover": {
+      cursor: "pointer",
+      backgroundColor: theme.colors.gray[0],
+    }
+  },
+
   scrolled: {
     boxShadow: theme.shadows.sm,
   },
@@ -115,6 +122,7 @@ const Index = () => {
   const getList = useCallback(
     async (status: any, angkatan: any) => {
       try {
+        setIsLoadingList(true);
         const response = await api.get(
           `students?skripsi_status=${status}&start_education_year=${angkatan}&page=${activePage}`
         );
@@ -153,39 +161,23 @@ const Index = () => {
   ));
 
   const countCol = rekap.map((col: any) => {
-    const clickGraduate = () => {
-      if (opened) {
-        toggle();
-        setStatus("");
-        setAngkatan("");
-      } else {
-        setIsLoadingList(true);
-        setStatus("graduate");
-        setAngkatan(col.start_education_year.toString());
+    const clickStatus = (status: string) => {
+      return () => {
+        if (!opened) {
+          setStatus(status);
+          setAngkatan(col.start_education_year.toString());
+        }
         toggle();
       }
-    };
-
-    const clickNotGraduate = () => {
-      if (opened) {
-        toggle();
-        setStatus("");
-        setAngkatan("");
-      } else {
-        setIsLoadingList(true);
-        setStatus("not_graduate");
-        setAngkatan(col.start_education_year.toString());
-        toggle();
-      }
-    };
+    }
 
     return (
       <>
-        <td key={col.start_education_year}>
-          <Text onClick={clickGraduate}>{col.graduate}</Text>
+        <td key={col.start_education_year} onClick={clickStatus("graduate")} className={classes.statusRow}>
+          {col.graduate}
         </td>
-        <td key={col.start_education_year}>
-          <Text onClick={clickNotGraduate}>{col.not_graduate}</Text>
+        <td key={col.start_education_year} onClick={clickStatus("not_graduate")} className={classes.statusRow}>
+          {col.not_graduate}
         </td>
       </>
     );
@@ -223,33 +215,33 @@ const Index = () => {
             mt={10}
             onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
           >
-            <Table miw={700} withColumnBorders withBorder>
-              <thead
-                className={cx(classes.header, {
-                  [classes.scrolled]: scrolled,
-                })}
-              >
-                <tr>
-                  <th
-                    colSpan={totalAngkatan * 2}
-                    style={{ textAlign: "center" }}
-                  >
-                    Angkatan
-                  </th>
-                </tr>
-              </thead>
-              <tbody style={{ textAlign: "center" }}>
-                {isLoadingRecap ? (
-                  <Loader />
-                ) : (
-                  <>
-                    <tr>{yearCol}</tr>
-                    <tr>{statusCol}</tr>
-                    <tr>{countCol}</tr>
-                  </>
-                )}
-              </tbody>
-            </Table>
+            {isLoadingRecap ? (
+              <Center>
+                <Loader />
+              </Center>
+            ) : (
+              <Table miw={700} withColumnBorders withBorder>
+                <thead
+                  className={cx(classes.header, {
+                    [classes.scrolled]: scrolled,
+                  })}
+                >
+                  <tr>
+                    <th
+                      colSpan={totalAngkatan * 2}
+                      style={{ textAlign: "center" }}
+                    >
+                      Angkatan
+                    </th>
+                  </tr>
+                </thead>
+                <tbody style={{ textAlign: "center" }}>
+                  <tr>{yearCol}</tr>
+                  <tr>{statusCol}</tr>
+                  <tr>{countCol}</tr>
+                </tbody>
+              </Table>
+            )}
           </ScrollArea>
         </Card>
         <Collapse in={opened}>
