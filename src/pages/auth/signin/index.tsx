@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   Grid,
   Stack,
@@ -9,6 +9,7 @@ import {
   PasswordInput,
   Box,
   Button,
+  LoadingOverlay
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import Link from "next/link";
@@ -43,6 +44,7 @@ const API = process.env.API_URL;
 export default function Index() {
   const Router = useRouter();
   const { classes } = useStyles();
+  const [ isLoading, setIsLoading ] = useState(false);
   const form = useForm({
     initialValues: {
       email: "",
@@ -52,6 +54,7 @@ export default function Index() {
   
   const handleSubmit = async () => {
     // console.log(form.errors);
+    setIsLoading(true);
     form.validate();
     if (!form.validate().hasErrors) {
       try {
@@ -66,6 +69,7 @@ export default function Index() {
           Router.push("/dashboard");
         }
         form.reset();
+        setIsLoading(false);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -85,6 +89,7 @@ export default function Index() {
           <Grid.Col pb={0} sm={6} md={5} sx={{ width: "100%" }}>
             <Stack sx={{ height: "100vh" }} align="center" justify="center">
               <Box sx={{ width: "405px" }} className={classes.loginFormLayout}>
+              <LoadingOverlay color='primary' visible={isLoading} overlayBlur={2} />
                 <Text
                   c="primary"
                   fw={600}

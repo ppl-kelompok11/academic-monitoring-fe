@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import Cookies from 'js-cookie';
 
 export default function middleware(request: NextRequest) {
   const token = request.cookies.get("token");
@@ -24,6 +25,20 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
+  // redirect to dashboard based on user role
+  if (request.nextUrl.pathname.startsWith('/dashboard')) {
+    if (user?.role_id == 1) {
+      return NextResponse.rewrite(new URL('/dashboard/operator', request.url))
+    } else if (user?.role_id == 2) {
+      return NextResponse.rewrite(new URL('/dashboard/student', request.url))
+    } else if (user?.role_id == 3) {
+      return NextResponse.rewrite(new URL('/dashboard/lecturer', request.url))
+    } else if (user?.role_id == 4) {
+      return NextResponse.rewrite(new URL('/dashboard/department', request.url))
+    }
+  }
+
+  // redirect to initial data page if user is not active
   if (
     (!user?.active && token) &&
     (request.nextUrl.pathname.startsWith("/academic") ||

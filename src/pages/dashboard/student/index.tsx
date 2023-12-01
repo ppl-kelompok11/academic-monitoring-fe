@@ -66,9 +66,12 @@ export default function Index() {
           Halo Husain!
         </Text>
         <Space h={20} />
-        <Stack align="flex-start">
-          Dashboard Mahasiswa
-        </Stack>
+        <Flex align="flex-start" wrap="wrap" gap={10}>
+          <SimpleCard title="Jumlah Mahasiswa" value={"12"} />
+          <SimpleCard title="Jumlah Mahasiswa" value={"12"} />
+          <SimpleCard title="Jumlah Mahasiswa" value={"12"} />
+          <SimpleCard title="Jumlah Mahasiswa" value={"12"} />
+        </Flex>
       </Stack>
     </AppLayout>
   );

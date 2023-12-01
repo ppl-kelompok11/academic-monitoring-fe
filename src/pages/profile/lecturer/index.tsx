@@ -43,7 +43,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function Index() {
   const { classes } = useStyles();
-  const [mahasiswa, setMahasiswa] = React.useState<any>({});
+  const [lecture, setLecture] = React.useState<any>({});
   const form = useForm({
     initialValues: {
       nama: "",
@@ -57,12 +57,12 @@ export default function Index() {
   const userData = Cookies.get("user");
   const user = userData && JSON.parse(userData);
 
-  const getMahasiswa = async (id: any) => {
+  const getLecture = async (id: any) => {
     try {
-      const response = await api.get(`/students/${id}`);
+      const response = await api.get(`/lecture/${id}`);
       if (response.status === 200) {
         console.log("ini response", response.data);
-        setMahasiswa(response.data);
+        setLecture(response.data);
       }
     } catch (error) {
       console.log(error);
@@ -70,13 +70,13 @@ export default function Index() {
   };
 
   useEffect (() => {
-    getMahasiswa(user.ref_id);
+    getLecture(user.ref_id);
   }, [])
 
   return (
-    <AppLayout activeLink="profile" role="mahasiswa">
+    <AppLayout activeLink="profile" role="dosen-wali">
       <Stack mt={35} mx={45}>
-        <TitleWithBack title="Profile" route="/dashboard/student" />
+        <TitleWithBack title="Profile" route="/dashboard/lecturer" />
         <Card mt={10} bg={"white"} radius={"lg"}>
           <Flex
             direction={{ base: "column", md: "row" }}
@@ -90,51 +90,30 @@ export default function Index() {
                 <td style={{ paddingRight: "50px" }}>Nama Lengkap</td>
                 <td style={{ paddingRight: "25px" }}>:</td>
                 <td>
-                  {mahasiswa.name ? (
-                    mahasiswa.name
+                  {lecture.name ? (
+                    lecture.name
                   ) : (
                     <Skeleton width={50} height={10} radius="xl" />
                   )}
                 </td>
               </tr>
               <tr>
-                <td>NIM</td>
+                <td>NIP</td>
                 <td>:</td>
                 <td>
-                  {mahasiswa.nim ? (
-                    mahasiswa.nim
+                  {lecture.nip ? (
+                    lecture.nip
                   ) : (
                     <Skeleton width={50} height={10} radius="xl" />
                   )}
                 </td>
               </tr>
               <tr>
-                <td>Angkatan</td>
+                <td>NIDN</td>
                 <td>:</td>
                 <td>
-                  {mahasiswa.start_education_year ? (
-                    mahasiswa.start_education_year
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>Jalur Masuk</td>
-                <td>:</td>
-                {!mahasiswa.entrance_code && (
-                  <Skeleton width={50} height={10} radius="xl" />
-                )}
-                {mahasiswa.entrance_code == "00" && <td>SNMPTN</td>}
-                {mahasiswa.entrance_code == "01" && <td>SBMPTN</td>}
-                {mahasiswa.entrance_code == "02" && <td>Mandiri</td>}
-              </tr>
-              <tr>
-                <td>Dosen Wali</td>
-                <td>:</td>
-                <td>
-                  {mahasiswa.lecture_name ? (
-                    mahasiswa.lecture_name
+                  {lecture.nidn ? (
+                    lecture.nidn
                   ) : (
                     <Skeleton width={50} height={10} radius="xl" />
                   )}
@@ -144,8 +123,8 @@ export default function Index() {
                 <td>Provinsi</td>
                 <td>:</td>
                 <td>
-                  {mahasiswa.province_name ? (
-                    mahasiswa.province_name
+                  {lecture.province_name ? (
+                    lecture.province_name
                   ) : (
                     <Skeleton width={50} height={10} radius="xl" />
                   )}
@@ -155,8 +134,8 @@ export default function Index() {
                 <td>Kabupaten / Kota</td>
                 <td>:</td>
                 <td>
-                  {mahasiswa.city_name ? (
-                    mahasiswa.city_name
+                  {lecture.city_name ? (
+                    lecture.city_name
                   ) : (
                     <Skeleton width={50} height={10} radius="xl" />
                   )}
@@ -166,8 +145,8 @@ export default function Index() {
                 <td>Alamat</td>
                 <td>:</td>
                 <td>
-                  {mahasiswa.address ? (
-                    mahasiswa.address
+                  {lecture.address ? (
+                    lecture.address
                   ) : (
                     <Skeleton width={50} height={10} radius="xl" />
                   )}
@@ -177,8 +156,8 @@ export default function Index() {
                 <td>No Handphone</td>
                 <td>:</td>
                 <td>
-                  {mahasiswa.phone ? (
-                    mahasiswa.phone
+                  {lecture.phone ? (
+                    lecture.phone
                   ) : (
                     <Skeleton width={50} height={10} radius="xl" />
                   )}

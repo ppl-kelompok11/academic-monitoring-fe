@@ -116,7 +116,7 @@ const Mahasiswa = () => {
 
     const rows = data.map((row: any) => (
         <tr key={row.id}>
-            <td>{row.semester}</td>
+            <td>{row.semester_value}</td>
             <td>{row.sks}</td>
             <td>{row.sks_kumulatif}</td>
             <td>{row.ip}</td>

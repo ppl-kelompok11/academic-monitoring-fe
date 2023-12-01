@@ -11,7 +11,7 @@ import {
 type SimpleCardProps = {
   title: string;
   value: string;
-  loading: boolean;
+  loading?: boolean;
 };
 
 const useStyles = createStyles((theme) => ({
