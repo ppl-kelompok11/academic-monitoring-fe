@@ -31,6 +31,7 @@ import {
   IconSearch,
   IconCheck,
   IconX,
+  IconPrinter,
 } from "@tabler/icons-react";
 import AppLayout from "@/layouts/AppLayout";
 import { useRouter } from "next/router";
@@ -70,7 +71,7 @@ const useStyles = createStyles((theme) => ({
     "&:hover": {
       cursor: "pointer",
       backgroundColor: theme.colors.gray[0],
-    }
+    },
   },
 
   scrolled: {
@@ -103,6 +104,7 @@ const Index = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isLoadingList, setIsLoadingList] = useState(false);
   const [isLoadingRecap, setIsLoadingRecap] = useState(true);
+  const [limit, setLimit] = useState(1);
   const theme = useMantineTheme();
 
   const getRekap = async () => {
@@ -124,17 +126,18 @@ const Index = () => {
       try {
         setIsLoadingList(true);
         const response = await api.get(
-          `students?status=${status}&start_education_year=${angkatan}&page=${activePage}`
+          `students?status=${status}&start_education_year=${angkatan}&page=${activePage}&limit=${limit}`
         );
         console.log(response.data.data);
         setList(response.data.data);
         setTotalPage(response.data.meta.last_page);
+        setPage(response.data.meta.current_page);
         setIsLoadingList(false);
       } catch (error) {
         console.log(error);
       }
     },
-    [activePage]
+    [activePage, limit]
   );
 
   useEffect(() => {
@@ -145,7 +148,7 @@ const Index = () => {
     if (status && angkatan) {
       getList(status, angkatan);
     }
-  }, [status, angkatan, activePage]);
+  }, [status, angkatan, activePage, limit]);
 
   const parseStatus = (status: string) => {
     if (status == "00") {
@@ -163,7 +166,7 @@ const Index = () => {
     } else if (status == "06") {
       return "Meninggal";
     }
-  }
+  };
 
   const recapRows = rekap.map((row: any) => {
     const clickStatus = (status: string) => {
@@ -172,9 +175,30 @@ const Index = () => {
           setStatus(status);
           setAngkatan(row.start_education_year.toString());
         }
+        if (status == "00") {
+          setLimit(row.active);
+        }
+        if (status == "01") {
+          setLimit(row.holiday);
+        }
+        if (status == "02") {
+          setLimit(row.absent);
+        }
+        if (status == "03") {
+          setLimit(row.drop_out);
+        }
+        if (status == "04") {
+          setLimit(row.resign);
+        }
+        if (status == "05") {
+          setLimit(row.graduate);
+        }
+        if (status == "06") {
+          setLimit(row.die);
+        }
         toggle();
-      }
-    }
+      };
+    };
 
     return (
       <tr key={row.start_education_year}>
@@ -222,8 +246,17 @@ const Index = () => {
     </tr>
   ));
 
+  const print = (id: string) => {
+    let printContents: any = document.getElementById(id)?.innerHTML;
+    let originalContents: any = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+    window.location.reload();
+  };
+
   return (
-    <AppLayout role="dosen-wali" activeLink="validation">
+    <AppLayout role="dosen-wali" activeLink="recap">
       <Stack mt={35} mx={45}>
         <TitleWithBack title="Rekapitulasi" route="/dashboard/lecture" />
         <Card mt={10} bg={"white"} radius={"lg"}>
@@ -240,79 +273,117 @@ const Index = () => {
             </Tabs.List>
           </Tabs>
           <Space h={15} />
-          <ScrollArea
-            mt={10}
-            onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
-          >
-            {isLoadingRecap ? (
-              <Center>
-                <Loader />
-              </Center>
-            ) : (
-              <Table miw={700} withColumnBorders withBorder>
-                <thead
-                  className={cx(classes.header, {
-                    [classes.scrolled]: scrolled,
-                  })}
-                >
-                  <tr>
-                    <th style={{ textAlign: "center" }}>Angkatan</th>
-                    <th style={{ textAlign: "center" }}>Aktif</th>
-                    <th style={{ textAlign: "center" }}>Cuti</th>
-                    <th style={{ textAlign: "center" }}>Mangkir</th>
-                    <th style={{ textAlign: "center" }}>Drop Out</th>
-                    <th style={{ textAlign: "center" }}>Mengundurkan Diri</th>
-                    <th style={{ textAlign: "center" }}>Lulus</th>
-                    <th style={{ textAlign: "center" }}>Meninggal</th>
-                  </tr>
-                </thead>
-                <tbody style={{ textAlign: "center" }}>{recapRows}</tbody>
-              </Table>
-            )}
-          </ScrollArea>
-        </Card>
-        <Collapse in={opened}>
-          <Card mt={10} bg={"white"} radius={"lg"}>
-            <Text align="center" fw={600} size={20}>
-              Daftar Status {parseStatus(status)} Angkatan {angkatan} <br />
-              Mahasiswa Informatika Fakultas Sains dan Matematika UNDIP Semarang
-            </Text>
+          {isLoadingRecap ? (
+            <Center>
+              <Loader />
+            </Center>
+          ) : (
             <ScrollArea
               mt={10}
               onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
             >
-              <Table miw={700}>
-                <thead
-                  className={cx(classes.header, {
-                    [classes.scrolled]: scrolled,
-                  })}
+              <Group position="right">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    print("recap");
+                  }}
+                  leftIcon={<IconPrinter />}
                 >
-                  <tr>
-                    <th>No</th>
-                    <th>NIM</th>
-                    <th>Nama</th>
-                    <th>Angkatan</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {isLoadingList ? (
+                  Cetak
+                </Button>
+              </Group>
+              <Space h={15} />
+              <div id="recap">
+                <Text align="center" fw={600} size={20}>
+                  Rekap Status Mahasiswa Informatika <br />
+                  Fakultas Sains dan Matematika UNDIP Semarang
+                </Text>
+                <Space h={15} />
+                <Table miw={700} withColumnBorders withBorder>
+                  <thead
+                    className={cx(classes.header, {
+                      [classes.scrolled]: scrolled,
+                    })}
+                  >
                     <tr>
-                      <td colSpan={5} style={{ textAlign: "center" }}>
-                        <Loader />
-                      </td>
+                    <th rowSpan={2} style={{ textAlign: "center" }}>Angkatan</th>
+                    <th colSpan={7} style={{ textAlign: "center" }}>Status</th>
                     </tr>
-                  ) : list.length == 0 ? (
                     <tr>
-                      <td colSpan={5} style={{ textAlign: "center" }}>
-                        Tidak Ada Mahasiswa
-                      </td>
+                      <th style={{ textAlign: "center" }}>Aktif</th>
+                      <th style={{ textAlign: "center" }}>Cuti</th>
+                      <th style={{ textAlign: "center" }}>Mangkir</th>
+                      <th style={{ textAlign: "center" }}>Drop Out</th>
+                      <th style={{ textAlign: "center" }}>Mengundurkan Diri</th>
+                      <th style={{ textAlign: "center" }}>Lulus</th>
+                      <th style={{ textAlign: "center" }}>Meninggal</th>
                     </tr>
-                  ) : (
-                    rows
-                  )}
-                </tbody>
-              </Table>
+                  </thead>
+                  <tbody style={{ textAlign: "center" }}>{recapRows}</tbody>
+                </Table>
+              </div>
+            </ScrollArea>
+          )}
+        </Card>
+        <Collapse in={opened}>
+          <Card mt={10} bg={"white"} radius={"lg"}>
+            <Group position="right">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  print("recap_status");
+                }}
+                leftIcon={<IconPrinter />}
+              >
+                Cetak
+              </Button>
+            </Group>
+            <Space h={15} />
+            <ScrollArea
+              mt={10}
+              onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+            >
+              <div id="recap_status">
+                <Text align="center" fw={600} size={20}>
+                  Daftar Status {parseStatus(status)} Angkatan {angkatan} <br />
+                  Mahasiswa Informatika Fakultas Sains dan Matematika UNDIP
+                  Semarang
+                </Text>
+
+                <Table miw={700}>
+                  <thead
+                    className={cx(classes.header, {
+                      [classes.scrolled]: scrolled,
+                    })}
+                  >
+                    <tr>
+                      <th>No</th>
+                      <th>NIM</th>
+                      <th>Nama</th>
+                      <th>Angkatan</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {isLoadingList ? (
+                      <tr>
+                        <td colSpan={5} style={{ textAlign: "center" }}>
+                          <Loader />
+                        </td>
+                      </tr>
+                    ) : list.length == 0 ? (
+                      <tr>
+                        <td colSpan={5} style={{ textAlign: "center" }}>
+                          Tidak Ada Mahasiswa
+                        </td>
+                      </tr>
+                    ) : (
+                      rows
+                    )}
+                  </tbody>
+                </Table>
+              </div>
               <Center>
                 <Pagination
                   my={20}
