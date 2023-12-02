@@ -1,281 +1,324 @@
-import React, {useEffect} from "react";
-import AppLayout from "@/layouts/AppLayout";
+import { use, useEffect, useState } from "react";
 import {
-  Stack,
-  Text,
   createStyles,
-  Box,
-  TextInput,
-  Group,
-  Button,
-  Space,
-  NativeSelect,
+  Table,
+  ScrollArea,
+  rem,
   Card,
-  SimpleGrid,
-  Center,
   Grid,
-  Image,
+  Input,
   Flex,
-  Skeleton
+  Button,
+  ActionIcon,
+  Badge,
+  Pagination,
+  Stack,
+  Tabs,
+  Space,
+  Text,
+  Center,
+  Image,
+  Tooltip,
+  Modal,
+  Collapse,
+  Skeleton,
+  Loader,
 } from "@mantine/core";
+import {
+  IconEditCircle,
+  IconInfoCircle,
+  IconSearch,
+  IconTrash,
+} from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
+import AppLayout from "@/layouts/AppLayout";
+import { useRouter } from "next/router";
 import Link from "next/link";
-import { useForm } from "@mantine/form";
 import api from "@/configs/axios-interceptors";
-import TitleWithBack from "@/components/atoms/TitleWithBack";
+import { useCallback } from "react";
 import Cookies from "js-cookie";
+import getConfig from "next/config";
+import TitleWithBack from "@/components/atoms/TitleWithBack";
+import { TextalignCenter } from "iconsax-react";
+import IrsPanel from "@/components/molekul/ProgressTabPanel/IrsPanel";
+import KhsPanel from "@/components/molekul/ProgressTabPanel/KhsPanel";
+import PklPanel from "@/components/molekul/ProgressTabPanel/PklPanel";
+import SkripsiPanel from "@/components/molekul/ProgressTabPanel/SkripsiPanel";
+import ProgressAkademik from "@/components/molekul/ProgressAkademik";
+import ProfilMahasiswa from "@/components/molekul/ProfilMahasiswa";
+// const { publicRuntimeConfig } = getConfig();
 
-const useStyles = createStyles((theme) => ({
-  name: {
-    textUnderlineOffset: "15px",
-  },
-  card: {
-    borderRadius: "14px",
-  },
-  form: {
-    background: "#FFFFFF",
-    borderRadius: "10px",
-  },
-  gridCol: {
-    maxWidth: "455px",
-    marginRight: "20px",
-  },
-}));
-
-export default function Index() {
-  const { classes } = useStyles();
-  const [mahasiswa, setMahasiswa] = React.useState<any>({});
-  const form = useForm({
-    initialValues: {
-      nama: "",
-      email: "",
-      provinsi: "",
-      kabupatenKota: "",
-      handphone: "",
-    },
-  });
-
+const Index = () => {
+  const router = useRouter();
   const userData = Cookies.get("user");
   const user = userData && JSON.parse(userData);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [openCollapse, { toggle }] = useDisclosure(false);
+
+  const [mahasiswa, setMahasiswa] = useState<any>({});
+  const [isLoadingMahasiswa, setIsLoadingMahasiswa] = useState(false);
+  const [riwayat, setRiwayat] = useState<any>([]);
+  const [isLoadingRiwayat, setIsLoadingRiwayat] = useState(false);
+  const [semester, setSemester] = useState<any>(null);
+
+  const [irsId, setIrsId] = useState<any>(null);
+  const [irs, setIrs] = useState<any>({});
+  const [isLoadingIrs, setIsLoadingIrs] = useState(false);
+
+  const [khsId, setKhsId] = useState<any>(null);
+  const [khs, setKhs] = useState<any>({});
+  const [isLoadingKhs, setIsLoadingKhs] = useState(false);
+
+  const [pklId, setPklId] = useState<any>(null);
+  const [pkl, setPkl] = useState<any>({});
+  const [isLoadingPkl, setIsLoadingPkl] = useState(false);
+
+  const [skripsi, setSkripsi] = useState<any>({});
+  const [skripsiId, setSkripsiId] = useState<any>(null);
+  const [isLoadingSkripsi, setIsLoadingSkripsi] = useState(false);
+  const [path, setPath] = useState("");
+
+  useEffect(() => {
+    getMahasiswa(user.ref_id);
+    getRiwayat(user.ref_id);
+  }, []);
+
+  useEffect(() => {
+    if (irsId) {
+      getIrs(irsId);
+    }
+  }, [irsId]);
+
+  useEffect(() => {
+    if (khsId) {
+      getKhs(khsId);
+    }
+  }, [khsId]);
+
+  useEffect(() => {
+    if (pklId) {
+      getPkl(pklId);
+    }
+  }, [pklId]);
+
+  useEffect(() => {
+    if (skripsiId) {
+      getSkripsi(skripsiId);
+    }
+  }, [skripsiId]);
 
   const getMahasiswa = async (id: any) => {
     try {
+      setIsLoadingMahasiswa(true);
       const response = await api.get(`/students/${id}`);
       if (response.status === 200) {
         console.log("ini response", response.data);
         setMahasiswa(response.data);
+        setIsLoadingMahasiswa(false);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect (() => {
-    getMahasiswa(user.ref_id);
-  }, [])
+  const getRiwayat = async (id: any) => {
+    try {
+      setIsLoadingRiwayat(true);
+      const response = await api.get(`/students/academic/${id}`);
+      if (response.status === 200) {
+        console.log("riwayat", response.data.data);
+        setRiwayat(response.data.data);
+        setIsLoadingRiwayat(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getIrs = async (id: any) => {
+    try {
+      setIsLoadingIrs(true);
+      const response = await api.get(`/irs/${id}`);
+      if (response.status === 200) {
+        console.log("IRS", response.data);
+        setIrs(response.data);
+        setPath(response.data.scan_irs.url);
+        setIsLoadingIrs(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getKhs = async (id: any) => {
+    try {
+      setIsLoadingKhs(true);
+      const response = await api.get(`/khs/${id}`);
+      if (response.status === 200) {
+        console.log("KHS", response.data);
+        setKhs(response.data);
+        setPath(response.data.scan_khs.url);
+        setIsLoadingKhs(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getPkl = async (id: any) => {
+    try {
+      setIsLoadingPkl(true);
+      const response = await api.get(`/pkl/${id}`);
+      if (response.status === 200) {
+        console.log("PKL", response.data);
+        setKhs(response.data);
+        setPath(response.data.scan_pkl.url);
+        setIsLoadingPkl(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getSkripsi = async (id: any) => {
+    try {
+      setIsLoadingSkripsi(true);
+      const response = await api.get(`/skripsi/${id}`);
+      if (response.status === 200) {
+        console.log("Skripsi", response.data);
+        setSkripsi(response.data);
+        setPath(response.data.scan_skripsi.url);
+        setIsLoadingSkripsi(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const closeModal = () => {
+    close();
+    irs && setIrsId(null);
+    khs && setKhsId(null);
+    pkl && setPklId(null);
+    skripsi && setSkripsiId(null);
+    openCollapse && toggle();
+  };
+
+  const onViewDetail = (path: string) => {
+    return () => {
+      setPath(path);
+      toggle();
+    };
+  };
 
   return (
     <AppLayout activeLink="profile" role="mahasiswa">
+      <Modal
+        opened={opened}
+        onClose={closeModal}
+        title={`Progress Akademik Semester ${semester}`}
+        size="70%"
+        centered
+      >
+        <Tabs defaultValue="irs">
+          <Tabs.List>
+            {irsId && <Tabs.Tab value="irs">IRS</Tabs.Tab>}
+            {khsId && <Tabs.Tab value="khs">KHS</Tabs.Tab>}
+            {pklId && <Tabs.Tab value="pkl">PKL</Tabs.Tab>}
+            {skripsiId && <Tabs.Tab value="skripsi">Skripsi</Tabs.Tab>}
+          </Tabs.List>
+
+          <Tabs.Panel value="irs">
+            <IrsPanel
+              irs={irs}
+              openCollapse={openCollapse}
+              onViewDetail={onViewDetail}
+              path={path}
+              isLoading={isLoadingIrs}
+            />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="khs">
+            <KhsPanel
+              khs={khs}
+              openCollapse={openCollapse}
+              onViewDetail={onViewDetail}
+              path={path}
+              isLoading={isLoadingKhs}
+            />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="pkl">
+            <PklPanel
+              pkl={pkl}
+              openCollapse={openCollapse}
+              onViewDetail={onViewDetail}
+              path={path}
+              isLoading={isLoadingPkl}
+            />
+          </Tabs.Panel>
+
+          <Tabs.Panel value="skripsi">
+            <SkripsiPanel
+              skripsi={skripsi}
+              openCollapse={openCollapse}
+              onViewDetail={onViewDetail}
+              path={path}
+              isLoading={isLoadingSkripsi}
+            />
+          </Tabs.Panel>
+        </Tabs>
+      </Modal>
+
       <Stack mt={35} mx={45}>
         <TitleWithBack title="Profile" route="/dashboard/student" />
-        <Card mt={10} bg={"white"} radius={"lg"}>
-          <Flex
-            direction={{ base: "column", md: "row" }}
-            gap={{ base: "sm", md: "lg" }}
-            justify={{ base: "center", md: "space-between" }}
-            align="flex-start"
-            p={16}
-          >
-            <table>
-              <tr>
-                <td style={{ paddingRight: "50px" }}>Nama Lengkap</td>
-                <td style={{ paddingRight: "25px" }}>:</td>
-                <td>
-                  {mahasiswa.name ? (
-                    mahasiswa.name
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>NIM</td>
-                <td>:</td>
-                <td>
-                  {mahasiswa.nim ? (
-                    mahasiswa.nim
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>Angkatan</td>
-                <td>:</td>
-                <td>
-                  {mahasiswa.start_education_year ? (
-                    mahasiswa.start_education_year
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>Jalur Masuk</td>
-                <td>:</td>
-                {!mahasiswa.entrance_code && (
-                  <Skeleton width={50} height={10} radius="xl" />
-                )}
-                {mahasiswa.entrance_code == "00" && <td>SNMPTN</td>}
-                {mahasiswa.entrance_code == "01" && <td>SBMPTN</td>}
-                {mahasiswa.entrance_code == "02" && <td>Mandiri</td>}
-              </tr>
-              <tr>
-                <td>Dosen Wali</td>
-                <td>:</td>
-                <td>
-                  {mahasiswa.lecture_name ? (
-                    mahasiswa.lecture_name
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>Provinsi</td>
-                <td>:</td>
-                <td>
-                  {mahasiswa.province_name ? (
-                    mahasiswa.province_name
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>Kabupaten / Kota</td>
-                <td>:</td>
-                <td>
-                  {mahasiswa.city_name ? (
-                    mahasiswa.city_name
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>Alamat</td>
-                <td>:</td>
-                <td>
-                  {mahasiswa.address ? (
-                    mahasiswa.address
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>No Handphone</td>
-                <td>:</td>
-                <td>
-                  {mahasiswa.phone ? (
-                    mahasiswa.phone
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-            </table>
-            <Center>
-              <Image
-                alt="auth"
-                radius={16}
-                src="/profile-sample.png"
-                height={300}
-                width={300}
-                className=""
-              />
-            </Center>
-          </Flex>
+        <ProfilMahasiswa mahasiswa={mahasiswa} isLoading={isLoadingMahasiswa} isShowEditBtn />
+        <Space h={10} />
+        <Text c="black" size={32} fw={700} align="left">
+          Progress Akademik Mahasiswa
+        </Text>
+        <Card
+          mt={10}
+          bg={"white"}
+          radius={"lg"}
+          style={{ overflow: "visible" }}
+        >
+          <Center>
+            {isLoadingRiwayat ? (
+              <Loader />
+            ) : (
+              <Flex
+                gap="md"
+                maw={800}
+                justify="center"
+                align="center"
+                direction="row"
+                wrap="wrap"
+              >
+                <ProgressAkademik
+                  riwayat={riwayat}
+                  irs={irs}
+                  khs={khs}
+                  pkl={pkl}
+                  skripsi={skripsi}
+                  setIrs={setIrs}
+                  setKhs={setKhs}
+                  setPkl={setPkl}
+                  setSkripsi={setSkripsi}
+                  setIrsId={setIrsId}
+                  setKhsId={setKhsId}
+                  setPklId={setPklId}
+                  setSkripsiId={setSkripsiId}
+                  setSemester={setSemester}
+                  open={open}
+                />
+              </Flex>
+            )}
+          </Center>
         </Card>
-
-        {/* <Card mt={10} bg={"white"} radius={"lg"}>
-          <Group sx={{width: "100%" }} position="apart">
-            <Box className={classes.form} py={20} px={30}>
-              <form onSubmit={form.onSubmit((values) => console.log(values))}>
-                <TextInput
-                  size="md"
-                  label="Email"
-                  {...form.getInputProps("email")}
-                />
-                <Space h={15} />
-                <TextInput
-                  size="md"
-                  label="Nama Lengkap"
-                  {...form.getInputProps("nama")}
-                />
-                <Space h={15} />
-                <TextInput
-                  size="md"
-                  label="NIM"
-                  {...form.getInputProps("nim")}
-                />
-                <Space h={15} />
-                <TextInput
-                  size="md"
-                  label="alamat"
-                  {...form.getInputProps("alamat")}
-                />
-                <Space h={15} />
-                <TextInput
-                  size="md"
-                  label="Kabupaten / Kota"
-                  {...form.getInputProps("kabupatenKota")}
-                />
-                <Space h={15} />
-                <TextInput
-                  size="md"
-                  label="Provinsi"
-                  {...form.getInputProps("provinsi")}
-                />
-                <Space h={15} />
-                <TextInput
-                  size="md"
-                  label="Angkatan"
-                  {...form.getInputProps("angkatan")}
-                />
-                <Space h={15} />
-                <TextInput
-                  size="md"
-                  label="Jalur Masuk"
-                  {...form.getInputProps("jalurMasuk")}
-                />
-                <Space h={15} />
-                <TextInput
-                  size="md"
-                  label="Handphone"
-                  {...form.getInputProps("handphone")}
-                />
-                <Space h={15} />
-                <NativeSelect
-                  label="Status"
-                  data={["Aktif", "Cuti", "Mangkir", "Drop Out", "Lulus"]}
-                  {...form.getInputProps("status")}
-                />
-                <Group mt="md">
-                  <Button type="submit">Simpan</Button>
-                </Group>
-              </form>
-            </Box>
-
-            <Image
-              alt="profile"
-              src="/profile-sample.png"
-              height={400}
-              width={400}
-            />
-          </Group>
-        </Card> */}
       </Stack>
     </AppLayout>
   );
-}
+};
+
+export default Index;

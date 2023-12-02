@@ -44,6 +44,7 @@ export default function Index() {
   const { classes } = UseStyles();
   const router = useRouter();
   const [irs, setIrs] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -79,6 +80,7 @@ export default function Index() {
 
   const handleSubmit = async () => {
     try {
+      setIsLoading(true);
       const response = await api.post("/khs", {
         irs_id: form.values.irs_id,
         sks: form.values.sks,
@@ -111,18 +113,21 @@ export default function Index() {
               <Select
                 label="Semester"
                 data={irsData}
+                disabled={isLoading}
                 {...form.getInputProps("irs_id")}
               />
               <Space h={15} />
               <TextInput
                 size="md"
                 label="SKS Semester"
+                disabled={isLoading}
                 {...form.getInputProps("sks")}
               />
               <Space h={15} />
               <TextInput
                 size="md"
                 label="IP Semester"
+                disabled={isLoading}
                 {...form.getInputProps("ip")}
               />
               <Space h={15} />
@@ -132,9 +137,10 @@ export default function Index() {
               <FileUpload
                 file={form.values.scan_khs}
                 onFileUpload={handleUpload}
+                isDisable={isLoading}
               />
               <Group mt="md">
-                <Button type="submit" onClick={handleSubmit}>
+                <Button loading={isLoading} type="submit" onClick={handleSubmit}>
                   Simpan
                 </Button>
               </Group>

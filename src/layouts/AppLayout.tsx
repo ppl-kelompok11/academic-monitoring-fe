@@ -9,8 +9,12 @@ import {
   MediaQuery,
   Burger,
   useMantineTheme,
+  LoadingOverlay
 } from "@mantine/core";
 import NavBar, { NavbarProps } from "@/components/molekul/Navbar";
+import Cookies from "js-cookie";
+import api from "@/configs/axios-interceptors";
+import router from "next/router";
 
 type AppLayoutProps = {
   children: React.ReactNode;
@@ -21,6 +25,15 @@ type AppLayoutProps = {
 export default function AppLayout({ children, activeLink, role }: AppLayoutProps) {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const triggerLoading = () => {
+    if (isLoading) {
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  }
 
   return (
     <AppShell
@@ -39,7 +52,7 @@ export default function AppLayout({ children, activeLink, role }: AppLayoutProps
         // >
         //   <Text>Application navbar</Text>
         // </Navbar>
-        <NavBar activeLink={activeLink} role={role} />
+        <NavBar activeLink={activeLink} role={role} triggerLoading = {triggerLoading} />
       }
       // header={
       //   <Header height={{ base: 50, md: 70 }} p="md">
@@ -64,6 +77,7 @@ export default function AppLayout({ children, activeLink, role }: AppLayoutProps
       //   </Header>
       // }
     >
+      <LoadingOverlay visible={isLoading} overlayBlur={2} />
       {children}
     </AppShell>
   );

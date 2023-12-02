@@ -7,18 +7,37 @@ import { BiSolidMessageSquareEdit } from "react-icons/bi";
 
 type NavbarProps = {
   activeLink?: string;
+  triggerLoading?: Function;
 };
 
-export default function OperatorNavItem({ activeLink }: NavbarProps) {
+export default function OperatorNavItem({
+  activeLink,
+  triggerLoading,
+}: NavbarProps) {
   return (
     <Stack>
-      <NavLink route="/dashboard/operator" label="Dashboard" isActive={activeLink === "dashboard"}>
+      <NavLink
+        route="/dashboard/operator"
+        label="Dashboard"
+        isActive={activeLink === "dashboard"}
+        onClick={triggerLoading}
+      >
         <TbCategoryFilled color="white" size={30} />
       </NavLink>
-      <NavLink route="/accounts/student" label="Manajemen Akun" isActive={activeLink === "accounts"}>
+      <NavLink
+        route="/accounts/student"
+        label="Manajemen Akun"
+        isActive={activeLink === "accounts"}
+        onClick={triggerLoading}
+      >
         <FaUserGroup color="white" size={30} />
       </NavLink>
-      <NavLink route="/edit-status" label="Edit Status Mahasiswa" isActive={activeLink === "edit-status"}>
+      <NavLink
+        route="/edit-status"
+        label="Edit Status Mahasiswa"
+        isActive={activeLink === "edit-status"}
+        onClick={triggerLoading}
+      >
         <BiSolidMessageSquareEdit color="white" size={30} />
       </NavLink>
     </Stack>

@@ -1,7 +1,8 @@
 import React from "react";
-import { Collapse, Skeleton, Center, Button, Space } from "@mantine/core";
+import { Collapse, Center, Button, Space, Loader } from "@mantine/core";
 
 export type SkripsiPanelProps = {
+  isLoading?: boolean;
   skripsi: any;
   openCollapse: boolean;
   onViewDetail: Function;
@@ -9,6 +10,7 @@ export type SkripsiPanelProps = {
 };
 
 export default function SkripsiPanel({
+  isLoading = false,
   skripsi,
   openCollapse,
   onViewDetail,
@@ -17,30 +19,24 @@ export default function SkripsiPanel({
   return (
     <>
       <Space h={10} />
-      <table>
-        <tr>
-          <td>Status Skripsi</td>
-          <td>:</td>
-          <td>
-            {skripsi.grade ? (
-              "Lulus"
-            ) : (
-              <Skeleton width={50} height={10} radius="xl" />
-            )}
-          </td>
-        </tr>
-        <tr>
-          <td>Nilai Skripsi</td>
-          <td>:</td>
-          <td>
-            {skripsi.grade ? (
-              skripsi.grade
-            ) : (
-              <Skeleton width={50} height={10} radius="xl" />
-            )}
-          </td>
-        </tr>
-      </table>
+      {isLoading ? (
+        <Center>
+          <Loader />
+        </Center>
+      ) : (
+        <table>
+          <tr>
+            <td>Status Skripsi</td>
+            <td>:</td>
+            <td>{skripsi.grade ? "Lulus" : "-"}</td>
+          </tr>
+          <tr>
+            <td>Nilai Skripsi</td>
+            <td>:</td>
+            <td>{skripsi.grade ? skripsi.grade : "-"}</td>
+          </tr>
+        </table>
+      )}
       <Space h={10} />
       <Center>
         <Button onClick={onViewDetail(path)}>Lihat Detail</Button>

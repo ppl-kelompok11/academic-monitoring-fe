@@ -100,7 +100,7 @@ export default function Index() {
                 <Text size={32} fw={600}>
                   Tambah <br /> Mahasiswa Baru
                 </Text>
-                <Link href="/student/create" className={classes.addBtn}>
+                <Link href="/accounts/student/create" className={classes.addBtn}>
                   <Center>
                     <PiPlusBold size={45} />
                   </Center>
@@ -112,7 +112,7 @@ export default function Index() {
                 <Text size={32} fw={600}>
                   Tambah <br /> Dosen Baru
                 </Text>
-                <Link href="/lecture/create" className={classes.addBtn}>
+                <Link href="/accounts/lecture/create" className={classes.addBtn}>
                   <Center>
                     <PiPlusBold size={45} />
                   </Center>

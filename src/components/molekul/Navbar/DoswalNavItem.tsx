@@ -8,21 +8,45 @@ import { FaUserGroup } from "react-icons/fa6";
 
 type NavbarProps = {
   activeLink?: string;
+  triggerLoading?: Function;
 };
 
-export default function DoswalNavItem({ activeLink }: NavbarProps) {
+export default function DoswalNavItem({
+  activeLink,
+  triggerLoading,
+}: NavbarProps) {
   return (
     <Stack>
-      <NavLink route="/dashboard/lecturer" label="Dashboard" isActive={activeLink === "dashboard"}>
+      <NavLink
+        route="/dashboard/lecturer"
+        label="Dashboard"
+        isActive={activeLink === "dashboard"}
+        onClick={triggerLoading}
+      >
         <TbCategoryFilled color="white" size={30} />
       </NavLink>
-      <NavLink route="/validation/irs" label="Validasi Progress" isActive={activeLink === "validation"}>
+      <NavLink
+        route="/validation/irs"
+        label="Validasi Progress"
+        isActive={activeLink === "validation"}
+        onClick={triggerLoading}
+      >
         <BsClipboard2CheckFill color="white" size={30} />
       </NavLink>
-      <NavLink route="/recap" label="Rekap Progress" isActive={activeLink === "recap"}>
+      <NavLink
+        route="/recap"
+        label="Rekap Progress"
+        isActive={activeLink === "recap"}
+        onClick={triggerLoading}
+      >
         <SlBookOpen color="white" size={30} />
       </NavLink>
-      <NavLink route="/students" label="Daftar Mahasiswa" isActive={activeLink === "student-list"}>
+      <NavLink
+        route="/students"
+        label="Daftar Mahasiswa"
+        isActive={activeLink === "student-list"}
+        onClick={triggerLoading}
+      >
         <FaUserGroup color="white" size={30} />
       </NavLink>
     </Stack>

@@ -19,6 +19,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export type NavbarProps = {
+  triggerLoading?: Function;
   role?: "operator" | "mahasiswa" | "dosen-wali" | "departemen";
   activeLink?:
     | "dashboard"
@@ -34,21 +35,24 @@ export type NavbarProps = {
     // dosen-wali & departemen
     | "student-list"
     | "recap"
-    | "validation" // !departemen
+    | "validation"; // !departemen
 };
 
-export default function Index({ activeLink, role }: NavbarProps ) {
+export default function Index({
+  activeLink,
+  role,
+  triggerLoading = () => {},
+}: NavbarProps) {
   const { classes } = useStyles();
 
   const onLogout = async () => {
     try {
+      triggerLoading();
       const response = await api.post("/auth/logout");
-
-      if(response.status === 200) {
-        Cookies.remove("token");
-        Cookies.remove("user");
-        router.push("/auth/signin");
-      }
+      Cookies.remove("token");
+      Cookies.remove("user");
+      router.push("/auth/signin");
+      triggerLoading();
     } catch (error) {
       console.log("Error:", error);
     }
@@ -70,17 +74,41 @@ export default function Index({ activeLink, role }: NavbarProps ) {
       </Navbar.Section>
       <Navbar.Section grow my="30px">
         <Center>
-          {role === "operator" && (<OperatorNavItem activeLink={activeLink} />)}
-          {role === "mahasiswa" && (<MahasiswaNavItem activeLink={activeLink} />)}
-          {role === "dosen-wali" && (<DoswalNavItem activeLink={activeLink} />)}
-          {role === "departemen" && (<DepartemenNavItem activeLink={activeLink} />)}
+          {role === "operator" && (
+            <OperatorNavItem
+              activeLink={activeLink}
+              triggerLoading={triggerLoading}
+            />
+          )}
+          {role === "mahasiswa" && (
+            <MahasiswaNavItem
+              activeLink={activeLink}
+              triggerLoading={triggerLoading}
+            />
+          )}
+          {role === "dosen-wali" && (
+            <DoswalNavItem
+              activeLink={activeLink}
+              triggerLoading={triggerLoading}
+            />
+          )}
+          {role === "departemen" && (
+            <DepartemenNavItem
+              activeLink={activeLink}
+              triggerLoading={triggerLoading}
+            />
+          )}
         </Center>
       </Navbar.Section>
 
       <Navbar.Section>
         <Center>
           <Stack>
-            <NavLink label="Profil" route="/profile" isActive={activeLink === "profile"}>
+            <NavLink
+              label="Profil"
+              route="/profile"
+              isActive={activeLink === "profile"}
+            >
               <FaUser color="white" size={30} />
             </NavLink>
             <NavButton label="Keluar" onClick={onLogout}>

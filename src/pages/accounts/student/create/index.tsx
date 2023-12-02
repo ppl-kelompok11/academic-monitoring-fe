@@ -42,6 +42,7 @@ const UseStyles = createStyles((theme) => ({
 export default function Index() {
   const { classes } = UseStyles();
   const [dosenWali, setDosenWali] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const thisYear = new Date().getFullYear();
 
   const form = useForm({
@@ -59,6 +60,7 @@ export default function Index() {
     // console.log(form.errors);
     form.validate();
     if (!form.validate().hasErrors) {
+      setIsLoading(true);
       try {
         const response = await api.post("/students", {
           name: form.values.nama,
@@ -71,6 +73,7 @@ export default function Index() {
         console.log(response);
         form.reset();
         Router.push("/accounts/student");
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -122,30 +125,43 @@ export default function Index() {
               <TextInput
                 size="md"
                 label="Nama Lengkap"
+                disabled={isLoading}
                 {...form.getInputProps("nama")}
               />
               <Space h={15} />
-              <TextInput size="md" label="NIM" {...form.getInputProps("nim")} />
+              <TextInput
+                size="md"
+                label="NIM"
+                disabled={isLoading}
+                {...form.getInputProps("nim")}
+              />
               <Space h={15} />
               <Select
                 label="Angkatan"
                 data={angkatanData}
+                disabled={isLoading}
                 {...form.getInputProps("angkatan")}
               />
               <Space h={15} />
               <Select
                 label="Jalur Masuk"
                 data={entrancesData}
+                disabled={isLoading}
                 {...form.getInputProps("entrance_code")}
               />
               <Space h={15} />
               <Select
                 label="Dosen Wali"
                 data={doswalData}
+                disabled={isLoading}
                 {...form.getInputProps("lecture_id")}
               />
               <Group mt="md">
-                <Button type="submit" onClick={handleSubmit}>
+                <Button
+                  type="submit"
+                  onClick={handleSubmit}
+                  loading={isLoading}
+                >
                   Tambah
                 </Button>
               </Group>

@@ -1,7 +1,14 @@
 import React from "react";
-import { Collapse, Skeleton, Center, Button, Space } from "@mantine/core";
+import {
+  Collapse,
+  Center,
+  Button,
+  Space,
+  Loader,
+} from "@mantine/core";
 
 export type IrsPanelProps = {
+  isLoading?: boolean;
   irs: any;
   openCollapse: boolean;
   onViewDetail: Function;
@@ -9,6 +16,7 @@ export type IrsPanelProps = {
 };
 
 export default function IrsPanel({
+  isLoading = false,
   irs,
   openCollapse,
   onViewDetail,
@@ -17,19 +25,19 @@ export default function IrsPanel({
   return (
     <>
       <Space h={10} />
-      <table>
-        <tr>
-          <td>SKS</td>
-          <td>:</td>
-          <td>
-            {irs.sks ? (
-              irs.sks
-            ) : (
-              <Skeleton width={50} height={10} radius="xl" />
-            )}
-          </td>
-        </tr>
-      </table>
+      {isLoading ? (
+        <Center>
+          <Loader />
+        </Center>
+      ) : (
+        <table>
+          <tr>
+            <td>SKS</td>
+            <td>:</td>
+            <td>{irs.sks ? irs.sks : "-"}</td>
+          </tr>
+        </table>
+      )}
       <Space h={10} />
       <Center>
         <Button onClick={onViewDetail(path)}>Lihat Detail</Button>

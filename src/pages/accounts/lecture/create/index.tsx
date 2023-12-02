@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Stack,
   createStyles,
@@ -10,7 +10,7 @@ import {
   Space,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { DateInput } from '@mantine/dates';
+import { DateInput } from "@mantine/dates";
 import AppLayout from "@/layouts/AppLayout";
 import api from "@/configs/axios-interceptors";
 import Router from "next/router";
@@ -42,6 +42,7 @@ const UseStyles = createStyles((theme) => ({
 
 export default function Index() {
   const { classes } = UseStyles();
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm({
     initialValues: {
       nama: "",
@@ -58,6 +59,7 @@ export default function Index() {
     form.validate();
     if (!form.validate().hasErrors) {
       try {
+        setIsLoading(true);
         const response = await api.post("/lecture", {
           email: form.values.email,
           password: form.values.password,
@@ -67,10 +69,10 @@ export default function Index() {
           workStartDate: moment(form.values.workStartDate).format("YYYY-MM-DD"),
         });
         console.log(response);
-        form.reset();
         Router.push("/accounts/lecture");
       } catch (error) {
         console.log(error);
+        setIsLoading(false);
       }
     }
   };
@@ -79,51 +81,58 @@ export default function Index() {
     <AppLayout activeLink="accounts" role="operator">
       <div className={classes.wrapper}>
         <Stack mx={45}>
-        <TitleWithBack
-            title="Tambah Akun Dosen"
-            route="/accounts/lecture/"
-          />
+          <TitleWithBack title="Tambah Akun Dosen" route="/accounts/lecture/" />
           <Box className={classes.form} py={15} px={20}>
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
               <TextInput
                 size="md"
                 label="Email"
+                disabled={isLoading}
                 {...form.getInputProps("email")}
               />
               <Space h={15} />
               <TextInput
                 size="md"
                 label="Nama Lengkap"
+                disabled={isLoading}
                 {...form.getInputProps("nama")}
               />
               <Space h={15} />
-              <TextInput size="md" label="NIP" {...form.getInputProps("nip")} />
+              <TextInput
+                size="md"
+                label="NIP"
+                disabled={isLoading}
+                {...form.getInputProps("nip")}
+              />
               <Space h={15} />
               <TextInput
                 size="md"
                 label="NIDN"
+                disabled={isLoading}
                 {...form.getInputProps("nidn")}
               />
               <Space h={15} />
               <PasswordInput
                 size="md"
                 label="Password"
+                disabled={isLoading}
                 {...form.getInputProps("password")}
               />
               <Space h={15} />
               <DateInput
                 valueFormat="YYYY-MM-DD"
                 label="Tanggal Mulai Bekerja"
-                {...form.getInputProps("workStartDate")}
-              />
-              <Space h={15} />
-              <TextInput
-                size="md"
-                label="Tanggal Mulai Bekerja"
+                disabled={isLoading}
                 {...form.getInputProps("workStartDate")}
               />
               <Group mt="md">
-                <Button type="submit" onClick={handleSubmit}>Tambah</Button>
+                <Button
+                  loading={isLoading}
+                  type="submit"
+                  onClick={handleSubmit}
+                >
+                  Tambah
+                </Button>
               </Group>
             </form>
           </Box>

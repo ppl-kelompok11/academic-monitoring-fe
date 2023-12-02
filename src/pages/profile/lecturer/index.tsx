@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import AppLayout from "@/layouts/AppLayout";
 import {
   Stack,
@@ -16,13 +16,14 @@ import {
   Grid,
   Image,
   Flex,
-  Skeleton
+  Skeleton,
 } from "@mantine/core";
 import Link from "next/link";
 import { useForm } from "@mantine/form";
 import api from "@/configs/axios-interceptors";
 import TitleWithBack from "@/components/atoms/TitleWithBack";
 import Cookies from "js-cookie";
+import Router from "next/router";
 
 const useStyles = createStyles((theme) => ({
   name: {
@@ -44,6 +45,7 @@ const useStyles = createStyles((theme) => ({
 export default function Index() {
   const { classes } = useStyles();
   const [lecture, setLecture] = React.useState<any>({});
+  const [isLoading, setIsLoading] = React.useState(false);
   const form = useForm({
     initialValues: {
       nama: "",
@@ -59,19 +61,22 @@ export default function Index() {
 
   const getLecture = async (id: any) => {
     try {
+      setIsLoading(true);
       const response = await api.get(`/lecture/${id}`);
       if (response.status === 200) {
         console.log("ini response", response.data);
         setLecture(response.data);
       }
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
-  useEffect (() => {
+  useEffect(() => {
     getLecture(user.ref_id);
-  }, [])
+  }, []);
 
   return (
     <AppLayout activeLink="profile" role="dosen-wali">
@@ -85,94 +90,122 @@ export default function Index() {
             align="flex-start"
             p={16}
           >
-            <table>
-              <tr>
-                <td style={{ paddingRight: "50px" }}>Nama Lengkap</td>
-                <td style={{ paddingRight: "25px" }}>:</td>
-                <td>
-                  {lecture.name ? (
-                    lecture.name
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>NIP</td>
-                <td>:</td>
-                <td>
-                  {lecture.nip ? (
-                    lecture.nip
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>NIDN</td>
-                <td>:</td>
-                <td>
-                  {lecture.nidn ? (
-                    lecture.nidn
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>Provinsi</td>
-                <td>:</td>
-                <td>
-                  {lecture.province_name ? (
-                    lecture.province_name
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>Kabupaten / Kota</td>
-                <td>:</td>
-                <td>
-                  {lecture.city_name ? (
-                    lecture.city_name
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>Alamat</td>
-                <td>:</td>
-                <td>
-                  {lecture.address ? (
-                    lecture.address
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>No Handphone</td>
-                <td>:</td>
-                <td>
-                  {lecture.phone ? (
-                    lecture.phone
-                  ) : (
-                    <Skeleton width={50} height={10} radius="xl" />
-                  )}
-                </td>
-              </tr>
-            </table>
+            <Stack>
+              <table>
+                <tr>
+                  <td style={{ paddingRight: "50px" }}>Nama Lengkap</td>
+                  <td style={{ paddingRight: "25px" }}>:</td>
+                  <td>
+                    {isLoading ? (
+                      <Skeleton width={50} height={10} radius="xl" />
+                    ) : lecture.name ? (
+                      lecture.name
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                </tr>
+                <tr>
+                  <td>NIP</td>
+                  <td>:</td>
+                  <td>
+                    {isLoading ? (
+                      <Skeleton width={50} height={10} radius="xl" />
+                    ) : lecture.nip ? (
+                      lecture.nip
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                </tr>
+                <tr>
+                  <td>NIDN</td>
+                  <td>:</td>
+                  <td>
+                    {isLoading ? (
+                      <Skeleton width={50} height={10} radius="xl" />
+                    ) : lecture.nidn ? (
+                      lecture.nidn
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Provinsi</td>
+                  <td>:</td>
+                  <td>
+                    {isLoading ? (
+                      <Skeleton width={50} height={10} radius="xl" />
+                    ) : lecture.province_name ? (
+                      lecture.province_name
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Kabupaten / Kota</td>
+                  <td>:</td>
+                  <td>
+                    {isLoading ? (
+                      <Skeleton width={50} height={10} radius="xl" />
+                    ) : lecture.city_name ? (
+                      lecture.city_name
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Alamat</td>
+                  <td>:</td>
+                  <td>
+                    {isLoading ? (
+                      <Skeleton width={50} height={10} radius="xl" />
+                    ) : lecture.address ? (
+                      lecture.address
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                </tr>
+                <tr>
+                  <td>No Handphone</td>
+                  <td>:</td>
+                  <td>
+                    {isLoading ? (
+                      <Skeleton width={50} height={10} radius="xl" />
+                    ) : lecture.phone ? (
+                      lecture.phone
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                </tr>
+              </table>
+              <Button
+                onClick={() => {
+                  Router.push("/profile/edit");
+                }}
+                size="sm"
+              >
+                Edit Profile
+              </Button>
+            </Stack>
             <Center>
-              <Image
-                alt="auth"
-                radius={16}
-                src="/profile-sample.png"
-                height={300}
-                width={300}
-                className=""
-              />
+              {isLoading ? (
+                <Skeleton width={300} height={300} radius="xl" />
+              ) : (
+                <Image
+                  alt="profile picture"
+                  radius={16}
+                  src={lecture.photo ? lecture.photo : "/sample-profile.jpg"}
+                  height={300}
+                  width={300}
+                  className=""
+                />
+              )}
             </Center>
           </Flex>
         </Card>

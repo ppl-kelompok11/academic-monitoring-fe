@@ -48,6 +48,7 @@ const UseStyles = createStyles((theme) => ({
 export default function Index() {
   const { classes } = UseStyles();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [provinces, setProvinces] = useState([]);
   const [cities, setCities] = useState([]);
   const userData = Cookies.get("user");
@@ -126,6 +127,7 @@ export default function Index() {
 
   const handleSubmit = async () => {
     try {
+      setIsLoading(true);
       const response = await api.put("/students", {
         name: form.values.name,
         nim: form.values.nim,
@@ -145,6 +147,7 @@ export default function Index() {
       }
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
 
     console.log(form.values);
@@ -207,6 +210,7 @@ export default function Index() {
               required
               size="md"
               label="Email"
+              disabled = {isLoading}
               {...form.getInputProps("email")}
             />
 
@@ -216,6 +220,7 @@ export default function Index() {
               required
               size="md"
               label="Password"
+              disabled = {isLoading}
               {...form.getInputProps("password")}
             />
 
@@ -228,6 +233,7 @@ export default function Index() {
                 { value: "male", label: "Laki-laki" },
                 { value: "female", label: "Perempuan" },
               ]}
+              disabled = {isLoading}
               {...form.getInputProps("gender")}
             />
 
@@ -238,6 +244,7 @@ export default function Index() {
               searchable
               label="Provinsi"
               data={provincesData}
+              disabled = {isLoading}
               {...form.getInputProps("province_id")}
             />
 
@@ -248,6 +255,7 @@ export default function Index() {
               searchable
               label="Kabupaten / Kota"
               data={citiesData}
+              disabled = {isLoading}
               {...form.getInputProps("city_id")}
             />
 
@@ -257,11 +265,12 @@ export default function Index() {
               required
               size="md"
               label="Alamat"
+              disabled = {isLoading}
               {...form.getInputProps("address")}
             />
 
             <Group mt="md">
-              <Button type="submit" onClick={handleSubmit}>
+              <Button loading = {isLoading} type="submit" onClick={handleSubmit}>
                 Simpan
               </Button>
             </Group>

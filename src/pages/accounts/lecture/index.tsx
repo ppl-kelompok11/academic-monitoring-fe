@@ -17,6 +17,7 @@ import {
   Tabs,
   Space,
   Center,
+  Loader,
 } from "@mantine/core";
 import {
   IconEditCircle,
@@ -78,15 +79,18 @@ const Mahasiswa = () => {
   const [data, setData] = useState([]);
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getData = useCallback(async () => {
     try {
+      setIsLoading(true);
       const response = await api.get(
         `lecture?search=${search}&page=${activePage}`
       );
       console.log(response.data.data);
       setData(response.data.data);
       setTotalPage(response.data.meta.last_page);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -194,6 +198,7 @@ const Mahasiswa = () => {
               </Flex>
             </Grid.Col>
           </Grid>
+          {isLoading ? (<Center><Loader/></Center>) : (
           <ScrollArea
             mt={10}
             onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
@@ -213,7 +218,17 @@ const Mahasiswa = () => {
                   <th>Aksi</th>
                 </tr>
               </thead>
-              <tbody>{rows}</tbody>
+              <tbody>
+                  {data.length == 0 ? (
+                    <tr>
+                      <td colSpan={5} style={{ textAlign: "center" }}>
+                        Tidak Ada Dosen
+                      </td>
+                    </tr>
+                  ) : (
+                    rows
+                  )}
+                </tbody>
             </Table>
             <Center>
               <Pagination
@@ -224,6 +239,7 @@ const Mahasiswa = () => {
               />
             </Center>
           </ScrollArea>
+          )}
         </Card>
       </Stack>
     </AppLayout>

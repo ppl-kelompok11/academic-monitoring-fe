@@ -1,7 +1,8 @@
 import React from "react";
-import { Collapse, Skeleton, Center, Button, Space } from "@mantine/core";
+import { Collapse, Center, Button, Space, Loader } from "@mantine/core";
 
 export type PklPanelProps = {
+  isLoading?: boolean;
   pkl: any;
   openCollapse: boolean;
   onViewDetail: Function;
@@ -9,6 +10,7 @@ export type PklPanelProps = {
 };
 
 export default function PklPanel({
+  isLoading = false,
   pkl,
   openCollapse,
   onViewDetail,
@@ -17,30 +19,24 @@ export default function PklPanel({
   return (
     <>
       <Space h={10} />
-      <table>
-        <tr>
-          <td>Status PKL</td>
-          <td>:</td>
-          <td>
-            {pkl.grade ? (
-              "Lulus"
-            ) : (
-              <Skeleton width={50} height={10} radius="xl" />
-            )}
-          </td>
-        </tr>
-        <tr>
-          <td>Nilai PKL</td>
-          <td>:</td>
-          <td>
-            {pkl.grade ? (
-              pkl.grade
-            ) : (
-              <Skeleton width={50} height={10} radius="xl" />
-            )}
-          </td>
-        </tr>
-      </table>
+      {isLoading ? (
+        <Center>
+          <Loader />
+        </Center>
+      ) : (
+        <table>
+          <tr>
+            <td>Status PKL</td>
+            <td>:</td>
+            <td>{pkl.grade ? "Lulus" : "-"}</td>
+          </tr>
+          <tr>
+            <td>Nilai PKL</td>
+            <td>:</td>
+            <td>{pkl.grade ? pkl.grade : "-"}</td>
+          </tr>
+        </table>
+      )}
       <Space h={10} />
       <Center>
         <Button onClick={onViewDetail(path)}>Lihat Detail</Button>

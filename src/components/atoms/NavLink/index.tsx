@@ -7,6 +7,7 @@ interface NavLinksProps {
   children: React.ReactNode;
   route: string;
   label?: string;
+  onClick?: Function;
 }
 
 const UseStyles = createStyles((theme) => ({
@@ -38,6 +39,7 @@ export default function Index({
   children,
   route,
   label,
+  onClick = () => {},
 }: NavLinksProps) {
   const { classes } = UseStyles();
 
@@ -58,6 +60,7 @@ export default function Index({
               borderRadius: "8px",
             },
           })}
+          onClick = {() => onClick()}
         >
           <Center>{children}</Center>
         </Box>
