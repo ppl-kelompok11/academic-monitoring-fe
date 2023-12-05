@@ -23,6 +23,7 @@ import api from "@/configs/axios-interceptors";
 import { useRouter } from "next/router";
 import AppLayout from "@/layouts/AppLayout";
 import Cookies from "js-cookie";
+import ImageUpload from "@/components/molekul/Imageupload";
 
 const UseStyles = createStyles((theme) => ({
   wrapper: {
@@ -70,7 +71,11 @@ export default function Index() {
       lecture_id: "",
       entrance_code: "",
       status: "",
-      photo: "",
+      photo: {
+        path: "",
+        filename: "",
+        url: "",
+      },
       gender: "",
       address: "",
       phone: "",
@@ -156,7 +161,7 @@ export default function Index() {
         province_id: form.values.province_id,
         city_id: form.values.city_id,
         address: form.values.address,
-        photo: "",
+        photo: form.values.photo.path,
       });
 
       if (response.status === 201) {
@@ -169,6 +174,11 @@ export default function Index() {
       setIsLoading(false);
     }
 
+    console.log(form.values);
+  };
+
+  const handleUpload = (file: any) => {
+    form.setFieldValue("photo", file);
     console.log(form.values);
   };
 
@@ -286,8 +296,22 @@ export default function Index() {
                 {...form.getInputProps("address")}
               />
 
+              <Space h={15} />
+
+              <Text c="primary" size={18} fw={500} align="left" mb={5}>
+                Foto Profil
+              </Text>
+              <ImageUpload
+                file={form.values.photo}
+                onFileUpload={handleUpload}
+              />
+
               <Group mt="md">
-                <Button loading={isLoading} type="submit" onClick={handleSubmit}>
+                <Button
+                  loading={isLoading}
+                  type="submit"
+                  onClick={handleSubmit}
+                >
                   Simpan
                 </Button>
               </Group>

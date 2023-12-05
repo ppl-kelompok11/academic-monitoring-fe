@@ -167,7 +167,7 @@ export default function Index({
             <Image
               alt="profile picture"
               radius={16}
-              src={mahasiswa.photo ? mahasiswa.photo : "/sample-profile.jpg"}
+              src={mahasiswa.photo ? mahasiswa.photo.url : "/sample-profile.jpg"}
               height={300}
               width={300}
               className=""
