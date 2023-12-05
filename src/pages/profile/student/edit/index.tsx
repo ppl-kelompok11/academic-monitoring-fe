@@ -187,147 +187,175 @@ export default function Index() {
     <AppLayout role="mahasiswa" activeLink="profile">
       <Stack my={35} mx={45}>
         <TitleWithBack title="Update Profile" route="/profile" />
-        <Box className={classes.form} py={20} px={30}>
+        <Box className={classes.form} py={20} pl={30} pr={15}>
           {isFetching ? (
             <Center>
               <Loader />
             </Center>
           ) : (
-            <form onSubmit={form.onSubmit((values) => console.log(values))}>
-              <TextInput
-                disabled
-                size="md"
-                label="Nama Lengkap"
-                {...form.getInputProps("name")}
-              />
+            <ScrollArea
+              h="calc(100vh - 225px)"
+              pr={15}
+              offsetScrollbars
+              styles={(theme) => ({
+                scrollbar: {
+                  "&, &:hover": {
+                    background:
+                      theme.colorScheme === "dark"
+                        ? theme.colors.dark[6]
+                        : theme.colors.gray[0],
+                  },
 
-              <Space h={15} />
+                  '&[data-orientation="vertical"] .mantine-ScrollArea-thumb': {
+                    backgroundColor: theme.colors.primary[5],
+                  },
+                },
 
-              <TextInput
-                disabled
-                size="md"
-                label="NIM"
-                {...form.getInputProps("nim")}
-              />
+                corner: {
+                  opacity: 1,
+                  background:
+                    theme.colorScheme === "dark"
+                      ? theme.colors.dark[6]
+                      : theme.colors.gray[0],
+                },
+              })}
+            >
+              <form onSubmit={form.onSubmit((values) => console.log(values))}>
+                <TextInput
+                  disabled
+                  size="md"
+                  label="Nama Lengkap"
+                  {...form.getInputProps("name")}
+                />
 
-              <Space h={15} />
+                <Space h={15} />
 
-              <TextInput
-                disabled
-                size="md"
-                label="Angkatan"
-                {...form.getInputProps("start_education_year")}
-              />
+                <TextInput
+                  disabled
+                  size="md"
+                  label="NIM"
+                  {...form.getInputProps("nim")}
+                />
 
-              <Space h={15} />
+                <Space h={15} />
 
-              <Select
-                disabled
-                label="Jalur Masuk"
-                data={entrancesData}
-                {...form.getInputProps("entrance_code")}
-              />
+                <TextInput
+                  disabled
+                  size="md"
+                  label="Angkatan"
+                  {...form.getInputProps("start_education_year")}
+                />
 
-              <Space h={15} />
+                <Space h={15} />
 
-              <TextInput
-                disabled
-                size="md"
-                label="Dosen Wali"
-                {...form.getInputProps("lecture_name")}
-              />
+                <Select
+                  disabled
+                  label="Jalur Masuk"
+                  data={entrancesData}
+                  {...form.getInputProps("entrance_code")}
+                />
 
-              <Space h={15} />
+                <Space h={15} />
 
-              <TextInput
-                required
-                withAsterisk={false}
-                size="md"
-                label="Email"
-                disabled={isLoading}
-                {...form.getInputProps("email")}
-              />
+                <TextInput
+                  disabled
+                  size="md"
+                  label="Dosen Wali"
+                  {...form.getInputProps("lecture_name")}
+                />
 
-              <Space h={15} />
+                <Space h={15} />
 
-              <TextInput
-                required
-                withAsterisk={false}
-                size="md"
-                label="Nomor Telepon"
-                disabled={isLoading}
-                {...form.getInputProps("phone")}
-              />
+                <TextInput
+                  required
+                  withAsterisk={false}
+                  size="md"
+                  label="Email"
+                  disabled={isLoading}
+                  {...form.getInputProps("email")}
+                />
 
-              <Space h={15} />
+                <Space h={15} />
 
-              <Select
-                required
-                withAsterisk={false}
-                label="Jenis Kelamin"
-                data={[
-                  { value: "male", label: "Laki-laki" },
-                  { value: "female", label: "Perempuan" },
-                ]}
-                disabled={isLoading}
-                {...form.getInputProps("gender")}
-              />
+                <TextInput
+                  required
+                  withAsterisk={false}
+                  size="md"
+                  label="Nomor Telepon"
+                  disabled={isLoading}
+                  {...form.getInputProps("phone")}
+                />
 
-              <Space h={15} />
+                <Space h={15} />
 
-              <Select
-                required
-                withAsterisk={false}
-                searchable
-                label="Provinsi"
-                data={provincesData}
-                disabled={isLoading}
-                {...form.getInputProps("province_id")}
-              />
+                <Select
+                  required
+                  withAsterisk={false}
+                  label="Jenis Kelamin"
+                  data={[
+                    { value: "male", label: "Laki-laki" },
+                    { value: "female", label: "Perempuan" },
+                  ]}
+                  disabled={isLoading}
+                  {...form.getInputProps("gender")}
+                />
 
-              <Space h={15} />
+                <Space h={15} />
 
-              <Select
-                required
-                withAsterisk={false}
-                searchable
-                label="Kabupaten / Kota"
-                data={citiesData}
-                disabled={isLoading}
-                {...form.getInputProps("city_id")}
-              />
+                <Select
+                  required
+                  withAsterisk={false}
+                  searchable
+                  label="Provinsi"
+                  data={provincesData}
+                  disabled={isLoading}
+                  {...form.getInputProps("province_id")}
+                />
 
-              <Space h={15} />
+                <Space h={15} />
 
-              <Textarea
-                required
-                withAsterisk={false}
-                size="md"
-                label="Alamat"
-                disabled={isLoading}
-                {...form.getInputProps("address")}
-              />
+                <Select
+                  required
+                  withAsterisk={false}
+                  searchable
+                  label="Kabupaten / Kota"
+                  data={citiesData}
+                  disabled={isLoading}
+                  {...form.getInputProps("city_id")}
+                />
 
-              <Space h={15} />
+                <Space h={15} />
 
-              <Text c="primary" size={18} fw={500} align="left" mb={5}>
-                Foto Profil
-              </Text>
-              <ImageUpload
-                file={form.values.photo}
-                onFileUpload={handleUpload}
-              />
+                <Textarea
+                  required
+                  withAsterisk={false}
+                  size="md"
+                  label="Alamat"
+                  disabled={isLoading}
+                  {...form.getInputProps("address")}
+                />
 
-              <Group mt="md">
-                <Button
-                  loading={isLoading}
-                  type="submit"
-                  onClick={handleSubmit}
-                >
-                  Simpan
-                </Button>
-              </Group>
-            </form>
+                <Space h={15} />
+
+                <Text c="primary" size={18} fw={500} align="left" mb={5}>
+                  Foto Profil
+                </Text>
+                <ImageUpload
+                  file={form.values.photo}
+                  onFileUpload={handleUpload}
+                />
+
+                <Group mt="md">
+                  <Button
+                    loading={isLoading}
+                    type="submit"
+                    onClick={handleSubmit}
+                  >
+                    Simpan
+                  </Button>
+                </Group>
+              </form>
+            </ScrollArea>
           )}
         </Box>
       </Stack>
