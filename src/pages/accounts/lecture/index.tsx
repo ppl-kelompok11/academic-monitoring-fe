@@ -6,12 +6,10 @@ import {
   rem,
   Card,
   Grid,
-  Text,
   Input,
   Flex,
   Button,
   ActionIcon,
-  Badge,
   Pagination,
   Stack,
   Tabs,
@@ -29,11 +27,9 @@ import AppLayout from "@/layouts/AppLayout";
 import { useRouter } from "next/router";
 import api from "@/configs/axios-interceptors";
 import { useCallback } from "react";
-import { GetServerSideProps } from "next";
 import Cookies from "js-cookie";
-import getConfig from "next/config";
 import TitleWithBack from "@/components/atoms/TitleWithBack";
-// const { publicRuntimeConfig } = getConfig();
+
 const useStyles = createStyles((theme) => ({
   header: {
     position: "sticky",
@@ -60,17 +56,8 @@ const useStyles = createStyles((theme) => ({
     boxShadow: theme.shadows.sm,
   },
 }));
-// type TableScrollAreaProps = NextPageWithAuth & {
-//   data: {
-//     id: number;
-//     order_name: string;
-//     customer_name: string;
-//     instantion: string;
-//     quantity: number;
-//     total_price: number;
-//   }[];
-// };
-const Mahasiswa = () => {
+
+const Index = () => {
   const router = useRouter();
   const token = Cookies.get("token");
   const [activePage, setPage] = useState(1);
@@ -126,7 +113,7 @@ const Mahasiswa = () => {
               variant="filled"
               color="blue"
               onClick={() => {
-                // router.push(`/mahasiswa/detail/${row.id}`);
+                router.push(`/accounts/lecture/${row.id}`);
               }}
             >
               <IconInfoCircle size="1rem" />
@@ -135,7 +122,7 @@ const Mahasiswa = () => {
               variant="filled"
               color="yellow"
               onClick={() => {
-                // router.push(`/mahasiswa/update/${row.id}`);
+                router.push(`/accounts/lecture/${row.id}/edit`);
               }}
             >
               <IconEditCircle size="1rem" />
@@ -198,27 +185,31 @@ const Mahasiswa = () => {
               </Flex>
             </Grid.Col>
           </Grid>
-          {isLoading ? (<Center><Loader/></Center>) : (
-          <ScrollArea
-            mt={10}
-            onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
-          >
-            <Table miw={700}>
-              <thead
-                className={cx(classes.header, {
-                  [classes.scrolled]: scrolled,
-                })}
-              >
-                <tr>
-                  <th>Nama</th>
-                  <th>Email</th>
-                  <th>NIP</th>
-                  <th>NIDN</th>
-                  <th>Tanggal Masuk</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
+          {isLoading ? (
+            <Center>
+              <Loader />
+            </Center>
+          ) : (
+            <ScrollArea
+              mt={10}
+              onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+            >
+              <Table miw={700}>
+                <thead
+                  className={cx(classes.header, {
+                    [classes.scrolled]: scrolled,
+                  })}
+                >
+                  <tr>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>NIP</th>
+                    <th>NIDN</th>
+                    <th>Tanggal Masuk</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
                   {data.length == 0 ? (
                     <tr>
                       <td colSpan={5} style={{ textAlign: "center" }}>
@@ -229,16 +220,16 @@ const Mahasiswa = () => {
                     rows
                   )}
                 </tbody>
-            </Table>
-            <Center>
-              <Pagination
-                my={20}
-                value={activePage}
-                onChange={setPage}
-                total={totalPage}
-              />
-            </Center>
-          </ScrollArea>
+              </Table>
+              <Center>
+                <Pagination
+                  my={20}
+                  value={activePage}
+                  onChange={setPage}
+                  total={totalPage}
+                />
+              </Center>
+            </ScrollArea>
           )}
         </Card>
       </Stack>
@@ -246,4 +237,4 @@ const Mahasiswa = () => {
   );
 };
 
-export default Mahasiswa;
+export default Index;

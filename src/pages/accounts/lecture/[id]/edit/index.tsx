@@ -20,8 +20,8 @@ import TitleWithBack from "@/components/atoms/TitleWithBack";
 import api from "@/configs/axios-interceptors";
 import { useRouter } from "next/router";
 import AppLayout from "@/layouts/AppLayout";
-import Cookies from "js-cookie";
 import ImageUpload from "@/components/molekul/Imageupload";
+import moment from "moment";
 
 const UseStyles = createStyles((theme) => ({
   wrapper: {
@@ -56,9 +56,6 @@ export default function Index() {
   const [cities, setCities] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const userData = Cookies.get("user");
-  const user = userData && JSON.parse(userData);
 
   const form = useForm({
     initialValues: {
@@ -118,9 +115,12 @@ export default function Index() {
   };
 
   useEffect(() => {
-    getDoswal(user.ref_id);
-    getProvinces();
-  }, []);
+    if (router.isReady) {
+      console.log(router.query.id);
+      getDoswal(router.query.id);
+      getProvinces();
+    }
+  }, [router.isReady]);
 
   useEffect(() => {
     getCities();
@@ -140,7 +140,7 @@ export default function Index() {
     try {
       setIsLoading(true);
       const response = await api.put("/lecture", {
-        id: user.ref_id,
+        id: router.query.id,
         name: form.values.name,
         nip: form.values.nip,
         nidn: form.values.nidn,
@@ -150,11 +150,11 @@ export default function Index() {
         address: form.values.address,
         photo: form.values.photo.path,
         phone: form.values.phone,
-        work_start_date: form.values.work_start_date,
+        work_start_date: moment(form.values.work_start_date).format("YYYY-MM-DD"),
       });
 
       if (response.status === 201) {
-        router.push("/profile");
+        router.push(`/accounts/lecture/${router.query.id}`);
       }
     } catch (error) {
       console.log(error);
@@ -172,7 +172,7 @@ export default function Index() {
   return (
     <AppLayout activeLink="profile">
       <Stack my={35} mx={45}>
-        <TitleWithBack title="Update Profile" route="/profile" />
+        <TitleWithBack title="Update Profile" route={`/accounts/lecture/${router.query.id}`} />
         <Box className={classes.form} py={20} pl={30} pr={15}>
           {isFetching ? (
             <Center>
@@ -235,7 +235,8 @@ export default function Index() {
                 <Space h={15} />
 
                 <DateInput
-                  disabled
+                  required
+                  withAsterisk={false}
                   valueFormat="YYYY-MM-DD"
                   label="Tanggal Mulai Bekerja"
                   {...form.getInputProps("work_start_date")}

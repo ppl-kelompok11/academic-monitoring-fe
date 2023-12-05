@@ -137,7 +137,7 @@ const Mahasiswa = () => {
               variant="filled"
               color="red"
               onClick={() => {
-                handleDelete(row.id);
+                // handleDelete(row.id);
               }}
             >
               <IconTrash size="1rem" />

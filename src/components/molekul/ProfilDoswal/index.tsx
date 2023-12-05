@@ -27,7 +27,7 @@ export default function Index({
         <Stack align="flex-start" justify="space-between" h={300}>
           <table>
             <tr>
-              <td style={{ paddingRight: "50px" }}>Nama Lengkap</td>
+              <td style={{ paddingRight: "75px" }}>Nama Lengkap</td>
               <td style={{ paddingRight: "25px" }}>:</td>
               <td>
                 {isLoading ? (
@@ -60,6 +60,19 @@ export default function Index({
                   <Skeleton width={50} height={10} radius="xl" />
                 ) : lecture.nidn ? (
                   lecture.nidn
+                ) : (
+                  "-"
+                )}
+              </td>
+            </tr>
+            <tr>
+              <td>Tanggal Mulai Bekerja</td>
+              <td>:</td>
+              <td>
+                {isLoading ? (
+                  <Skeleton width={50} height={10} radius="xl" />
+                ) : lecture.work_start_date ? (
+                  lecture.work_start_date
                 ) : (
                   "-"
                 )}

@@ -49,13 +49,12 @@ export default function Index() {
       email: "",
       nip: "",
       nidn: "",
-      workStartDate: "",
+      work_start_date: "",
       password: "",
     },
   });
 
   const handleSubmit = async () => {
-    // console.log(form.errors);
     form.validate();
     if (!form.validate().hasErrors) {
       try {
@@ -66,7 +65,7 @@ export default function Index() {
           name: form.values.nama,
           nip: form.values.nip,
           nidn: form.values.nidn,
-          workStartDate: moment(form.values.workStartDate).format("YYYY-MM-DD"),
+          work_start_date: moment(form.values.work_start_date).format("YYYY-MM-DD"),
         });
         console.log(response);
         Router.push("/accounts/lecture");
@@ -123,7 +122,7 @@ export default function Index() {
                 valueFormat="YYYY-MM-DD"
                 label="Tanggal Mulai Bekerja"
                 disabled={isLoading}
-                {...form.getInputProps("workStartDate")}
+                {...form.getInputProps("work_start_date")}
               />
               <Group mt="md">
                 <Button
