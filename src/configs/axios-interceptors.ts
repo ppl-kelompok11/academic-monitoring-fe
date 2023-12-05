@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 // Membuat instance Axios dengan konfigurasi default
 const API_URL = process.env.API_URL;
 const api = axios.create({
-    baseURL: "http://localhost:8000/api", // Ganti dengan URL API Anda
+    baseURL: "http://ppl-api.next-innovate.tech/api", // Ganti dengan URL API Anda
     timeout: 10000, // Timeout dalam milidetik
 });
 api.interceptors.request.use(

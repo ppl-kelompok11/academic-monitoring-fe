@@ -20,15 +20,9 @@ import {
   Loader,
   Select,
 } from "@mantine/core";
-import { AiOutlinePlus } from "react-icons/ai";
-import { FaPlus } from "react-icons/fa";
-import { PiPlusBold } from "react-icons/pi";
-import { HiAcademicCap } from "react-icons/hi2";
+import { useViewportSize } from "@mantine/hooks";
 import { IoPersonSharp } from "react-icons/io5";
 import { FaUserGraduate } from "react-icons/fa";
-import { MdWork } from "react-icons/md";
-import { IoMdBookmarks } from "react-icons/io";
-import { IoMdInformationCircleOutline } from "react-icons/io";
 import { IoBarChart } from "react-icons/io5";
 import { MdOutlineGrade } from "react-icons/md";
 import Link from "next/link";
@@ -52,6 +46,7 @@ const useStyles = createStyles((theme) => ({
   },
   card: {
     borderRadius: "14px",
+    overflow: "visible",
   },
   gridCol: {
     maxWidth: "455px",
@@ -76,8 +71,9 @@ export default function Index() {
   const [data, setData] = useState<any>({});
   const [riwayat, setRiwayat] = useState([]);
   const thisYear = new Date().getFullYear();
-  const [angkatan, setAngkatan] = useState(thisYear.toString());
+  const [angkatan, setAngkatan] = useState<string | null>(thisYear.toString());
   const [isLoading, setIsLoading] = useState(false);
+  const { height, width } = useViewportSize();
 
   const getDashboard = async (year: any) => {
     try {
@@ -119,14 +115,10 @@ export default function Index() {
     });
   }
 
-  const handleAngkatanChange = (e: any) => {
-    setAngkatan(e.target.value);
-  };
-
   useEffect(() => {
     getDashboard(angkatan);
     getStudentIRS(angkatan);
-  }, []);
+  }, [angkatan]);
 
   let dataChart: any = [];
 
@@ -141,36 +133,39 @@ export default function Index() {
     <AppLayout activeLink="dashboard" role="dosen-wali">
       <Stack pt="3vh" px="3%" align="flex-start">
         {!isLoading && (
-          <Group position="apart">
-            <Text
-              size={32}
-              fw={600}
-              align="left"
-              underline
-              className={classes.name}
-            >
-              {/* Halo {(mahasiswa.name.split(" ")[0] || "").toLowerCase()}! */}
-              Halo Malik!
-            </Text>
-            <Select
-              data={angkatanData}
-              placeholder="Angkatan Mahasiswa"
-              label="Pilih Angkatan"
-              radius="lg"
-              defaultValue={angkatanData[0].value}
-              onChange={handleAngkatanChange}
-            />
-          </Group>
-        )}
+          <Card shadow="sm" w="100%" className={classes.card}>
+            <Group position="apart" w="100%">
+              <Text
+                size={32}
+                fw={600}
+                align="left"
+                underline
+                className={classes.name}
+              >
+                {/* Halo {(mahasiswa.name.split(" ")[0] || "").toLowerCase()}! */}
+                Halo Malik!
+              </Text>
 
-        <Space h={20} />
+              <Select
+                data={angkatanData}
+                placeholder="Angkatan Mahasiswa"
+                label="Pilih Angkatan"
+                radius="lg"
+                value={angkatan}
+                onChange={setAngkatan}
+              />
+            </Group>
+          </Card>
+        )}
         {isLoading ? (
           <LoadingOverlay visible={isLoading} />
         ) : (
           <>
             <SimpleGrid
+              mt={10}
               cols={4}
               spacing="lg"
+              w="100%"
               breakpoints={[
                 { maxWidth: "xl", cols: 3, spacing: "md" },
                 { maxWidth: "md", cols: 2, spacing: "md" },
@@ -181,75 +176,105 @@ export default function Index() {
               <InfoCard
                 title="Total Mahasiswa"
                 color="black"
-                value={data.total_student + " Mahasiswa"}
+                width="100%"
+                value={
+                  data.total_student ? data.total_student + " Mahasiswa" : "-"
+                }
                 icon={<IoPersonSharp color="white" size={32} />}
               />
               <InfoCard
                 title="Mahasiswa Lulus"
                 color="black"
-                value={data.total_graduate + " Mahasiswa"}
+                value={
+                  data.total_graduate ? data.total_graduate + " Mahasiswa" : "-"
+                }
                 icon={<FaUserGraduate color="white" size={32} />}
               />
               <InfoCard
                 title="Lulus Cumlaude"
                 color="black"
-                value={data.total_graduate_cumlaude + " Mahasiswa"}
+                value={
+                  data.total_graduate_cumlaude
+                    ? data.total_graduate_cumlaude + " Mahasiswa"
+                    : "-"
+                }
                 icon={<MdOutlineGrade color="white" size={32} />}
               />
               <InfoCard
                 title="Rerata Lulus"
                 color="black"
-                value={Math.floor(data.average_semester_graduate) + " Semester"}
+                value={
+                  data.average_semester_graduate
+                    ? Math.floor(data.average_semester_graduate) + " Semester"
+                    : "-"
+                }
                 icon={<IoBarChart color="white" size={32} />}
               />
               <InfoCard
                 title="Rerata SKSK"
                 color="black"
-                value={data.average_sks_graduate}
+                value={
+                  data.average_sks_graduate ? data.average_sks_graduate : "-"
+                }
                 icon={<IoBarChart color="white" size={32} />}
               />
               <InfoCard
                 title="Rerata SKSK Lulus"
                 color="black"
-                value={data.average_sks_kumulatif_graduate}
+                value={
+                  data.average_sks_kumulatif_graduate
+                    ? data.average_sks_kumulatif_graduate
+                    : "-"
+                }
                 icon={<IoBarChart color="white" size={32} />}
               />
               <InfoCard
                 title="Rerata IPK"
                 color="black"
-                value={data.average_ip_graduate}
+                value={
+                  data.average_ip_graduate ? data.average_ip_graduate : "-"
+                }
                 icon={<IoBarChart color="white" size={32} />}
               />
               <InfoCard
                 title="Rerata IPK Lulus"
                 color="black"
-                value={data.average_ip_kumulatif_graduate}
+                value={
+                  data.average_ip_kumulatif_graduate
+                    ? data.average_ip_kumulatif_graduate
+                    : "-"
+                }
                 icon={<IoBarChart color="white" size={32} />}
               />
             </SimpleGrid>
-            <Space h={20} />
-            <Card shadow="sm" className={classes.card}>
-              <Text align="center" fw={600} size={20}>
+            <Card shadow="sm" w="100%" mt={10} className={classes.card}>
+              <Text align="center" mb={10} fw={600} size={20}>
                 Progress IP Semester Rata-Rata
               </Text>
-              <LineChart
-                width={1000}
-                height={300}
-                data={dataChart}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="semester" />
-                <YAxis dataKey="IP" />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="IP" stroke="#8884d8" />
-              </LineChart>
+              {dataChart.length == 0 ? (
+                <Text align="center" fw={400} size={16}>
+                  Tidak ada data
+                </Text>
+              ) : (
+                <LineChart
+                  width={width * 0.90 - 75 * 0.90}
+                  height={300}
+                  data={dataChart}
+                  margin={{
+                    top: 5,
+                    right: 50,
+                    left: 0,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="semester" />
+                  <YAxis dataKey="IP" />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="IP" stroke="#8884d8" />
+                </LineChart>
+              )}
             </Card>
           </>
         )}

@@ -4,6 +4,7 @@ import {Card, Group, Stack, Text, Box, Center, createStyles} from "@mantine/core
 const useStyles = createStyles((theme) => ({
   card: {
     borderRadius: "14px",
+    width: "100%",
   },
   icon: {
     borderRadius: "13px",
@@ -21,13 +22,15 @@ type InfoCardProps = {
   value: any;
   icon: React.ReactNode;
   color?: string;
+  height?: any;
+  width?: any;
 };
 
 
-export default function Index( {title, value, icon, color="black"}: InfoCardProps) {
+export default function Index( {title, value, icon, color="black", width, height}: InfoCardProps) {
   const { classes } = useStyles();
   return (
-    <Card shadow="sm" w={300} className={classes.card}>
+    <Card shadow="sm" className={classes.card}>
       <Group position="apart">
         <Stack align="flex-start" spacing={5}>
           <Text size={20} weight={600}>
