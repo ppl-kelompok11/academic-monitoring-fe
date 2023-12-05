@@ -8,7 +8,6 @@ import {
   Group,
   Button,
   Space,
-  NativeSelect,
   Select,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";

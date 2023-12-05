@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Stack,
@@ -38,21 +38,18 @@ const useStyles = createStyles((theme) => ({
   imageAuth: {},
 }));
 
-const API = process.env.API_URL;
-
 export default function Index() {
   const Router = useRouter();
   const { classes } = useStyles();
-  const [ isLoading, setIsLoading ] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm({
     initialValues: {
       email: "",
       password: "",
     },
   });
-  
+
   const handleSubmit = async () => {
-    // console.log(form.errors);
     setIsLoading(true);
     form.validate();
     if (!form.validate().hasErrors) {
@@ -74,11 +71,11 @@ export default function Index() {
     }
   };
 
-  const handleEnter = (e : any) => {
+  const handleEnter = (e: any) => {
     if (e.key === "Enter") {
       handleSubmit();
     }
-  }
+  };
 
   return (
     <>

@@ -1,7 +1,5 @@
-import { use, useEffect, useState } from "react";
-import {
-  Stack,
-} from "@mantine/core";
+import { useEffect, useState } from "react";
+import { Stack } from "@mantine/core";
 import AppLayout from "@/layouts/AppLayout";
 import { useRouter } from "next/router";
 import api from "@/configs/axios-interceptors";

@@ -4,23 +4,17 @@ import {
   Text,
   createStyles,
   Box,
-  TextInput,
   Group,
   Button,
   Space,
-  NativeSelect,
   Select,
   LoadingOverlay,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import Link from "next/link";
 import AppLayout from "@/layouts/AppLayout";
-import { IoIosArrowBack } from "react-icons/io";
-import next from "next";
 import FileUpload from "@/components/molekul/FileUpload";
 import api from "@/configs/axios-interceptors";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
 import TitleWithBack from "@/components/atoms/TitleWithBack";
 
 const UseStyles = createStyles((theme) => ({

@@ -1,52 +1,26 @@
 import { use, useEffect, useState } from "react";
 import {
-  createStyles,
-  Table,
-  ScrollArea,
-  rem,
   Card,
-  Grid,
-  Input,
   Flex,
-  Button,
-  ActionIcon,
-  Badge,
-  Pagination,
   Stack,
   Tabs,
   Space,
   Text,
   Center,
-  Image,
-  Tooltip,
   Modal,
-  Collapse,
-  Skeleton,
   Loader,
 } from "@mantine/core";
-import {
-  IconEditCircle,
-  IconInfoCircle,
-  IconSearch,
-  IconTrash,
-} from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import AppLayout from "@/layouts/AppLayout";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import api from "@/configs/axios-interceptors";
-import { useCallback } from "react";
-import Cookies from "js-cookie";
-import getConfig from "next/config";
 import TitleWithBack from "@/components/atoms/TitleWithBack";
-import { TextalignCenter } from "iconsax-react";
 import IrsPanel from "@/components/molekul/ProgressTabPanel/IrsPanel";
 import KhsPanel from "@/components/molekul/ProgressTabPanel/KhsPanel";
 import PklPanel from "@/components/molekul/ProgressTabPanel/PklPanel";
 import SkripsiPanel from "@/components/molekul/ProgressTabPanel/SkripsiPanel";
 import ProgressAkademik from "@/components/molekul/ProgressAkademik";
 import ProfilMahasiswa from "@/components/molekul/ProfilMahasiswa";
-// const { publicRuntimeConfig } = getConfig();
 
 const Index = () => {
   const router = useRouter();
@@ -75,7 +49,7 @@ const Index = () => {
   const [skripsiId, setSkripsiId] = useState<any>(null);
   const [isLoadingSkripsi, setIsLoadingSkripsi] = useState(false);
   const [path, setPath] = useState("");
-  
+
   useEffect(() => {
     if (router.isReady) {
       console.log(router.query.id);
@@ -273,10 +247,7 @@ const Index = () => {
 
       <Stack mt={35} mx={45}>
         <TitleWithBack title="Detail Mahasiswa" route="/students" />
-        <ProfilMahasiswa
-          mahasiswa={mahasiswa}
-          isLoading={isLoadingMahasiswa}
-        />
+        <ProfilMahasiswa mahasiswa={mahasiswa} isLoading={isLoadingMahasiswa} />
         <Space h={10} />
         <Text c="black" size={32} fw={700} align="left">
           Progress Akademik Mahasiswa

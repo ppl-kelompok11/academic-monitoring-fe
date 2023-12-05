@@ -3,15 +3,11 @@ import {
   Stack,
   createStyles,
   Box,
-  TextInput,
   Group,
   Button,
-  Space,
-  Select,
   Text
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { YearPickerInput } from "@mantine/dates";
 import AppLayout from "@/layouts/AppLayout";
 import api from "@/configs/axios-interceptors";
 import Router from "next/router";

@@ -115,12 +115,12 @@ export default function Index() {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getDoswal(user.ref_id);
     getProvinces();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     getCities();
   }, [form.values.province_id]);
 

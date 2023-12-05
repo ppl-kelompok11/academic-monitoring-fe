@@ -6,39 +6,26 @@ import {
   rem,
   Card,
   Grid,
-  Text,
   Input,
   Flex,
   Button,
   ActionIcon,
-  Badge,
   Pagination,
   Stack,
   Tabs,
   Space,
   Center,
-  Group,
-  Box,
   useMantineTheme,
   Modal,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  IconSearch,
-  IconCheck,
-  IconX,
-} from "@tabler/icons-react";
+import { IconSearch, IconCheck, IconX } from "@tabler/icons-react";
 import AppLayout from "@/layouts/AppLayout";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import { IoIosArrowBack } from "react-icons/io";
 import api from "@/configs/axios-interceptors";
 import { useCallback } from "react";
-import { GetServerSideProps } from "next";
 import Cookies from "js-cookie";
-import getConfig from "next/config";
 import TitleWithBack from "@/components/atoms/TitleWithBack";
-// const { publicRuntimeConfig } = getConfig();
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -67,20 +54,8 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-// type TableScrollAreaProps = NextPageWithAuth & {
-//   data: {
-//     id: number;
-//     order_name: string;
-//     customer_name: string;
-//     instantion: string;
-//     quantity: number;
-//     total_price: number;
-//   }[];
-// };
-
-const Mahasiswa = () => {
+const Index = () => {
   const router = useRouter();
-  const token = Cookies.get("token");
   const [activePage, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [totalPage, setTotalPage] = useState(0);
@@ -124,7 +99,7 @@ const Mahasiswa = () => {
   const handleView = (path: string) => {
     return () => {
       setPath(path);
-      console.log(path)
+      console.log(path);
       open();
     };
   };
@@ -181,7 +156,7 @@ const Mahasiswa = () => {
       >
         <iframe src={path} width="100%" height="720px" />
       </Modal>
-      
+
       <Stack mt={35} mx={45}>
         <TitleWithBack title="Validasi" route="/dashboard/lecture" />
         <Card mt={10} bg={"white"} radius={"lg"}>
@@ -213,8 +188,7 @@ const Mahasiswa = () => {
                 />
               </Flex>
             </Grid.Col>
-            <Grid.Col md={3} xs={12}>
-            </Grid.Col>
+            <Grid.Col md={3} xs={12}></Grid.Col>
           </Grid>
           <ScrollArea
             mt={10}
@@ -252,4 +226,4 @@ const Mahasiswa = () => {
   );
 };
 
-export default Mahasiswa;
+export default Index;

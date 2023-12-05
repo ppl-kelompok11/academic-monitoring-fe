@@ -114,12 +114,12 @@ export default function Index() {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getOperator(user.ref_id);
     getProvinces();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     getCities();
   }, [form.values.province_id]);
 

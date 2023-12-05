@@ -9,11 +9,8 @@ import {
   Group,
   Button,
   Space,
-  NativeSelect,
   ScrollArea,
-  PasswordInput,
   Select,
-  LoadingOverlay,
   Center,
   Loader,
 } from "@mantine/core";
@@ -22,7 +19,6 @@ import TitleWithBack from "@/components/atoms/TitleWithBack";
 import api from "@/configs/axios-interceptors";
 import { useRouter } from "next/router";
 import AppLayout from "@/layouts/AppLayout";
-import Cookies from "js-cookie";
 import ImageUpload from "@/components/molekul/Imageupload";
 
 const UseStyles = createStyles((theme) => ({
@@ -129,7 +125,7 @@ export default function Index() {
     }
   }, [router.isReady]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     getCities();
   }, [form.values.province_id]);
 

@@ -6,38 +6,29 @@ import {
   rem,
   Card,
   Grid,
-  Text,
   Input,
   Flex,
   Button,
   ActionIcon,
-  Badge,
   Pagination,
   Stack,
   Tabs,
   Space,
   Center,
-  Group,
-  Box,
   Loader,
 } from "@mantine/core";
 import {
   IconEditCircle,
-  IconInfoCircle,
   IconSearch,
   IconTrash,
 } from "@tabler/icons-react";
 import AppLayout from "@/layouts/AppLayout";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import { IoIosArrowBack } from "react-icons/io";
 import api from "@/configs/axios-interceptors";
 import { useCallback } from "react";
-import { GetServerSideProps } from "next";
 import Cookies from "js-cookie";
-import getConfig from "next/config";
 import TitleWithBack from "@/components/atoms/TitleWithBack";
-// const { publicRuntimeConfig } = getConfig();
+
 const useStyles = createStyles((theme) => ({
   header: {
     position: "sticky",
@@ -64,17 +55,6 @@ const useStyles = createStyles((theme) => ({
     boxShadow: theme.shadows.sm,
   },
 }));
-
-// type TableScrollAreaProps = NextPageWithAuth & {
-//   data: {
-//     id: number;
-//     order_name: string;
-//     customer_name: string;
-//     instantion: string;
-//     quantity: number;
-//     total_price: number;
-//   }[];
-// };
 
 const Mahasiswa = () => {
   const router = useRouter();

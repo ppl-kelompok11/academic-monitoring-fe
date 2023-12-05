@@ -6,20 +6,16 @@ import {
   rem,
   Card,
   Grid,
-  Text,
   Input,
   Flex,
   Button,
   ActionIcon,
-  Badge,
   Pagination,
   Stack,
   Tabs,
   Space,
   Center,
-  Group,
   Modal,
-  Box,
   useMantineTheme,
 } from "@mantine/core";
 import { IconSearch, IconCheck, IconX } from "@tabler/icons-react";
@@ -29,9 +25,7 @@ import { useRouter } from "next/router";
 import api from "@/configs/axios-interceptors";
 import { useCallback } from "react";
 import Cookies from "js-cookie";
-import getConfig from "next/config";
 import TitleWithBack from "@/components/atoms/TitleWithBack";
-// const { publicRuntimeConfig } = getConfig();
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -60,20 +54,8 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-// type TableScrollAreaProps = NextPageWithAuth & {
-//   data: {
-//     id: number;
-//     order_name: string;
-//     customer_name: string;
-//     instantion: string;
-//     quantity: number;
-//     total_price: number;
-//   }[];
-// };
-
 const Index = () => {
   const router = useRouter();
-  const token = Cookies.get("token");
   const [activePage, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [totalPage, setTotalPage] = useState(0);

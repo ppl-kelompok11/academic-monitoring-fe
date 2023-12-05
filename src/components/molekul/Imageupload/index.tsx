@@ -2,25 +2,20 @@ import {
   Group,
   Text,
   useMantineTheme,
-  rem,
   Flex,
-  Button,
   Image,
   Stack,
   createStyles,
   ActionIcon,
 } from "@mantine/core";
-import { IconUpload, IconPhoto, IconX } from "@tabler/icons-react";
-import { Dropzone, DropzoneProps, MIME_TYPES } from "@mantine/dropzone";
+import { IconUpload, IconX } from "@tabler/icons-react";
+import { Dropzone, DropzoneProps } from "@mantine/dropzone";
 import { FaTrash } from "react-icons/fa";
 import { MdDownload } from "react-icons/md";
-import { Document } from "iconsax-react";
 import axios from "axios";
 import api from "@/configs/axios-interceptors";
 import { useState } from "react";
 import { notifications } from "@mantine/notifications";
-import Link from "next/link";
-import { on } from "events";
 
 interface FileUploadProps extends DropzoneProps {
   mimeTypes?: string[];
@@ -39,7 +34,6 @@ export default function Index(props: Partial<FileUploadProps>) {
   const [load, setLoad] = useState(false);
   const theme = useMantineTheme();
   const { classes } = useStyles();
-  // console.log("ini file", props.file);
 
   const onDownload = async () => {
     try {
@@ -107,7 +101,6 @@ export default function Index(props: Partial<FileUploadProps>) {
           onReject={(files) => {}}
           maxSize={3 * 1024 ** 3}
           sx={{ ":hover": { backgroundColor: "#EEF0F6" } }}
-          // sx={{ backgroundColor: "black" }}
           color="black"
           bg="white"
           accept={props.mimeTypes}
@@ -118,9 +111,6 @@ export default function Index(props: Partial<FileUploadProps>) {
             spacing="xl"
             sx={{
               minHeight: "150px",
-              // backgroundColor: "black",
-              // border: "none",
-              // color: "black",
             }}
             color="black"
           >
@@ -152,12 +142,6 @@ export default function Index(props: Partial<FileUploadProps>) {
           align="flex-start"
           direction="row"
           gap="lg"
-          // sx={{
-          //   border: "1px solid #243063",
-          //   width: "fit-content",
-          //   padding: "10px",
-          //   borderRadius: "10px",
-          // }}
         >
           <Stack>
             <Image

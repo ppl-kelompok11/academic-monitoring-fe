@@ -121,12 +121,12 @@ export default function Index() {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getMahasiswa(user.ref_id);
     getProvinces();
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     getCities();
   }, [form.values.province_id]);
 

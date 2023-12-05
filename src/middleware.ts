@@ -78,6 +78,10 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/academic/irs", request.url));
   }
 
+  if (request.nextUrl.pathname.endsWith("/validation")) {
+    return NextResponse.redirect(new URL("/validation/irs", request.url));
+  }
+
   if (request.nextUrl.pathname.endsWith("/recap")) {
     return NextResponse.redirect(new URL("/recap/pkl", request.url));
   }

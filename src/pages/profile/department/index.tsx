@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Stack,
-} from "@mantine/core";
+import { Stack } from "@mantine/core";
 import AppLayout from "@/layouts/AppLayout";
 import api from "@/configs/axios-interceptors";
 import Cookies from "js-cookie";

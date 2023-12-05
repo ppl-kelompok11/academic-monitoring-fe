@@ -4,20 +4,10 @@ import {
   Stack,
   Text,
   createStyles,
-  Box,
-  TextInput,
   Group,
-  Button,
-  Space,
-  NativeSelect,
   Card,
   SimpleGrid,
-  Center,
-  Grid,
-  Flex,
-  Skeleton,
   LoadingOverlay,
-  Loader,
   Select,
 } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
@@ -25,8 +15,6 @@ import { IoPersonSharp } from "react-icons/io5";
 import { FaUserGraduate } from "react-icons/fa";
 import { IoBarChart } from "react-icons/io5";
 import { MdOutlineGrade } from "react-icons/md";
-import Link from "next/link";
-import NavButton from "@/components/atoms/NavButton";
 import InfoCard from "@/components/atoms/InfoCard";
 import api from "@/configs/axios-interceptors";
 import Cookies from "js-cookie";

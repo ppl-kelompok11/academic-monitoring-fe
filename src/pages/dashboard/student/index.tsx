@@ -4,24 +4,10 @@ import {
   Stack,
   Text,
   createStyles,
-  Box,
-  TextInput,
-  Group,
-  Button,
-  Space,
-  NativeSelect,
   Card,
   SimpleGrid,
-  Center,
-  Grid,
-  Flex,
-  Skeleton,
   LoadingOverlay,
-  Loader,
 } from "@mantine/core";
-import { AiOutlinePlus } from "react-icons/ai";
-import { FaPlus } from "react-icons/fa";
-import { PiPlusBold } from "react-icons/pi";
 import { HiAcademicCap } from "react-icons/hi2";
 import { useViewportSize } from "@mantine/hooks";
 import { IoPersonSharp } from "react-icons/io5";
@@ -29,8 +15,6 @@ import { FaUserGraduate } from "react-icons/fa";
 import { MdWork } from "react-icons/md";
 import { IoMdBookmarks } from "react-icons/io";
 import { IoMdInformationCircleOutline } from "react-icons/io";
-import Link from "next/link";
-import NavButton from "@/components/atoms/NavButton";
 import InfoCard from "@/components/atoms/InfoCard";
 import api from "@/configs/axios-interceptors";
 import Cookies from "js-cookie";
@@ -102,8 +86,8 @@ export default function Index() {
   };
 
   useEffect(() => {
-    const userData = Cookies.get("user")
-    userData && setUser(JSON.parse(userData))
+    const userData = Cookies.get("user");
+    userData && setUser(JSON.parse(userData));
     getKhs();
     getDashboard();
   }, []);
