@@ -25,20 +25,12 @@ export default function OperatorNavItem({
         <TbCategoryFilled color="white" size={30} />
       </NavLink>
       <NavLink
-        route="/accounts/student"
+        route="/accounts"
         label="Manajemen Akun"
         isActive={activeLink === "accounts"}
         onClick={triggerLoading}
       >
         <FaUserGroup color="white" size={30} />
-      </NavLink>
-      <NavLink
-        route="/edit-status"
-        label="Edit Status Mahasiswa"
-        isActive={activeLink === "edit-status"}
-        onClick={triggerLoading}
-      >
-        <BiSolidMessageSquareEdit color="white" size={30} />
       </NavLink>
     </Stack>
   );

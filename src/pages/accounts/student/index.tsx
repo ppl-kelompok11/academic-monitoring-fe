@@ -132,7 +132,7 @@ const Mahasiswa = () => {
               variant="filled"
               color="blue"
               onClick={() => {
-                router.push(`/mahasiswa/detail/${row.id}`);
+                router.push(`/accounts/student/${row.id}`);
               }}
             >
               <IconInfoCircle size="1rem" />
@@ -141,7 +141,7 @@ const Mahasiswa = () => {
               variant="filled"
               color="yellow"
               onClick={() => {
-                router.push(`/mahasiswa/update/${row.id}`);
+                router.push(`/accounts/student/${row.id}/edit`);
               }}
             >
               <IconEditCircle size="1rem" />

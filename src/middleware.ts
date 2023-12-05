@@ -82,6 +82,10 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/recap/pkl", request.url));
   }
 
+  if (request.nextUrl.pathname.endsWith("/accounts")) {
+    return NextResponse.redirect(new URL("/accounts/student", request.url));
+  }
+
   // redirect to initial data page if user is not active
   if (
     user?.role_id == 2 &&

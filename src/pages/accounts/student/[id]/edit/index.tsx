@@ -59,9 +59,6 @@ export default function Index() {
   const [isFetching, setIsFetching] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const userData = Cookies.get("user");
-  const user = userData && JSON.parse(userData);
-
   const form = useForm({
     initialValues: {
       name: "",
@@ -124,10 +121,13 @@ export default function Index() {
     }
   };
 
-  React.useEffect(() => {
-    getMahasiswa(user.ref_id);
-    getProvinces();
-  }, []);
+  useEffect(() => {
+    if (router.isReady) {
+      console.log(router.query.id);
+      getMahasiswa(router.query.id);
+      getProvinces();
+    }
+  }, [router.isReady]);
 
   React.useEffect(() => {
     getCities();
@@ -137,6 +137,16 @@ export default function Index() {
     { value: "00", label: "SNMPTN" },
     { value: "01", label: "SBMPTN" },
     { value: "02", label: "Mandiri" },
+  ];
+
+  const statusData = [
+    { value: "00", label: "Aktif" },
+    { value: "01", label: "Cuti" },
+    { value: "02", label: "Mangkir" },
+    { value: "03", label: "Drop Out" },
+    { value: "04", label: "Mengundurkan Diri" },
+    { value: "05", label: "Lulus" },
+    { value: "06", label: "Meninggal" },
   ];
 
   const provincesData = provinces.map((data: any) => ({
@@ -163,10 +173,11 @@ export default function Index() {
         address: form.values.address,
         photo: form.values.photo.path,
         phone: form.values.phone,
+        status: form.values.status,
       });
 
       if (response.status === 201) {
-        router.push("/profile");
+        router.push(`/accounts/student/${router.query.id}`);
       }
     } catch (error) {
       console.log(error);
@@ -182,9 +193,9 @@ export default function Index() {
   };
 
   return (
-    <AppLayout role="mahasiswa" activeLink="profile">
+    <AppLayout role="operator" activeLink="accounts">
       <Stack my={35} mx={45}>
-        <TitleWithBack title="Update Profile" route="/profile" />
+        <TitleWithBack title="Update Profile Mahasiswa" route={`/accounts/student/${router.query.id}`} />
         <Box className={classes.form} py={20} pl={30} pr={15}>
           {isFetching ? (
             <Center>
@@ -220,7 +231,6 @@ export default function Index() {
             >
               <form onSubmit={form.onSubmit((values) => console.log(values))}>
                 <TextInput
-                  disabled
                   size="md"
                   label="Nama Lengkap"
                   {...form.getInputProps("name")}
@@ -255,8 +265,17 @@ export default function Index() {
 
                 <Space h={15} />
 
+                <Select
+                  required
+                  withAsterisk={false}
+                  label="Status Mahasiswa"
+                  data={statusData}
+                  {...form.getInputProps("status")}
+                />
+
+                <Space h={15} />
+
                 <TextInput
-                  disabled
                   size="md"
                   label="Dosen Wali"
                   {...form.getInputProps("lecture_name")}

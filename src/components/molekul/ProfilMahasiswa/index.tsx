@@ -152,7 +152,7 @@ export default function Index({
           {isShowEditBtn && (
             <Button
               onClick={() => {
-                Router.push("/profile/edit");
+                Router.push(`${Router.asPath}/edit`);
               }}
               size="sm"
             >
