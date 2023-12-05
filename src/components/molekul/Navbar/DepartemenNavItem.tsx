@@ -17,7 +17,7 @@ export default function DepartemenNavItem({
   return (
     <Stack>
       <NavLink
-        route="/"
+        route="/dashboard"
         label="Dashboard"
         isActive={activeLink === "dashboard"}
         onClick={triggerLoading}
@@ -33,7 +33,7 @@ export default function DepartemenNavItem({
         <SlBookOpen color="white" size={30} />
       </NavLink>
       <NavLink
-        route="/student-list"
+        route="/students"
         label="Daftar Mahasiswa"
         isActive={activeLink === "student-list"}
         onClick={triggerLoading}

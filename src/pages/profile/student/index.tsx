@@ -272,7 +272,11 @@ const Index = () => {
 
       <Stack mt={35} mx={45}>
         <TitleWithBack title="Profile" route="/dashboard/student" />
-        <ProfilMahasiswa mahasiswa={mahasiswa} isLoading={isLoadingMahasiswa} isShowEditBtn />
+        <ProfilMahasiswa
+          mahasiswa={mahasiswa}
+          isLoading={isLoadingMahasiswa}
+          isShowEditBtn
+        />
         <Space h={10} />
         <Text c="black" size={32} fw={700} align="left">
           Progress Akademik Mahasiswa

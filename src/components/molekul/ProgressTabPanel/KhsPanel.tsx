@@ -27,22 +27,22 @@ export default function KhsPanel({
         <table>
           <tr>
             <td>SKS Semester</td>
-            <td>:</td>
+            <td style={{padding: "0 10px"}}>:</td>
             <td>{khs.sks ? khs.sks : "-"}</td>
           </tr>
           <tr>
             <td>IP Semester</td>
-            <td>:</td>
+            <td style={{padding: "0 10px"}}>:</td>
             <td>{khs.ip ? khs.ip : "-"}</td>
           </tr>
           <tr>
             <td>SKS Kumulatif</td>
-            <td>:</td>
+            <td style={{padding: "0 10px"}}>:</td>
             <td>{khs.sks_kumulatif ? khs.sks_kumulatif : "-"}</td>
           </tr>
           <tr>
             <td>IP Kumulatif</td>
-            <td>:</td>
+            <td style={{padding: "0 10px"}}>:</td>
             <td>{khs.ip_kumulatif ? khs.ip_kumulatif : "-"}</td>
           </tr>
         </table>

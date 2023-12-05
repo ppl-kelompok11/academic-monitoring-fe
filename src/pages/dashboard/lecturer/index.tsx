@@ -65,8 +65,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function Index() {
   const { classes } = useStyles();
-  const userData = Cookies.get("user");
-  const user = userData && JSON.parse(userData);
+  const [user, setUser] = useState<any>({});
 
   const [data, setData] = useState<any>({});
   const [riwayat, setRiwayat] = useState([]);
@@ -116,6 +115,11 @@ export default function Index() {
   }
 
   useEffect(() => {
+    const userData = Cookies.get("user")
+    userData && setUser(JSON.parse(userData))
+  }, []);
+
+  useEffect(() => {
     getDashboard(angkatan);
     getStudentIRS(angkatan);
   }, [angkatan]);
@@ -124,7 +128,7 @@ export default function Index() {
 
   riwayat.map((item: any) => {
     dataChart.push({
-      semester: item.semester_value,
+      semester: "Semester " + item.semester_value,
       IP: item.average_ip,
     });
   });
@@ -138,12 +142,12 @@ export default function Index() {
               <Text
                 size={32}
                 fw={600}
+                mb={10}
                 align="left"
                 underline
                 className={classes.name}
               >
-                {/* Halo {(mahasiswa.name.split(" ")[0] || "").toLowerCase()}! */}
-                Halo Malik!
+                Halo {user.name}!
               </Text>
 
               <Select
@@ -167,10 +171,9 @@ export default function Index() {
               spacing="lg"
               w="100%"
               breakpoints={[
-                { maxWidth: "xl", cols: 3, spacing: "md" },
-                { maxWidth: "md", cols: 2, spacing: "md" },
+                { maxWidth: 1460, cols: 3, spacing: "md" },
+                { maxWidth: 1110, cols: 2, spacing: "md" },
                 { maxWidth: "sm", cols: 1, spacing: "sm" },
-                { maxWidth: "xs", cols: 1, spacing: "sm" },
               ]}
             >
               <InfoCard
@@ -257,7 +260,7 @@ export default function Index() {
                 </Text>
               ) : (
                 <LineChart
-                  width={width * 0.90 - 75 * 0.90}
+                  width={width * 0.9 - 100 * 0.9}
                   height={300}
                   data={dataChart}
                   margin={{

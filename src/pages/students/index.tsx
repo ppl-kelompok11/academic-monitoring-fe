@@ -73,7 +73,6 @@ const useStyles = createStyles((theme) => ({
 
 const Index = () => {
   const router = useRouter();
-  const token = Cookies.get("token");
   const [activePage, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [totalPage, setTotalPage] = useState(0);
@@ -96,7 +95,7 @@ const Index = () => {
       console.log(error);
     }
   }, [search, activePage]);
-
+  
   useEffect(() => {
     getData();
   }, [search, activePage]);
@@ -132,7 +131,7 @@ const Index = () => {
   ));
 
   return (
-    <AppLayout role="dosen-wali" activeLink="student-list">
+    <AppLayout activeLink="student-list">
       <Stack mt={35} mx={45}>
         <TitleWithBack title="List Mahasiswa" route="/dashboard/lecture" />
         <Card mt={10} bg={"white"} radius={"lg"}>

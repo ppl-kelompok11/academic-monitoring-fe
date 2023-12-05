@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppShell,
   Navbar,
@@ -24,6 +24,7 @@ type AppLayoutProps = {
 
 export default function AppLayout({ children, activeLink, role }: AppLayoutProps) {
   const theme = useMantineTheme();
+  const [user, setUser] = useState<any>({});
   const [opened, setOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,6 +35,23 @@ export default function AppLayout({ children, activeLink, role }: AppLayoutProps
       setIsLoading(true);
     }
   }
+
+  useEffect(() => {
+    const userData = Cookies.get("user")
+    userData && setUser(JSON.parse(userData))
+  }, []);
+
+  const parseRole = (id: number) => {
+    if (id == 1) {
+      return "operator"
+    } else if (id == 2) {
+      return "mahasiswa"
+    } else if (id == 3) {
+      return "dosen-wali"
+    } else if (id == 4) {
+      return "departemen";
+    }
+  };
 
   return (
     <AppShell
@@ -52,7 +70,7 @@ export default function AppLayout({ children, activeLink, role }: AppLayoutProps
         // >
         //   <Text>Application navbar</Text>
         // </Navbar>
-        <NavBar activeLink={activeLink} role={role} triggerLoading = {triggerLoading} />
+        <NavBar activeLink={activeLink} role={parseRole(user.role_id)} triggerLoading = {triggerLoading} />
       }
       // header={
       //   <Header height={{ base: 50, md: 70 }} p="md">

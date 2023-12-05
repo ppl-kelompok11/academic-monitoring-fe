@@ -27,12 +27,12 @@ export default function PklPanel({
         <table>
           <tr>
             <td>Status PKL</td>
-            <td>:</td>
+            <td style={{padding: "0 10px"}}>:</td>
             <td>{pkl.grade ? "Lulus" : "-"}</td>
           </tr>
           <tr>
             <td>Nilai PKL</td>
-            <td>:</td>
+            <td style={{padding: "0 10px"}}>:</td>
             <td>{pkl.grade ? pkl.grade : "-"}</td>
           </tr>
         </table>

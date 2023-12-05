@@ -23,6 +23,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { FaPlus } from "react-icons/fa";
 import { PiPlusBold } from "react-icons/pi";
 import { HiAcademicCap } from "react-icons/hi2";
+import { useViewportSize } from "@mantine/hooks";
 import { IoPersonSharp } from "react-icons/io5";
 import { FaUserGraduate } from "react-icons/fa";
 import { MdWork } from "react-icons/md";
@@ -67,29 +68,12 @@ const useStyles = createStyles((theme) => ({
 
 export default function Index() {
   const { classes } = useStyles();
-  const userData = Cookies.get("user");
-  const user = userData && JSON.parse(userData);
-
-  const [mahasiswa, setMahasiswa] = useState<any>({});
-  const [isLoadingMahasiswa, setIsLoadingMahasiswa] = useState(false);
+  const [user, setUser] = useState<any>({});
 
   const [data, setData] = useState<any>({});
   const [khs, setKhs] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  const getMahasiswa = async (id: any) => {
-    try {
-      setIsLoadingMahasiswa(true);
-      const response = await api.get(`/students/${id}`);
-      if (response.status === 200) {
-        console.log("ini response", response.data);
-        setMahasiswa(response.data);
-        setIsLoadingMahasiswa(false);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { height, width } = useViewportSize();
 
   const getKhs = async () => {
     try {
@@ -118,7 +102,8 @@ export default function Index() {
   };
 
   useEffect(() => {
-    getMahasiswa(user.ref_id);
+    const userData = Cookies.get("user")
+    userData && setUser(JSON.parse(userData))
     getKhs();
     getDashboard();
   }, []);
@@ -168,11 +153,11 @@ export default function Index() {
     }
   };
 
-  let dataChart: any = []
+  let dataChart: any = [];
 
   khs.map((item: any) => {
     dataChart.push({
-      semester: item.semester_value,
+      semester: "Semester " + item.semester_value,
       IP: item.ip,
     });
   });
@@ -188,24 +173,22 @@ export default function Index() {
             underline
             className={classes.name}
           >
-            {/* Halo {(mahasiswa.name.split(" ")[0] || "").toLowerCase()}! */}
-            Halo {mahasiswa.name}!
+            Halo {user.name}!
           </Text>
         )}
-
-        <Space h={20} />
         {isLoading ? (
           <LoadingOverlay visible={isLoading} />
         ) : (
           <>
             <SimpleGrid
+              mt={20}
               cols={4}
+              w="100%"
               spacing="lg"
               breakpoints={[
-                { maxWidth: "xl", cols: 3, spacing: "md" },
-                { maxWidth: "md", cols: 2, spacing: "md" },
+                { maxWidth: 1460, cols: 3, spacing: "md" },
+                { maxWidth: 1110, cols: 2, spacing: "md" },
                 { maxWidth: "sm", cols: 1, spacing: "sm" },
-                { maxWidth: "xs", cols: 1, spacing: "sm" },
               ]}
             >
               <InfoCard
@@ -257,29 +240,34 @@ export default function Index() {
                 icon={<IoMdBookmarks color="white" size={32} />}
               />
             </SimpleGrid>
-            <Space h={20} />
-            <Card shadow="sm" className={classes.card}>
-              <Text align="center" fw={600} size={20}>
+            <Card shadow="sm" w="100%" mt={10} className={classes.card}>
+              <Text align="center" mb={10} fw={600} size={20}>
                 Progress IP Semester
               </Text>
-              <LineChart
-                width={1000}
-                height={300}
-                data={dataChart}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="semester" />
-                <YAxis dataKey="IP" />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="IP" stroke="#8884d8" />
-              </LineChart>
+              {dataChart.length == 0 ? (
+                <Text align="center" fw={400} size={16}>
+                  Tidak ada data
+                </Text>
+              ) : (
+                <LineChart
+                  width={width * 0.9 - 100 * 0.9}
+                  height={300}
+                  data={dataChart}
+                  margin={{
+                    top: 5,
+                    right: 50,
+                    left: 0,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="semester" />
+                  <YAxis dataKey="IP" />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="IP" stroke="#8884d8" />
+                </LineChart>
+              )}
             </Card>
           </>
         )}

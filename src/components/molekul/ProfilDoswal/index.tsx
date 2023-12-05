@@ -10,15 +10,8 @@ import {
 } from "@mantine/core";
 import Router from "next/router";
 
-const parseEntrance = (code: string) => {
-  if (code == "00") return "SNMPTN";
-  if (code == "01") return "SBMPTN";
-  if (code == "02") return "Mandiri";
-  return "-";
-};
-
 export default function Index({
-  mahasiswa,
+  lecture,
   isLoading,
   isShowEditBtn = false,
 }: any) {
@@ -39,21 +32,34 @@ export default function Index({
               <td>
                 {isLoading ? (
                   <Skeleton width={50} height={10} radius="xl" />
-                ) : mahasiswa.name ? (
-                  mahasiswa.name
+                ) : lecture.name ? (
+                  lecture.name
                 ) : (
                   "-"
                 )}
               </td>
             </tr>
             <tr>
-              <td>NIM</td>
+              <td>NIP</td>
               <td>:</td>
               <td>
                 {isLoading ? (
                   <Skeleton width={50} height={10} radius="xl" />
-                ) : mahasiswa.nim ? (
-                  mahasiswa.nim
+                ) : lecture.nip ? (
+                  lecture.nip
+                ) : (
+                  "-"
+                )}
+              </td>
+            </tr>
+            <tr>
+              <td>NIDN</td>
+              <td>:</td>
+              <td>
+                {isLoading ? (
+                  <Skeleton width={50} height={10} radius="xl" />
+                ) : lecture.nidn ? (
+                  lecture.nidn
                 ) : (
                   "-"
                 )}
@@ -65,45 +71,8 @@ export default function Index({
               <td>
                 {isLoading ? (
                   <Skeleton width={50} height={10} radius="xl" />
-                ) : mahasiswa.email ? (
-                  mahasiswa.email
-                ) : (
-                  "-"
-                )}
-              </td>
-            </tr>
-            <tr>
-              <td>Angkatan</td>
-              <td>:</td>
-              <td>
-                {isLoading ? (
-                  <Skeleton width={50} height={10} radius="xl" />
-                ) : mahasiswa.start_education_year ? (
-                  mahasiswa.start_education_year
-                ) : (
-                  "-"
-                )}
-              </td>
-            </tr>
-            <tr>
-              <td>Jalur Masuk</td>
-              <td>:</td>
-              {isLoading ? (
-                <Skeleton width={50} height={10} radius="xl" />
-              ) : mahasiswa.entrance_code ? (
-                parseEntrance(mahasiswa.entrance_code)
-              ) : (
-                "-"
-              )}
-            </tr>
-            <tr>
-              <td>Dosen Wali</td>
-              <td>:</td>
-              <td>
-                {isLoading ? (
-                  <Skeleton width={50} height={10} radius="xl" />
-                ) : mahasiswa.lecture_name ? (
-                  mahasiswa.lecture_name
+                ) : lecture.email ? (
+                  lecture.email
                 ) : (
                   "-"
                 )}
@@ -115,8 +84,8 @@ export default function Index({
               <td>
                 {isLoading ? (
                   <Skeleton width={50} height={10} radius="xl" />
-                ) : mahasiswa.province_name ? (
-                  mahasiswa.province_name
+                ) : lecture.province_name ? (
+                  lecture.province_name
                 ) : (
                   "-"
                 )}
@@ -128,8 +97,8 @@ export default function Index({
               <td>
                 {isLoading ? (
                   <Skeleton width={50} height={10} radius="xl" />
-                ) : mahasiswa.city_name ? (
-                  mahasiswa.city_name
+                ) : lecture.city_name ? (
+                  lecture.city_name
                 ) : (
                   "-"
                 )}
@@ -141,8 +110,8 @@ export default function Index({
               <td>
                 {isLoading ? (
                   <Skeleton width={50} height={10} radius="xl" />
-                ) : mahasiswa.address ? (
-                  mahasiswa.address
+                ) : lecture.address ? (
+                  lecture.address
                 ) : (
                   "-"
                 )}
@@ -154,8 +123,8 @@ export default function Index({
               <td>
                 {isLoading ? (
                   <Skeleton width={50} height={10} radius="xl" />
-                ) : mahasiswa.phone ? (
-                  mahasiswa.phone
+                ) : lecture.phone ? (
+                  lecture.phone
                 ) : (
                   "-"
                 )}
@@ -180,7 +149,7 @@ export default function Index({
             <Image
               alt="profile picture"
               radius={16}
-              src={mahasiswa.photo ? mahasiswa.photo.url : "/sample-profile.jpg"}
+              src={lecture.photo ? lecture.photo.url : "/sample-profile.jpg"}
               height={300}
               width={300}
               withPlaceholder

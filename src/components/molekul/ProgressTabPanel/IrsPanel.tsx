@@ -33,7 +33,7 @@ export default function IrsPanel({
         <table>
           <tr>
             <td>SKS</td>
-            <td>:</td>
+            <td style={{padding: "0 10px"}}>:</td>
             <td>{irs.sks ? irs.sks : "-"}</td>
           </tr>
         </table>

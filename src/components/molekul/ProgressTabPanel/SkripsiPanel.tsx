@@ -27,12 +27,12 @@ export default function SkripsiPanel({
         <table>
           <tr>
             <td>Status Skripsi</td>
-            <td>:</td>
+            <td style={{padding: "0 10px"}}>:</td>
             <td>{skripsi.grade ? "Lulus" : "-"}</td>
           </tr>
           <tr>
             <td>Nilai Skripsi</td>
-            <td>:</td>
+            <td style={{padding: "0 10px"}}>:</td>
             <td>{skripsi.grade ? skripsi.grade : "-"}</td>
           </tr>
         </table>

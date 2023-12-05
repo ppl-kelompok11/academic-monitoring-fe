@@ -75,7 +75,7 @@ const Index = () => {
   const [skripsiId, setSkripsiId] = useState<any>(null);
   const [isLoadingSkripsi, setIsLoadingSkripsi] = useState(false);
   const [path, setPath] = useState("");
-
+  
   useEffect(() => {
     if (router.isReady) {
       console.log(router.query.id);
@@ -172,7 +172,7 @@ const Index = () => {
       const response = await api.get(`/pkl/${id}`);
       if (response.status === 200) {
         console.log("PKL", response.data);
-        setKhs(response.data);
+        setPkl(response.data);
         setPath(response.data.scan_pkl.url);
         setIsLoadingPkl(false);
       }
@@ -213,7 +213,7 @@ const Index = () => {
   };
 
   return (
-    <AppLayout role="dosen-wali" activeLink="student-list">
+    <AppLayout activeLink="student-list">
       <Modal
         opened={opened}
         onClose={closeModal}
