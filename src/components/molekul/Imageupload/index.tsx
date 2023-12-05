@@ -70,7 +70,7 @@ export default function Index(props: Partial<FileUploadProps>) {
 
   return (
     <>
-      {!props.file?.filename && (
+      {!props.file?.path && (
         <Dropzone
           disabled={props.isDisable}
           className={props.isDisable ? classes.disabled : ""}
@@ -146,7 +146,7 @@ export default function Index(props: Partial<FileUploadProps>) {
         </Dropzone>
       )}
 
-      {props.file?.filename && (
+      {props.file?.path && (
         <Flex
           mt="md"
           align="flex-start"

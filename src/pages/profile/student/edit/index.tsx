@@ -162,6 +162,7 @@ export default function Index() {
         city_id: form.values.city_id,
         address: form.values.address,
         photo: form.values.photo.path,
+        phone: form.values.phone,
       });
 
       if (response.status === 201) {
@@ -245,6 +246,17 @@ export default function Index() {
                 label="Email"
                 disabled={isLoading}
                 {...form.getInputProps("email")}
+              />
+
+              <Space h={15} />
+
+              <TextInput
+                required
+                withAsterisk={false}
+                size="md"
+                label="Nomor Telepon"
+                disabled={isLoading}
+                {...form.getInputProps("phone")}
               />
 
               <Space h={15} />

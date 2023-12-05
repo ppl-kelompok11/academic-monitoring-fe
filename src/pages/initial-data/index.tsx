@@ -66,6 +66,7 @@ export default function Index() {
       city_id: "",
       address: "",
       photo: "",
+      phone: "",
       start_education_year: "",
       entrance_code: "",
     },
@@ -137,11 +138,12 @@ export default function Index() {
         province_id: form.values.province_id,
         city_id: form.values.city_id,
         address: form.values.address,
+        phone: form.values.phone,
         photo: "",
       });
 
       if (response.status === 201) {
-        const newUser = {...user, active:true}
+        const newUser = { ...user, active: true };
         Cookies.set("user", JSON.stringify(newUser));
         router.push("/dashboard/student");
       }
@@ -209,8 +211,18 @@ export default function Index() {
             <TextInput
               required
               size="md"
+              label="Nomor Telepon"
+              disabled={isLoading}
+              {...form.getInputProps("phone")}
+            />
+
+            <Space h={15} />
+
+            <TextInput
+              required
+              size="md"
               label="Email"
-              disabled = {isLoading}
+              disabled={isLoading}
               {...form.getInputProps("email")}
             />
 
@@ -220,7 +232,7 @@ export default function Index() {
               required
               size="md"
               label="Password"
-              disabled = {isLoading}
+              disabled={isLoading}
               {...form.getInputProps("password")}
             />
 
@@ -233,7 +245,7 @@ export default function Index() {
                 { value: "male", label: "Laki-laki" },
                 { value: "female", label: "Perempuan" },
               ]}
-              disabled = {isLoading}
+              disabled={isLoading}
               {...form.getInputProps("gender")}
             />
 
@@ -244,7 +256,7 @@ export default function Index() {
               searchable
               label="Provinsi"
               data={provincesData}
-              disabled = {isLoading}
+              disabled={isLoading}
               {...form.getInputProps("province_id")}
             />
 
@@ -255,7 +267,7 @@ export default function Index() {
               searchable
               label="Kabupaten / Kota"
               data={citiesData}
-              disabled = {isLoading}
+              disabled={isLoading}
               {...form.getInputProps("city_id")}
             />
 
@@ -265,12 +277,12 @@ export default function Index() {
               required
               size="md"
               label="Alamat"
-              disabled = {isLoading}
+              disabled={isLoading}
               {...form.getInputProps("address")}
             />
 
             <Group mt="md">
-              <Button loading = {isLoading} type="submit" onClick={handleSubmit}>
+              <Button loading={isLoading} type="submit" onClick={handleSubmit}>
                 Simpan
               </Button>
             </Group>
