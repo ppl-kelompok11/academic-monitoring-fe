@@ -36,8 +36,12 @@ const Index = () => {
   return (
     <AppLayout activeLink="profile">
       <Stack mt={35} mx={45}>
-        <TitleWithBack title="Profile" route="/accounts/lecture" />
-        <ProfilDoswal lecture={lecture} isLoading={isLoading} isShowEditBtn />
+        <TitleWithBack title="Detail Dosen" route="/accounts/lecture" />
+        <ProfilDoswal
+          lecture={lecture}
+          isLoading={isLoading}
+          isShowEditBtn
+        />
       </Stack>
     </AppLayout>
   );

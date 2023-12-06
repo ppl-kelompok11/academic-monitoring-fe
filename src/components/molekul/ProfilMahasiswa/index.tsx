@@ -25,13 +25,13 @@ export default function Index({
   return (
     <Card mt={10} bg={"white"} radius={"lg"}>
       <Flex
-        direction={{ base: "column", md: "row" }}
+        direction={{ base: "column-reverse", md: "row" }}
         gap={{ base: "sm", md: "lg" }}
         justify={{ base: "center", md: "space-between" }}
         align="flex-start"
         p={16}
       >
-        <Stack align="flex-start" justify="space-between" h={300}>
+        <Stack align="flex-start" justify="space-between">
           <table>
             <tr>
               <td style={{ paddingRight: "50px" }}>Nama Lengkap</td>
@@ -180,7 +180,9 @@ export default function Index({
             <Image
               alt="profile picture"
               radius={16}
-              src={mahasiswa.photo ? mahasiswa.photo.url : "/sample-profile.jpg"}
+              src={
+                mahasiswa.photo ? mahasiswa.photo.url : "/sample-profile.jpg"
+              }
               height={300}
               width={300}
               withPlaceholder

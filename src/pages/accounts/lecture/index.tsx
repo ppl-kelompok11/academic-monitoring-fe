@@ -89,11 +89,19 @@ const Index = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await api.delete(`customers/delete?id=${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await api.delete(`students?id=${id}`);
       console.log(response.data.data);
       getData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleResetPassword = async (id: number) => {
+    try {
+      const response = await api.post("auth/reset-password", {
+        id: id,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -106,6 +114,17 @@ const Index = () => {
       <td>{row.nip}</td>
       <td>{row.nidn}</td>
       <td>{row.work_start_date}</td>
+      <td>
+        <Button
+          onClick={() => {
+            handleResetPassword(row.user_id);
+          }}
+          color="red"
+          compact
+        >
+          Reset
+        </Button>
+      </td>
       <td>
         {
           <Flex gap="xs">
@@ -131,7 +150,7 @@ const Index = () => {
               variant="filled"
               color="red"
               onClick={() => {
-                // handleDelete(row.id);
+                handleDelete(row.id);
               }}
             >
               <IconTrash size="1rem" />
@@ -206,6 +225,7 @@ const Index = () => {
                     <th>NIP</th>
                     <th>NIDN</th>
                     <th>Tanggal Masuk</th>
+                    <th>Reset Password</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>

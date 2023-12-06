@@ -90,11 +90,19 @@ const Mahasiswa = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await api.delete(`customers/delete?id=${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await api.delete(`students?id=${id}`);
       console.log(response.data.data);
       getData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleResetPassword = async (id: number) => {
+    try {
+      const response = await api.post("auth/reset-password", {
+        id: id,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -105,13 +113,24 @@ const Mahasiswa = () => {
       <td>{row.name}</td>
       <td>{row.email}</td>
       <td>{row.nim}</td>
-      {/* <td>
+      <td>
         {row.active ? (
           <Badge color="green">Aktif</Badge>
         ) : (
           <Badge color="red">Tidak Aktif</Badge>
         )}
-      </td> */}
+      </td>
+      <td>
+        <Button
+          onClick={() => {
+            handleResetPassword(row.user_id);
+          }}
+          color="red"
+          compact
+        >
+          Reset
+        </Button>
+      </td>
       <td>
         {
           <Flex gap="xs">
@@ -137,7 +156,7 @@ const Mahasiswa = () => {
               variant="filled"
               color="red"
               onClick={() => {
-                // handleDelete(row.id);
+                handleDelete(row.id);
               }}
             >
               <IconTrash size="1rem" />
@@ -217,7 +236,8 @@ const Mahasiswa = () => {
                     <th>Nama</th>
                     <th>Email</th>
                     <th>NIM</th>
-                    {/* <th>Status</th> */}
+                    <th>Status Akun</th>
+                    <th>Reset Password</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>
