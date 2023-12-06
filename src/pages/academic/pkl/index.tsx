@@ -174,15 +174,17 @@ const Mahasiswa = () => {
               </Flex>
             </Grid.Col>
             <Grid.Col md={3} xs={12}>
-              <Flex justify={{ xs: "flex-start", md: "flex-end" }}>
-                <Button
-                  onClick={() => {
-                    router.push("/academic/pkl/input");
-                  }}
-                >
-                  Tambah
-                </Button>
-              </Flex>
+              {data.length == 0 && (
+                <Flex justify={{ xs: "flex-start", md: "flex-end" }}>
+                  <Button
+                    onClick={() => {
+                      router.push("/academic/pkl/input");
+                    }}
+                  >
+                    Tambah
+                  </Button>
+                </Flex>
+              )}
             </Grid.Col>
           </Grid>
           {isLoading ? (

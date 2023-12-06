@@ -19,7 +19,6 @@ export default function MahasiswaNavItem({
         route="/dashboard/student"
         label="Dashboard"
         isActive={activeLink === "dashboard"}
-        onClick={triggerLoading}
       >
         <TbCategoryFilled color="white" size={30} />
       </NavLink>
@@ -27,7 +26,6 @@ export default function MahasiswaNavItem({
         route="/academic/irs"
         label="Akademik"
         isActive={activeLink === "academic"}
-        onClick={triggerLoading}
       >
         <IoSchool color="white" size={30} />
       </NavLink>

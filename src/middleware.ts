@@ -25,6 +25,26 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
+  // redirect to initial data page if user is not active
+  if (
+    user?.role_id == 2 &&
+    !user?.active &&
+    token &&
+    (request.nextUrl.pathname.startsWith("/academic") ||
+      request.nextUrl.pathname.startsWith("/profile") ||
+      request.nextUrl.pathname.startsWith("/dashboard"))
+  ) {
+    return NextResponse.redirect(new URL("/initial-data", request.url));
+  }
+
+  if (
+    user?.active &&
+    token &&
+    request.nextUrl.pathname.startsWith("/initial-data")
+  ) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
   // redirect to dashboard based on user role
   if (request.nextUrl.pathname.startsWith("/dashboard")) {
     if (user?.role_id == 1) {
@@ -88,25 +108,5 @@ export default function middleware(request: NextRequest) {
 
   if (request.nextUrl.pathname.endsWith("/accounts")) {
     return NextResponse.redirect(new URL("/accounts/student", request.url));
-  }
-
-  // redirect to initial data page if user is not active
-  if (
-    user?.role_id == 2 &&
-    !user?.active &&
-    token &&
-    (request.nextUrl.pathname.startsWith("/academic") ||
-      request.nextUrl.pathname.startsWith("/profile") ||
-      request.nextUrl.pathname.startsWith("/dashboard"))
-  ) {
-    return NextResponse.redirect(new URL("/initial-data", request.url));
-  }
-
-  if (
-    user?.active &&
-    token &&
-    request.nextUrl.pathname.startsWith("/initial-data")
-  ) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 }
