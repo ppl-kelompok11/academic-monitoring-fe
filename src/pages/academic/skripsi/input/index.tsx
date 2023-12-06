@@ -102,23 +102,23 @@ export default function Index() {
 
   const gradeData = [
     {
-      value: "4.0",
+      value: "4.00",
       label: "A",
     },
     {
-      value: "3.0",
+      value: "3.00",
       label: "B",
     },
     {
-      value: "2.0",
+      value: "2.00",
       label: "C",
     },
     {
-      value: "1.0",
+      value: "1.00",
       label: "D",
     },
     {
-      value: "0.0",
+      value: "0.00",
       label: "E",
     },
   ];

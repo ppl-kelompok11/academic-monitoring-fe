@@ -85,7 +85,8 @@ export default function Index() {
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      const response = await api.post("/skripsi", {
+      const response = await api.put("/skripsi", {
+        id: router.query.id,
         semester_value: form.values.semester_value,
         grade: form.values.grade,
         scan_skripsi: form.values.scan_skripsi.path,
@@ -142,7 +143,7 @@ export default function Index() {
       label: "D",
     },
     {
-      value: "0.0",
+      value: "0.00",
       label: "E",
     },
   ];
@@ -167,9 +168,6 @@ export default function Index() {
                 {...form.getInputProps("grade")}
               />
               <Space h={15} />
-              <Text c="primary" size={18} fw={500} align="left" mb={5}>
-                Scan IRS
-              </Text>
               <Text c="primary" size={18} fw={500} align="left" mb={5}>
                 Scan Berita Acara Skripsi
               </Text>

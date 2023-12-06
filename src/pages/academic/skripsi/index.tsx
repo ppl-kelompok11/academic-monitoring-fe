@@ -17,11 +17,7 @@ import {
   Center,
   Loader,
 } from "@mantine/core";
-import {
-  IconEditCircle,
-  IconSearch,
-  IconTrash,
-} from "@tabler/icons-react";
+import { IconEditCircle, IconSearch, IconTrash } from "@tabler/icons-react";
 import AppLayout from "@/layouts/AppLayout";
 import { useRouter } from "next/router";
 import api from "@/configs/axios-interceptors";
@@ -88,9 +84,7 @@ const Mahasiswa = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await api.delete(`customers/delete?id=${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await api.delete(`skripsi?id=${id}`);
       console.log(response.data.data);
       getData();
     } catch (error) {
@@ -100,33 +94,50 @@ const Mahasiswa = () => {
 
   const rows = data.map((row: any) => (
     <tr key={row.id}>
-      <td>{row.verification_status}</td>
+      <td>{row.semester_value}</td>
       <td>{row.grade}</td>
-      <td>{row.scan_skripsi?.path}</td>
       <td>
-        <Flex gap="xs">
-          {row.verification_status !== "02" && (
+        {row.verification_status == "00"
+          ? "Verifikasi Ditolak"
+          : row.verification_status == "01"
+          ? "Menunggu verifikasi"
+          : "Sudah Diverifikasi"}
+      </td>
+      <td>
+        <Button
+          compact
+          onClick={() => {
+            window.open(row.scan_skripsi.url);
+          }}
+        >
+          Lihat File
+        </Button>
+      </td>
+      <td>
+        {
+          <Flex gap="xs">
             <ActionIcon
               variant="filled"
               color="yellow"
+              disabled={row.verification_status == "02"}
               onClick={() => {
                 router.push(`/academic/skripsi/${row.id}/edit`);
               }}
             >
               <IconEditCircle size="1rem" />
             </ActionIcon>
-          )}
-
-          <ActionIcon
-            variant="filled"
-            color="red"
-            onClick={() => {
-              handleDelete(row.id);
-            }}
-          >
-            <IconTrash size="1rem" />
-          </ActionIcon>
-        </Flex>
+            <ActionIcon
+              variant="filled"
+              color="red"
+              disabled={row.verification_status == "02"}
+              onClick={() => {
+                handleDelete(row.id);
+              }}
+            >
+              <IconTrash size="1rem" />
+            </ActionIcon>
+          </Flex>
+        }
       </td>
     </tr>
   ));
@@ -192,8 +203,9 @@ const Mahasiswa = () => {
                   })}
                 >
                   <tr>
-                    <th>Status</th>
+                    <th>Semester</th>
                     <th>Nilai</th>
+                    <th>Status</th>
                     <th>Scan Berita Acara Skripsi</th>
                     <th>Aksi</th>
                   </tr>
