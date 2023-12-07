@@ -105,7 +105,7 @@ const Index = () => {
     <tr key={row.id}>
       <td>{row.name}</td>
       <td>{row.nim}</td>
-      <td>{row.semester}</td>
+      <td>{row.semester_value}</td>
       <td>{row.sks}</td>
       <td>{row.sks_kumulatif}</td>
       <td>{row.ip}</td>
