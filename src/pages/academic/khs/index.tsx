@@ -73,6 +73,7 @@ const Mahasiswa = () => {
       setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   }, [search, activePage]);
 
@@ -217,7 +218,7 @@ const Mahasiswa = () => {
                 <tbody>
                   {data.length == 0 ? (
                     <tr>
-                      <td colSpan={5} style={{ textAlign: "center" }}>
+                      <td colSpan={8} style={{ textAlign: "center" }}>
                         Tidak Ada Data KHS
                       </td>
                     </tr>
@@ -226,14 +227,16 @@ const Mahasiswa = () => {
                   )}
                 </tbody>
               </Table>
-              <Center>
-                <Pagination
-                  my={20}
-                  value={activePage}
-                  onChange={setPage}
-                  total={totalPage}
-                />
-              </Center>
+              {data.length != 0 && (
+                <Center>
+                  <Pagination
+                    my={20}
+                    value={activePage}
+                    onChange={setPage}
+                    total={totalPage}
+                  />
+                </Center>
+              )}
             </ScrollArea>
           )}
         </Card>

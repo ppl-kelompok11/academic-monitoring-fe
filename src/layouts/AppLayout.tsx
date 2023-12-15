@@ -9,21 +9,8 @@ type AppLayoutProps = {
   role?: NavbarProps["role"];
 };
 
-export default function AppLayout({
-  children,
-  activeLink,
-  role,
-}: AppLayoutProps) {
+export default function AppLayout({ children, activeLink }: AppLayoutProps) {
   const [user, setUser] = useState<any>({});
-  const [isLoading, setIsLoading] = useState(false);
-
-  const triggerLoading = () => {
-    if (isLoading) {
-      setIsLoading(false);
-    } else {
-      setIsLoading(true);
-    }
-  };
 
   useEffect(() => {
     const userData = Cookies.get("user");
@@ -50,15 +37,8 @@ export default function AppLayout({
         },
       }}
       navbarOffsetBreakpoint="sm"
-      navbar={
-        <NavBar
-          activeLink={activeLink}
-          role={parseRole(user.role_id)}
-          triggerLoading={triggerLoading}
-        />
-      }
+      navbar={<NavBar activeLink={activeLink} role={parseRole(user.role_id)} />}
     >
-      <LoadingOverlay visible={isLoading} overlayBlur={2} />
       {children}
     </AppShell>
   );

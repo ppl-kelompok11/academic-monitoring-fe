@@ -17,6 +17,7 @@ import {
   Center,
   useMantineTheme,
   Modal,
+  Loader,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconSearch, IconCheck, IconX } from "@tabler/icons-react";
@@ -64,18 +65,22 @@ const Index = () => {
   const [scrolled, setScrolled] = useState(false);
   const [opened, { open, close }] = useDisclosure(false);
   const [path, setPath] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const theme = useMantineTheme();
 
   const getData = useCallback(async () => {
     try {
+      setIsLoading(true);
       const response = await api.get(
         `skripsi?search=${search}&page=${activePage}`
       );
       console.log(response.data.data);
       setData(response.data.data);
       setTotalPage(response.data.meta.last_page);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   }, [search, activePage]);
 
@@ -190,36 +195,54 @@ const Index = () => {
             </Grid.Col>
             <Grid.Col md={3} xs={12}></Grid.Col>
           </Grid>
-          <ScrollArea
-            mt={10}
-            onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
-          >
-            <Table miw={700}>
-              <thead
-                className={cx(classes.header, {
-                  [classes.scrolled]: scrolled,
-                })}
-              >
-                <tr>
-                  <th>Nama</th>
-                  <th>NIM</th>
-                  <th>Status</th>
-                  <th>Nilai</th>
-                  <th>Scan Berita Acara Skripsi</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody>{rows}</tbody>
-            </Table>
+          {isLoading ? (
             <Center>
-              <Pagination
-                my={20}
-                value={activePage}
-                onChange={setPage}
-                total={totalPage}
-              />
+              <Loader />
             </Center>
-          </ScrollArea>
+          ) : (
+            <ScrollArea
+              mt={10}
+              onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+            >
+              <Table miw={700}>
+                <thead
+                  className={cx(classes.header, {
+                    [classes.scrolled]: scrolled,
+                  })}
+                >
+                  <tr>
+                    <th>Nama</th>
+                    <th>NIM</th>
+                    <th>Status</th>
+                    <th>Nilai</th>
+                    <th>Scan Berita Acara Skripsi</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.length == 0 ? (
+                    <tr>
+                      <td colSpan={6} style={{ textAlign: "center" }}>
+                        Tidak Ada Data
+                      </td>
+                    </tr>
+                  ) : (
+                    rows
+                  )}
+                </tbody>
+              </Table>
+              {data.length != 0 && (
+                <Center>
+                  <Pagination
+                    my={20}
+                    value={activePage}
+                    onChange={setPage}
+                    total={totalPage}
+                  />
+                </Center>
+              )}
+            </ScrollArea>
+          )}
         </Card>
       </Stack>
     </AppLayout>

@@ -150,6 +150,8 @@ export default function Index() {
 
       if (response.status === 201) {
         router.push("/profile");
+      } else {
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);

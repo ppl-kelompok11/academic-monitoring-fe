@@ -7,7 +7,6 @@ import {
   Skeleton,
   Stack,
   Button,
-  Group,
 } from "@mantine/core";
 import Router from "next/router";
 
@@ -22,7 +21,7 @@ export default function Index({
         direction={{ base: "column-reverse", md: "row" }}
         gap={{ base: "sm", md: "lg" }}
         justify={{ base: "center", md: "space-between" }}
-        align="flex-start"
+        align={{md: "flex-start"}}
         p={16}
       >
         <Stack align="flex-start" justify="space-between" h={300}>

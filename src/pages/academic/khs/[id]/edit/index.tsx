@@ -89,6 +89,7 @@ export default function Index() {
             }
         } catch (error) {
             console.log(error);
+            setIsLoading(false);
         }
     };
 
@@ -122,6 +123,8 @@ export default function Index() {
 
             if (response.status === 200) {
                 router.push("/academic/khs");
+            } else {
+                setIsLoading(false);
             }
         } catch (error) {
             console.log(error);

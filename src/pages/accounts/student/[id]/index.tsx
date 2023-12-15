@@ -30,6 +30,7 @@ const Index = () => {
       }
     } catch (error) {
       console.log(error);
+      setIsLoadingMahasiswa(false);
     }
   };
 

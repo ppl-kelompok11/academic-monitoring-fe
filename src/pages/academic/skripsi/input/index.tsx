@@ -68,6 +68,8 @@ export default function Index() {
 
       if (response.status === 200) {
         router.push("/academic/skripsi");
+      } else {
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);

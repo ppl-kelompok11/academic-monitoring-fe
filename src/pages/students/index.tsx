@@ -70,6 +70,7 @@ const Index = () => {
       setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   }, [search, activePage]);
 
@@ -77,11 +78,39 @@ const Index = () => {
     getData();
   }, [search, activePage]);
 
+  const parseEntrance = (code: string) => {
+    if (code == "00") return "SNMPTN";
+    if (code == "01") return "SBMPTN";
+    if (code == "02") return "Mandiri";
+    return "-";
+  };
+
+  const parseStatus = (status: string) => {
+    if (status == "00") {
+      return "Aktif";
+    } else if (status == "01") {
+      return "Cuti";
+    } else if (status == "02") {
+      return "Mangkir";
+    } else if (status == "03") {
+      return "Drop Out";
+    } else if (status == "04") {
+      return "Mengundurkan Diri";
+    } else if (status == "05") {
+      return "Lulus";
+    } else if (status == "06") {
+      return "Meninggal";
+    }
+  };
+
   const rows = data.map((row: any) => (
     <tr key={row.id}>
       <td>{row.name}</td>
       <td>{row.email}</td>
       <td>{row.nim}</td>
+      <td>{row.start_education_year}</td>
+      <td>{parseEntrance(row.entrance_code)}</td>
+      <td>{parseStatus(row.status)}</td>
       {/* <td>
         {row.active ? (
           <Badge color="green">Aktif</Badge>
@@ -147,13 +176,16 @@ const Index = () => {
                     <th>Nama</th>
                     <th>Email</th>
                     <th>NIM</th>
+                    <th>Angkatan</th>
+                    <th>Jalur Masuk</th>
+                    <th>Status Mahasiswa</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.length == 0 ? (
                     <tr>
-                      <td colSpan={5} style={{ textAlign: "center" }}>
+                      <td colSpan={7} style={{ textAlign: "center" }}>
                         Tidak Ada Mahasiswa
                       </td>
                     </tr>
@@ -162,14 +194,16 @@ const Index = () => {
                   )}
                 </tbody>
               </Table>
-              <Center>
-                <Pagination
-                  my={20}
-                  value={activePage}
-                  onChange={setPage}
-                  total={totalPage}
-                />
-              </Center>
+              {data.length != 0 && (
+                <Center>
+                  <Pagination
+                    my={20}
+                    value={activePage}
+                    onChange={setPage}
+                    total={totalPage}
+                  />
+                </Center>
+              )}
             </ScrollArea>
           )}
         </Card>

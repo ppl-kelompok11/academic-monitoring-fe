@@ -6,24 +6,20 @@ import { IoSchool } from "react-icons/io5";
 
 type NavbarProps = {
   activeLink?: string;
-  triggerLoading?: Function;
 };
 
-export default function MahasiswaNavItem({
-  activeLink,
-  triggerLoading,
-}: NavbarProps) {
+export default function MahasiswaNavItem({ activeLink }: NavbarProps) {
   return (
     <Stack>
       <NavLink
-        route="/dashboard/student"
+        route="/dashboard/"
         label="Dashboard"
         isActive={activeLink === "dashboard"}
       >
         <TbCategoryFilled color="white" size={30} />
       </NavLink>
       <NavLink
-        route="/academic/irs"
+        route="/academic/"
         label="Akademik"
         isActive={activeLink === "academic"}
       >

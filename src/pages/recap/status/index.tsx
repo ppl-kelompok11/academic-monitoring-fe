@@ -72,12 +72,13 @@ const Index = () => {
   const [list, setList] = useState([]);
   const [scrolled, setScrolled] = useState(false);
   const [isLoadingList, setIsLoadingList] = useState(false);
-  const [isLoadingRecap, setIsLoadingRecap] = useState(true);
+  const [isLoadingRecap, setIsLoadingRecap] = useState(false);
   const [limit, setLimit] = useState(1);
   const theme = useMantineTheme();
 
   const getRekap = async () => {
     try {
+      setIsLoadingRecap(true);
       const response = await api.get(`recap/status`);
       console.log(response.data.data);
       const total = response.data.data.length;
@@ -87,6 +88,7 @@ const Index = () => {
       console.log(totalAngkatan);
     } catch (error) {
       console.log(error);
+      setIsLoadingRecap(false);
     }
   };
 
@@ -104,6 +106,7 @@ const Index = () => {
         setIsLoadingList(false);
       } catch (error) {
         console.log(error);
+        setIsLoadingList(false);
       }
     },
     [activePage, limit]

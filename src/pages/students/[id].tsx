@@ -93,6 +93,7 @@ const Index = () => {
       }
     } catch (error) {
       console.log(error);
+      setIsLoadingMahasiswa(false);
     }
   };
 
@@ -107,6 +108,7 @@ const Index = () => {
       }
     } catch (error) {
       console.log(error);
+      setIsLoadingRiwayat(false);
     }
   };
 
@@ -122,6 +124,7 @@ const Index = () => {
       }
     } catch (error) {
       console.log(error);
+      setIsLoadingIrs(false);
     }
   };
 
@@ -137,6 +140,7 @@ const Index = () => {
       }
     } catch (error) {
       console.log(error);
+      setIsLoadingKhs(false);
     }
   };
 
@@ -152,6 +156,7 @@ const Index = () => {
       }
     } catch (error) {
       console.log(error);
+      setIsLoadingPkl(false);
     }
   };
 
@@ -167,6 +172,7 @@ const Index = () => {
       }
     } catch (error) {
       console.log(error);
+      setIsLoadingSkripsi(false);
     }
   };
 

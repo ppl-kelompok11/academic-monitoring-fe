@@ -18,10 +18,10 @@ export default function Index({
   return (
     <Card mt={10} bg={"white"} radius={"lg"}>
       <Flex
-        direction={{ base: "column", md: "row" }}
+        direction={{ base: "column-reverse", md: "row" }}
         gap={{ base: "sm", md: "lg" }}
         justify={{ base: "center", md: "space-between" }}
-        align="flex-start"
+        align={{md: "flex-start"}}
         p={16}
       >
         <Stack align="flex-start" justify="space-between" h={300}>

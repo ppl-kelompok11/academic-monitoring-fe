@@ -94,6 +94,8 @@ export default function Index() {
 
             if (response.status === 200) {
                 router.push("/academic/khs");
+            } else {
+                setIsLoading(false);
             }
         } catch (error) {
             setIsLoading(false);

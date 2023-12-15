@@ -8,20 +8,15 @@ import { FaUserGroup } from "react-icons/fa6";
 
 type NavbarProps = {
   activeLink?: string;
-  triggerLoading?: Function;
 };
 
-export default function DoswalNavItem({
-  activeLink,
-  triggerLoading,
-}: NavbarProps) {
+export default function DoswalNavItem({ activeLink }: NavbarProps) {
   return (
     <Stack>
       <NavLink
         route="/dashboard/lecturer"
         label="Dashboard"
         isActive={activeLink === "dashboard"}
-        onClick={triggerLoading}
       >
         <TbCategoryFilled color="white" size={30} />
       </NavLink>
@@ -29,7 +24,6 @@ export default function DoswalNavItem({
         route="/validation/irs"
         label="Validasi Progress"
         isActive={activeLink === "validation"}
-        onClick={triggerLoading}
       >
         <BsClipboard2CheckFill color="white" size={30} />
       </NavLink>
@@ -37,7 +31,6 @@ export default function DoswalNavItem({
         route="/recap"
         label="Rekap Progress"
         isActive={activeLink === "recap"}
-        onClick={triggerLoading}
       >
         <SlBookOpen color="white" size={30} />
       </NavLink>
@@ -45,7 +38,6 @@ export default function DoswalNavItem({
         route="/students"
         label="Daftar Mahasiswa"
         isActive={activeLink === "student-list"}
-        onClick={triggerLoading}
       >
         <FaUserGroup color="white" size={30} />
       </NavLink>

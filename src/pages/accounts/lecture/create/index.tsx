@@ -68,7 +68,11 @@ export default function Index() {
           work_start_date: moment(form.values.work_start_date).format("YYYY-MM-DD"),
         });
         console.log(response);
-        Router.push("/accounts/lecture");
+        if (response.status === 201) {
+          Router.push("/accounts/lecture");
+        } else {
+          setIsLoading(false);
+        }
       } catch (error) {
         console.log(error);
         setIsLoading(false);

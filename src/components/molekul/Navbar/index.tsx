@@ -19,7 +19,6 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export type NavbarProps = {
-  triggerLoading?: Function;
   role?: "operator" | "mahasiswa" | "dosen-wali" | "departemen";
   activeLink?:
     | "dashboard"
@@ -41,18 +40,15 @@ export type NavbarProps = {
 export default function Index({
   activeLink,
   role,
-  triggerLoading = () => {},
 }: NavbarProps) {
   const { classes } = useStyles();
 
   const onLogout = async () => {
     try {
-      triggerLoading();
       const response = await api.post("/auth/logout");
       Cookies.remove("token");
       Cookies.remove("user");
       router.push("/auth/signin");
-      triggerLoading();
     } catch (error) {
       console.log("Error:", error);
     }
@@ -77,25 +73,21 @@ export default function Index({
           {role === "operator" && (
             <OperatorNavItem
               activeLink={activeLink}
-              triggerLoading={triggerLoading}
             />
           )}
           {role === "mahasiswa" && (
             <MahasiswaNavItem
               activeLink={activeLink}
-              triggerLoading={triggerLoading}
             />
           )}
           {role === "dosen-wali" && (
             <DoswalNavItem
               activeLink={activeLink}
-              triggerLoading={triggerLoading}
             />
           )}
           {role === "departemen" && (
             <DepartemenNavItem
               activeLink={activeLink}
-              triggerLoading={triggerLoading}
             />
           )}
         </Center>

@@ -174,6 +174,8 @@ export default function Index() {
 
       if (response.status === 201) {
         router.push(`/accounts/student/${router.query.id}`);
+      } else {
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);

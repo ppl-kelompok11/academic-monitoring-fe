@@ -145,6 +145,8 @@ export default function Index() {
         const newUser = { ...user, active: true };
         Cookies.set("user", JSON.stringify(newUser));
         router.push("/dashboard/student");
+      } else {
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);

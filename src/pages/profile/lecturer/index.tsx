@@ -28,6 +28,7 @@ const Index = () => {
       }
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 

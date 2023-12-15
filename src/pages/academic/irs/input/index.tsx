@@ -70,9 +70,12 @@ export default function Index() {
 
       if (response.status === 200) {
         router.push("/academic/irs");
+      } else {
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);
+      setIsLoading(true);
     }
 
     console.log(form.values);
@@ -132,7 +135,11 @@ export default function Index() {
                 isDisable={isLoading}
               />
               <Group mt="md">
-                <Button loading={isLoading} type="submit" onClick={handleSubmit}>
+                <Button
+                  loading={isLoading}
+                  type="submit"
+                  onClick={handleSubmit}
+                >
                   Simpan
                 </Button>
               </Group>
