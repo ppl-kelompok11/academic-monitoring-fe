@@ -124,7 +124,7 @@ export default function Index() {
   });
 
   return (
-    <AppLayout activeLink="dashboard" role="departemen">
+    <AppLayout activeLink="dashboard">
       <Stack pt="3vh" px="3%" align="flex-start">
         {!isLoading && (
           <Card shadow="sm" w="100%" className={classes.card}>

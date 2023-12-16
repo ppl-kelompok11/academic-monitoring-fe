@@ -228,7 +228,7 @@ const Index = () => {
   };
 
   return (
-    <AppLayout role="dosen-wali" activeLink="recap">
+    <AppLayout activeLink="recap">
       <Stack mt={35} mx={45}>
         <TitleWithBack title="Rekapitulasi" route="/dashboard/lecture" />
         <Card mt={10} bg={"white"} radius={"lg"}>

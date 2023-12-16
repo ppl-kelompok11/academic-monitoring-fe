@@ -157,7 +157,7 @@ export default function Index() {
   };
 
   return (
-    <AppLayout role="mahasiswa" activeLink="profile">
+    <AppLayout activeLink="profile">
       <Stack my={35} mx={45}>
         <Text c="black" size={32} fw={600} align="left">
           Isi Data Pribadi Anda

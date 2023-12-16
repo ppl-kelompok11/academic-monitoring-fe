@@ -35,7 +35,7 @@ const Index = () => {
   };
 
   return (
-    <AppLayout role="operator" activeLink="accounts">
+    <AppLayout activeLink="accounts">
       <Stack mt={35} mx={45}>
         <TitleWithBack title="Detail Mahasiswa" route="/accounts/student" />
         <ProfilMahasiswa

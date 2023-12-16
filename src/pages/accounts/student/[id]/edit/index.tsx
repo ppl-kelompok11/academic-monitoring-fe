@@ -191,7 +191,7 @@ export default function Index() {
   };
 
   return (
-    <AppLayout role="operator" activeLink="accounts">
+    <AppLayout activeLink="accounts">
       <Stack my={35} mx={45}>
         <TitleWithBack title="Update Profile Mahasiswa" route={`/accounts/student/${router.query.id}`} />
         <Box className={classes.form} py={20} pl={30} pr={15}>

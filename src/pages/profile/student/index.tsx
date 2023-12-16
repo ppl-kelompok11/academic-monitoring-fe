@@ -191,7 +191,7 @@ const Index = () => {
   };
 
   return (
-    <AppLayout activeLink="profile" role="mahasiswa">
+    <AppLayout activeLink="profile">
       <Modal
         opened={opened}
         onClose={closeModal}

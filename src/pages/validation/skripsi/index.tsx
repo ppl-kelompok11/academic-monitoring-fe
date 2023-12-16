@@ -146,7 +146,7 @@ const Index = () => {
   ));
 
   return (
-    <AppLayout role="dosen-wali" activeLink="validation">
+    <AppLayout activeLink="validation">
       <Modal
         opened={opened}
         onClose={close}

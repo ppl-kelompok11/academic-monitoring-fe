@@ -81,7 +81,7 @@ export default function Index() {
   }, []);
 
   return (
-    <AppLayout activeLink="dashboard" role="operator">
+    <AppLayout activeLink="dashboard">
       {isLoading ? (
         <LoadingOverlay visible={isLoading} />
       ) : (

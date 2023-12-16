@@ -113,7 +113,7 @@ export default function Index() {
   }
 
   return (
-    <AppLayout activeLink="accounts" role="operator">
+    <AppLayout activeLink="accounts">
       <div className={classes.wrapper}>
         <Stack mx={45}>
           <TitleWithBack

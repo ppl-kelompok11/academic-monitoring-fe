@@ -163,7 +163,7 @@ const Index = () => {
   ));
 
   return (
-    <AppLayout role="operator" activeLink="accounts">
+    <AppLayout activeLink="accounts">
       <Stack mt={35} mx={45}>
         <TitleWithBack title="Manajemen Akun" route="dashboard/operator" />
         <Card mt={10} bg={"white"} radius={"lg"}>

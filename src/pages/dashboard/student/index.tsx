@@ -148,7 +148,7 @@ export default function Index() {
   });
 
   return (
-    <AppLayout activeLink="dashboard" role="mahasiswa">
+    <AppLayout activeLink="dashboard">
       <Stack pt="3vh" px="3%" align="flex-start">
         {!isLoading && (
           <Text

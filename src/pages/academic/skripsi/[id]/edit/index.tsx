@@ -152,7 +152,7 @@ export default function Index() {
   ];
 
   return (
-    <AppLayout activeLink="academic" role="mahasiswa">
+    <AppLayout activeLink="academic">
       <div className={classes.wrapper}>
         <Stack mx={45}>
           <TitleWithBack title="Edit Skripsi" route="/academic/skripsi/" />

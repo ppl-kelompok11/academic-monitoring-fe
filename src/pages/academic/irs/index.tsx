@@ -147,7 +147,7 @@ const Mahasiswa = () => {
   ));
 
   return (
-    <AppLayout role="mahasiswa" activeLink="academic">
+    <AppLayout activeLink="academic">
       <Stack mt={35} mx={45}>
         <TitleWithBack title="Academic" route="/dashboard/mahasiswa" />
         <Card mt={10} bg={"white"} radius={"lg"}>
