@@ -10,12 +10,14 @@ import {
   Select,
   LoadingOverlay,
 } from "@mantine/core";
+import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import AppLayout from "@/layouts/AppLayout";
 import FileUpload from "@/components/molekul/FileUpload";
 import api from "@/configs/axios-interceptors";
 import { useRouter } from "next/router";
 import TitleWithBack from "@/components/atoms/TitleWithBack";
+import moment from "moment";
 
 const UseStyles = createStyles((theme) => ({
   wrapper: {},
@@ -48,6 +50,7 @@ export default function Index() {
     initialValues: {
       semester_value: "",
       grade: "",
+      defence_date: "",
       scan_skripsi: {
         path: "",
         filename: "",
@@ -69,11 +72,11 @@ export default function Index() {
       const response = await api.get(`/skripsi/${id}`);
       if (response.status === 200) {
         console.log("ini response", response.data);
-        form.setValues({
-          semester_value: response.data.semester_value,
-          grade: response.data.grade,
-          scan_skripsi: response.data.scan_skripsi,
-        });
+        const newData = {
+          ...response.data,
+          defence_date: new Date ("2023-12-01"),
+        }
+        form.setValues(newData);
         console.log("ini form", form.values);
         setIsLoading(false);
       }
@@ -158,7 +161,7 @@ export default function Index() {
           <TitleWithBack title="Edit Skripsi" route="/academic/skripsi/" />
           <Box className={classes.form} py={15} px={20}>
             <LoadingOverlay visible={isLoading} overlayBlur={2} />
-            <form onSubmit={form.onSubmit((values) => console.log(values))}>
+            <form onSubmit={form.onSubmit((values: any) => console.log(values))}>
               <Select
                 label="Semester"
                 data={semesterData}
@@ -169,6 +172,13 @@ export default function Index() {
                 label="Nilai Skripsi"
                 data={gradeData}
                 {...form.getInputProps("grade")}
+              />
+              <Space h={15} />
+              <DateInput
+                valueFormat="YYYY-MM-DD"
+                label="Tanggal Sidang Skripsi"
+                disabled={isLoading}
+                {...form.getInputProps("defence_date")}
               />
               <Space h={15} />
               <Text c="primary" size={18} fw={500} align="left" mb={5}>

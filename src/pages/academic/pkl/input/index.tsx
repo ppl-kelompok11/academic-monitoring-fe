@@ -9,6 +9,7 @@ import {
   Space,
   Select,
 } from "@mantine/core";
+import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import AppLayout from "@/layouts/AppLayout";
 import FileUpload from "@/components/molekul/FileUpload";
@@ -48,6 +49,7 @@ export default function Index() {
     initialValues: {
       semester_value: "",
       grade: "",
+      seminar_date: "",
       scan_pkl: {
         path: "",
         filename: "",
@@ -143,6 +145,13 @@ export default function Index() {
                 data={gradeData}
                 disabled={isLoading}
                 {...form.getInputProps("grade")}
+              />
+              <Space h={15} />
+              <DateInput
+                valueFormat="YYYY-MM-DD"
+                label="Tanggal Seminar PKL"
+                disabled={isLoading}
+                {...form.getInputProps("seminar_date")}
               />
               <Space h={15} />
               <Text c="primary" size={18} fw={500} align="left" mb={5}>
