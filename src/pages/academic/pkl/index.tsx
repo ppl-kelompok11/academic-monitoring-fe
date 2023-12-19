@@ -162,17 +162,6 @@ const Mahasiswa = () => {
           <Space h={15} />
           <Grid justify="space-between">
             <Grid.Col md={9} xs={12}>
-              <Flex gap="md">
-                <Input
-                  icon={<IconSearch />}
-                  placeholder="Cari Data"
-                  radius={8}
-                  w={300}
-                  onChange={(e) => {
-                    setSearch(e.currentTarget.value);
-                  }}
-                />
-              </Flex>
             </Grid.Col>
             <Grid.Col md={3} xs={12}>
               {data.length == 0 && (
