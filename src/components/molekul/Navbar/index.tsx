@@ -65,7 +65,7 @@ export default function Index({
     >
       <Navbar.Section>
         <Center>
-          <Image src="/logo.svg" alt="logo_undip" width="45px" />
+          <Image src="/logo.png" alt="logo_undip" width="45px" />
         </Center>
       </Navbar.Section>
       <Navbar.Section grow my="30px">
