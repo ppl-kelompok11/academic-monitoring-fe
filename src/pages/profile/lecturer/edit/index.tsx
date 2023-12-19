@@ -88,7 +88,8 @@ export default function Index() {
       if (response.status === 200) {
         console.log("ini response", response.data);
         setLecture(response.data);
-        form.setValues(response.data);
+        const newData = {...response.data, work_start_date: new Date(response.data.work_start_date)}
+        form.setValues(newData);
         setIsFetching(false);
       }
     } catch (error) {
